@@ -181,11 +181,25 @@ MDC 形式，标签写作大写 `QA`。问题写进 `#question` 插槽，回答�
 | collapsible | 是否显示折叠按钮   |  true  | `Boolean` |
 | collapsed   | 初始是否已折叠回答 | false  | `Boolean` |
 
+#### 问答组 {#qa-group}
+
+把多条问答放进 `QAGroup`，可以一次展开或折叠组内所有带折叠按钮的问答，嵌套写法见[组件嵌套](#mdc-nesting)：
+
+```markdown
+:::QAGroup
+::QA
+#question
+<问题>
+#answer
+<回答>
+::
+:::
+```
+
 #### 示例
 
-> 多条连续书写时，相邻的问答会连成一组，中间以分隔线隔开；点击右侧的展开或折叠按钮切换回答
-
 :::: demo
+:::QAGroup
 ::QA
 #question
 问答块的内容支持 Markdown 吗？
@@ -231,6 +245,7 @@ collapsed: true
 #answer
 可以，没写 `#answer` 时回答区为空。
 ::
+:::
 ::::
 
 ## Markdown 语法扩展 {#section-markdown-syntax}
