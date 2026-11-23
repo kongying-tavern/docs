@@ -18,7 +18,6 @@ import {
   MarkdownExtKbd,
   MarkdownExtLightbox,
   MarkdownExtMention,
-  MarkdownExtQA,
   MarkdownExtRuby,
   MarkdownExtSpoiler,
   MarkdownExtTimeline,
@@ -43,7 +42,6 @@ export const markdownConfig: MarkdownOptions = {
   config(md) {
     md.use(MarkdownExtColorPreview)
     md.use(MarkdownExtDemo)
-    md.use(MarkdownExtQA)
     md.use(sub)
     md.use(sup)
     md.use(mark)

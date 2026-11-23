@@ -7,32 +7,32 @@
   border-top: 1px solid var(--vp-c-brand);
 }
 
-.qa-summary {
+.qa-question {
   margin: 0.5rem 0;
   padding: 0 0.3rem;
 }
 
-.qa.qa-collapsible .qa-summary {
+.qa.qa-collapsible .qa-question {
   cursor: pointer;
   pointer-events: all;
 }
 
-.qa:not(.qa-collapsible) .qa-summary {
+.qa:not(.qa-collapsible) .qa-question {
   pointer-events: none;
 }
 
-.qa-detail {
+.qa-answer {
   margin: 0.6rem 0;
   padding: 0 0.3rem;
   overflow-y: hidden;
   transition: height 10s ease;
 }
 
-.qa.qa-opened .qa-detail {
+.qa.qa-opened .qa-answer {
   height: auto;
 }
 
-.qa:not(.qa-opened) .qa-detail {
+.qa:not(.qa-opened) .qa-answer {
   display: none;
   height: 0;
 }

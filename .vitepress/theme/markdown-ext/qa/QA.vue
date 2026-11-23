@@ -31,12 +31,12 @@ function handleToggle() {
       'qa-opened': isOpened,
     }"
   >
-    <div class="qa-wrapper qa-summary" @click="handleToggle">
+    <div class="qa-wrapper qa-question" @click="handleToggle">
       <div class="qa-mark qa-mark-question">
         Q
       </div>
       <div class="qa-content">
-        <slot name="summary" />
+        <slot name="question" />
       </div>
       <div v-if="collapsible" class="qa-toggle">
         <span
@@ -48,12 +48,12 @@ function handleToggle() {
         </span>
       </div>
     </div>
-    <div class="qa-wrapper qa-detail">
+    <div class="qa-wrapper qa-answer">
       <div class="qa-mark qa-mark-answer">
         A
       </div>
       <div class="qa-content">
-        <slot name="detail" />
+        <slot name="answer" />
       </div>
     </div>
   </div>
