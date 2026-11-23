@@ -159,6 +159,80 @@ theme: medium
 ::
 ::::
 
+### QA 问答 {#qa}
+
+#### 语法
+
+MDC 形式，标签写作大写 `QA`。问题写进 `#question` 插槽，回答写进 `#answer` 插槽，没写插槽标记的内容不会显示，插槽写法见 [MDC 的插槽](#mdc-slots)：
+
+```markdown
+::QA
+#question
+<问题>
+#answer
+<回答>
+::
+```
+
+#### 组件属性
+
+| 属性名      | 描述                     | 默认值 |   类型    |
+| ----------- | ------------------------ | :----: | :-------: |
+| collapsible | 是否允许点击问题折叠回答 |  true  | `Boolean` |
+| collapsed   | 初始是否已折叠回答       | false  | `Boolean` |
+
+#### 示例
+
+> 多条连续书写时，相邻的问答会连成一组，中间以分隔线隔开
+
+:::: demo
+::QA
+#question
+问答块的内容支持 Markdown 吗？
+
+#answer
+支持，两个插槽都会按 Markdown 渲染，列表和代码块也生效。
+::
+
+::QA{collapsed=true}
+#question
+问答可以默认收起吗？
+
+#answer
+可以，写 `collapsed=true` 后回答初始就是折叠的。
+::
+
+::QA{collapsible=false}
+#question
+可以不要折叠按钮吗？
+
+#answer
+可以，设置 `collapsible=false` 后回答一直展示。
+::
+
+::QA
+---
+collapsible: false
+---
+#question
+多个问答块之间会自动分隔吗？
+
+#answer
+会，连续书写时相邻两条之间只隔着一条分隔线。
+::
+
+::QA
+---
+collapsed: true
+---
+#question
+可以只写问题不写回答吗？
+
+#answer
+可以，没写 `#answer` 时回答区为空。
+::
+::::
+
 ## Markdown 语法扩展 {#section-markdown-syntax}
 
 此外，我们还扩展了部分 Markdown 语法，用于实现一些显示或逻辑效果。
