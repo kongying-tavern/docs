@@ -20,30 +20,32 @@ interface TimelineInfo {
 }
 
 /**
- * ::: timeline <日期|[标题]>[class]
+ * ::: timeline <日期>|<标题>[class] 或 ::: timeline <日期或标题>[class]
  * | 前的内容为 dot 左侧（通常日期），| 后为 dot 右侧标题；
- * 末尾 [] 内为 dot 自定义 class（逗号分隔，i- 类渲染图标），
- * 无 | / [] 的旧写法兼容：YYYY-MM-DD 日期自动提取到 dot 左侧。
+ * 末尾 [] 内为 dot 自定义 class（逗号分隔，i- 类渲染图标），与 | 无关；
+ * 无 | 时 YYYY-MM-DD 自动提取到 dot 左侧，余下内容为标题。
  * 注：不用 {} 是因站点 MDC/attrs 增强语法会消耗大括号。
  */
 function parseTimelineInfo(rawInfo: string, klass: string): TimelineInfo {
-  const info = rawInfo.trim().slice(klass.length).trim()
-  const [left = '', rightPart = ''] = info.split('|').map(part => part.trim())
+  let info = rawInfo.trim().slice(klass.length).trim()
 
   let opts = ''
+  if (info.endsWith(']')) {
+    const bracketIndex = info.lastIndexOf('[')
+    if (bracketIndex !== -1) {
+      opts = info.slice(bracketIndex + 1, -1)
+      info = info.slice(0, bracketIndex).trim()
+    }
+  }
+
+  const [left = '', rightPart = ''] = info.split('|').map(part => part.trim())
+
   let date = ''
   let title = left
 
   if (rightPart) {
     date = left
     title = rightPart
-    if (rightPart.endsWith(']')) {
-      const bracketIndex = rightPart.lastIndexOf('[')
-      if (bracketIndex !== -1) {
-        opts = rightPart.slice(bracketIndex + 1, -1)
-        title = rightPart.slice(0, bracketIndex).trim()
-      }
-    }
   }
   else {
     const autoDate = left.match(ISO_DATE_RE)?.[0]
