@@ -1,8 +1,3 @@
-.qa p {
-  margin: 0;
-  padding: 0;
-}
-
 .qa + .qa {
   border-top: 1px solid var(--vp-c-brand);
 }
@@ -12,20 +7,23 @@
   padding: 0 0.3rem;
 }
 
+/* Rows sit flush with their own edges, while a multi-paragraph answer keeps the
+   gap between its paragraphs. */
+.qa-content > :first-child {
+  margin-top: 0;
+}
+
+.qa-content > :last-child {
+  margin-bottom: 0;
+}
+
 .qa-answer {
   margin: 0.6rem 0;
   padding: 0 0.3rem;
-  overflow-y: hidden;
-  transition: height 10s ease;
-}
-
-.qa.qa-opened .qa-answer {
-  height: auto;
 }
 
 .qa:not(.qa-opened) .qa-answer {
   display: none;
-  height: 0;
 }
 
 .qa-wrapper {
@@ -36,12 +34,10 @@
 
 .qa-mark {
   flex: none;
-  display: inline-block;
   width: 2rem;
   height: 2rem;
   line-height: 2rem;
   background-color: var(--vp-c-brand);
-  vertical-align: middle;
   text-align: center;
   font-size: 1.4rem;
   border-radius: 0.3rem;
