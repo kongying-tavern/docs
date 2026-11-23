@@ -119,3 +119,50 @@ Second paragraph
   assert.match(html, /First paragraph/)
   assert.match(html, /Second paragraph/)
 })
+
+test('a group takes qa blocks in its default slot', async () => {
+  const markdown = await renderer()
+  const html = await markdown.renderAsync(`:::QAGroup
+::QA
+#question
+First
+#answer
+A1
+::
+::QA
+#question
+Second
+#answer
+A2
+::
+:::`)
+  assert.match(html, /<qa-group>/)
+  assert.equal((html.match(/<qa[ >]/g) || []).length, 2)
+  assert.match(html, /First/)
+  assert.match(html, /Second/)
+  assert.doesNotMatch(html, /::/, 'Container markers must not leak as text')
+})
+
+test('a group closes before the next qa block', async () => {
+  const markdown = await renderer()
+  const html = await markdown.renderAsync(`:::QAGroup
+::QA
+#question
+Inside
+#answer
+A
+::
+:::
+
+::QA
+#question
+Outside
+#answer
+B
+::`)
+  const groupClose = html.indexOf('</qa-group>')
+  const outside = html.indexOf('Outside')
+
+  assert.notEqual(groupClose, -1, 'The group should render')
+  assert.ok(outside > groupClose, 'The trailing QA must fall outside the group')
+})
