@@ -465,8 +465,6 @@ MDC 是一套兼容 Markdown 的 Vue 组件书写语法。组件名注意大小�
 
 行内组件嵌在正文里，写法是 `:组件名[内容]`。方括号内的内容会按 Markdown 渲染，可以继续使用加粗、行内代码等标记。
 
-<!-- zhlint ignore: :Spoiler -->
-
 :::: demo
 :Spoiler[刮开这里查看隐藏内容]
 ::::
@@ -474,8 +472,6 @@ MDC 是一套兼容 Markdown 的 Vue 组件书写语法。组件名注意大小�
 ### 块组件 {#mdc-block}
 
 块组件独占段落，写法是 `::组件名` 开始、单独一行 `::` 结束。两行之间的内容会按 Markdown 渲染，可以写多段、列表等。
-
-<!-- zhlint ignore: ::Spoiler -->
 
 :::: demo
 ::Spoiler
@@ -591,8 +587,6 @@ items:
 - 花括号属性和 YAML 属性块可同时使用；同名属性以 YAML 属性块的值为准。
 
 ### 示例 {#mdc-example}
-
-<!-- zhlint ignore: :Spoiler -->
 
 :::: demo
 :Spoiler[默认刮刮卡]
