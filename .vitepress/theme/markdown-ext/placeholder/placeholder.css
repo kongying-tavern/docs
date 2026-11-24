@@ -34,6 +34,12 @@
   text-align: center;
 }
 
+/* A slot may carry block markdown; its paragraph margins would otherwise fatten
+   the marker. */
+.doc-placeholder-hint p {
+  margin: 0;
+}
+
 /* Kept `inline` rather than `inline-block` so a long hint breaks across lines
    with the surrounding text instead of being pushed onto a line of its own.
    `clone` gives every line fragment its own border and rounded corners. */

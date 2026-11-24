@@ -13,10 +13,10 @@ withDefaults(defineProps<PlaceholderProps>(), {
 </script>
 
 <template>
-  <span v-if="inline" class="doc-placeholder doc-placeholder-inline">{{ hint }}</span>
+  <span v-if="inline" class="doc-placeholder doc-placeholder-inline"><slot>{{ hint }}</slot></span>
   <div v-else class="doc-placeholder doc-placeholder-block">
-    <p class="doc-placeholder-hint">
-      {{ hint }}
-    </p>
+    <div class="doc-placeholder-hint">
+      <slot>{{ hint }}</slot>
+    </div>
   </div>
 </template>
