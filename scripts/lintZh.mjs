@@ -20,8 +20,10 @@ const options = createLintZhOptions()
 // MDC 行内组件的起始冒号是语法，不是需要改写的中文标点。交给 zhlint 之前换成
 // 全角冒号，跑完再还原，行内组件因此不再需要 `<!-- zhlint ignore: :Name -->`。
 // 两者等长，校验位置可以直接对应源文件。
-const MDC_INLINE_COLON = /:(?=[a-z][\w-]*\[)/gi
-const MDC_INLINE_COLON_MASKED = /：(?=[a-z][\w-]*\[)/gi
+// 只处理小写组件名：PascalCase 组件（`:Spoiler[文本]{width=300}`）带有属性，
+// 冒号、属性名与引号都得跳过，在 lintZhOptions 里整段按 opaque 区域处理。
+const MDC_INLINE_COLON = /:(?=[a-z][\w-]*\[)/g
+const MDC_INLINE_COLON_MASKED = /：(?=[a-z][\w-]*\[)/g
 
 const resultList = globSync('pages/zh/**/*.md').map((file) => {
   console.log(`[start] ${file}`)
