@@ -30,6 +30,23 @@ test('timeline marks only the first dated entry and subsequent year changes', as
   }
 })
 
+test('timeline reads dot styles without the date/title pipe', async () => {
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
+  const source = `
+::: timeline 2025-12-03 [i-lucide-flag]
+- Latest
+:::
+::: timeline Beta 1.2 2025-11-01 [border-red-500]
+- Older
+:::
+`
+  const html = await markdown.renderAsync(source)
+  assert.ok(html.includes('timeline-dot-icon i-lucide-flag'))
+  assert.ok(html.includes('class=\'timeline-dot border-red-500\''))
+  assert.ok(html.includes('datetime=\'2025-11-01\''), 'Extract the date from an unpiped entry')
+  assert.ok(html.includes('Beta 1.2</h2>'), 'Keep the rest of an unpiped entry as the title')
+})
+
 test('timeline localizes dates at render time without timezone drift', async () => {
   const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const source = '::: timeline 2025-12-03 | Version 3\n- Latest\n:::'
