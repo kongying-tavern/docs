@@ -51,11 +51,18 @@ test('menu paths keep the same meaning across locales and fallback links resolve
       path = path.slice(locale.length + 1)
     return path.replace(/\/$/, '') + url.hash
   }
+  // A `_`-prefixed segment marks an unpublished page, such as the next manual
+  // being staged for Chinese only, so it does not have to exist elsewhere.
+  function isUnpublished(path: string): boolean {
+    return path.startsWith('/') && path.split('/').some(segment => segment.startsWith('_'))
+  }
   function structure(value: unknown): unknown {
     if (Array.isArray(value))
       return value.map(structure)
     if (value && typeof value === 'object') {
-      return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, key === 'link' ? destination(String(child)) : ['text', 'title'].includes(key) ? typeof child : structure(child)]))
+      return Object.fromEntries(Object.entries(value)
+        .filter(([key]) => !isUnpublished(key))
+        .map(([key, child]) => [key, key === 'link' ? destination(String(child)) : ['text', 'title'].includes(key) ? typeof child : structure(child)]))
     }
     return value
   }
