@@ -10,6 +10,7 @@
     "bierner.markdown-yaml-preamble",
     "mrmlnc.vscode-scss",
     "redhat.vscode-yaml",
-    "Nuxt.mdc"
+    "Nuxt.mdc",
+    "aristidekamara.code-explainer-notes"
   ]
 }
