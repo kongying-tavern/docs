@@ -4,9 +4,9 @@ import type { TopicFormTransactionResult, TopicFormTransactionStage } from '@/sr
 import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { uploadImg } from '@/src/forum/api/interknot.site/upload.ts'
-import { useSubmitTopic } from '@/src/forum/composables/data/useSubmitTopic.ts'
-import { calculateThumbHashForFile } from '@/src/forum/composables/view/calculateThumbHashForFile.ts'
-import { useImageAttachmentQueue } from '@/src/forum/composables/view/useImageAttachmentQueue.ts'
+import { useSubmitTopic } from '@/src/forum/hooks/data/useSubmitTopic.ts'
+import { useImageAttachmentQueue } from '@/src/forum/hooks/view/useImageAttachmentQueue.ts'
+import { calculateThumbHashForFile } from '@/src/forum/lib/calculateThumbHashForFile.ts'
 import { readTopicDraft } from '@/src/forum/services/form/topicDraft.ts'
 import { submitTopicFormTransaction } from '@/src/forum/services/form/topicFormTransaction.ts'
 

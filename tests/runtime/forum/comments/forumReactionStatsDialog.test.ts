@@ -7,7 +7,7 @@ import ForumReactionStatsDialog from '../../../../src/forum/components/ui/ForumR
 const stats = vi.hoisted(() => ({ commentId: undefined as string | undefined, viewCount: 3642 }))
 
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
-vi.mock('../../../../src/forum/composables/data/useReactionStats.ts', async () => {
+vi.mock('../../../../src/forum/hooks/data/useReactionStats.ts', async () => {
   const { ref } = await import('vue')
   return {
     useReactionStats: () => ({
@@ -18,7 +18,7 @@ vi.mock('../../../../src/forum/composables/data/useReactionStats.ts', async () =
     }),
   }
 })
-vi.mock('../../../../src/forum/composables/data/useForumReaction.ts', async () => {
+vi.mock('../../../../src/forum/hooks/data/useForumReaction.ts', async () => {
   const { ref } = await import('vue')
   return {
     useForumReaction: () => ({

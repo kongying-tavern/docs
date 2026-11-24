@@ -19,13 +19,21 @@ test('ESLint covers config languages, source and maintained tests', async () => 
 }, 30_000)
 
 test('forum services retain both layer and theme import restrictions', async () => {
-  for (const path of ['@/src/forum/components/Example.vue', '@/src/forum/composables/data/example', '../composables/example', '../../composables/example', '../../../../.vitepress/locales/types']) {
+  for (const path of ['@/src/forum/components/Example.vue', '@/src/forum/hooks/data/example', '@/src/forum/lib/example', '../hooks/example', '../../lib/example', '../../../../.vitepress/locales/types']) {
     const result = await messages(`import type { Example } from '${path}'\nexport type { Example }\n`, 'src/forum/services/eslintProbe.ts')
     assert.ok(result.some(message => message.ruleId === 'no-restricted-imports'), path)
   }
-  for (const file of ['src/forum/types.ts', 'src/composables/usePostData.ts']) {
+  for (const file of ['src/forum/types.ts', 'src/features/blog/postPaths.ts']) {
     const result = await messages('import type { Example } from \'../../../../.vitepress/locales/types\'\nexport type { Example }\n', file)
     assert.ok(!result.some(message => message.ruleId === 'no-restricted-imports'), file)
+  }
+})
+
+test('forum API and services share the same upward-import boundary', async () => {
+  const probe = 'import type { Example } from \'@/src/forum/hooks/data/example\'\nexport type { Example }\n'
+  for (const file of ['src/forum/api/example.ts', 'src/forum/services/example.ts']) {
+    const result = await messages(probe, file)
+    assert.ok(result.some(message => message.ruleId === 'no-restricted-imports'), file)
   }
 })
 

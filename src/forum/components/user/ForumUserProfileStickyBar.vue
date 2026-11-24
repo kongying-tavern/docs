@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FORUM } from '../types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { Button } from '@theme/components/ui/button/index.ts'
 import { useI18n } from 'vue-i18n'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'

@@ -15,9 +15,9 @@ vi.mock('vue', async importOriginal => ({
   onBeforeUnmount() {},
 }))
 vi.mock('../../../../src/forum/api/interknot.site/upload.ts', () => ({ uploadImg() {} }))
-vi.mock('../../../../src/forum/composables/data/useSubmitTopic.ts', () => ({ useSubmitTopic: () => ({ submitData() {} }) }))
-vi.mock('../../../../src/forum/composables/view/calculateThumbHashForFile.ts', () => ({ calculateThumbHashForFile() {} }))
-vi.mock('../../../../src/forum/composables/view/useImageAttachmentQueue.ts', () => ({
+vi.mock('../../../../src/forum/hooks/data/useSubmitTopic.ts', () => ({ useSubmitTopic: () => ({ submitData() {} }) }))
+vi.mock('../../../../src/forum/lib/calculateThumbHashForFile.ts', () => ({ calculateThumbHashForFile() {} }))
+vi.mock('../../../../src/forum/hooks/view/useImageAttachmentQueue.ts', () => ({
   useImageAttachmentQueue: () => ({
     restore() {
       if (mocks.failRestore)

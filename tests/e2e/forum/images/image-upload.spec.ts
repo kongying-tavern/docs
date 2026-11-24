@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test'
 import { Buffer } from 'node:buffer'
-import { fileURLToPath } from 'node:url'
 import { currentUser, localAuth } from '../../../fixtures/gitee.ts'
 import { animatedPng, animatedWebp, png } from '../../../fixtures/images.ts'
+import { sourceModuleUrl } from '../../support/modules.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ scenario: { following: false, user: { ...currentUser, id: 2 }, comments: [] } })
@@ -148,7 +148,7 @@ test.describe('touch upload recovery', () => {
   }
 })
 
-const compressionModule = `/@fs/${fileURLToPath(new URL('../../src/forum/services/form/compressImageForUpload.ts', import.meta.url)).replaceAll('\\', '/')}`
+const compressionModule = sourceModuleUrl('src/forum/services/form/compressImageForUpload.ts')
 for (const [name, type, fixture] of [
   ['WebP', 'image/webp', animatedWebp],
   ['APNG', 'image/png', animatedPng],

@@ -1,0 +1,32 @@
+import type { Composer } from 'vue-i18n'
+import { withAuth } from '@/src/forum/lib/authHelpers.ts'
+import { catchError } from '@/src/services/apiUtils.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
+
+type ActionFunction<T extends unknown[], R = unknown> = (...args: T) => Promise<R>
+
+export async function executeWithAuth<T extends unknown[], R>(
+  action: ActionFunction<T, R>,
+  argument: T,
+  errorMsg: string,
+  t: Composer['t'],
+): Promise<R | false> {
+  const result = await withAuth.execute(
+    async () => {
+      const [error, state] = await catchError<R>(action(...argument))
+
+      if (state !== undefined && !error) {
+        return state
+      }
+      else {
+        toast.error(errorMsg, { error, scene: 'cd' })
+        return false
+      }
+    },
+    {
+      loginMessage: t('forum.auth.loginTips'),
+    },
+  )
+
+  return result || false
+}

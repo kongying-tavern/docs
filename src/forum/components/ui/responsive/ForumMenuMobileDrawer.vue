@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FORUM } from '../../types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import {
   Drawer,
   DrawerContent,

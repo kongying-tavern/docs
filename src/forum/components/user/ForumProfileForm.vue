@@ -8,8 +8,8 @@ import { computed, nextTick, onMounted, reactive, ref, useTemplateRef, watch } f
 import { useI18n } from 'vue-i18n'
 import SettingsRow from '@/src/features/settings/SettingsRow.vue'
 import SettingsSection from '@/src/features/settings/SettingsSection.vue'
-import { useUserProfileEditor } from '@/src/forum/composables/data/useUserProfileEditor.ts'
 import { USER_PROFILE_FIELDS } from '@/src/forum/config/userProfile.ts'
+import { useUserProfileEditor } from '@/src/forum/hooks/data/useUserProfileEditor.ts'
 import { syncUserProfileDraft } from '@/src/forum/services/forumUserProfileOptimistic.ts'
 import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 

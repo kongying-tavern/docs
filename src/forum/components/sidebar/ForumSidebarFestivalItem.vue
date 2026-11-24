@@ -5,7 +5,6 @@ import { defaultDocument, useEventListener, useIntervalFn, useLocalStorage } fro
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
 import { forumFestivals } from '@/src/forum/config/forumFestivals.ts'
 import {
   FESTIVAL_AUTOPLAYED_STORAGE_KEY,
@@ -16,6 +15,7 @@ import {
   resolveActiveForumFestival,
   resolveForumFestivalAutoStart,
 } from '@/src/forum/services/forumFestival.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 
 const { localeIndex } = useData()
 const { t } = useI18n({ useScope: 'global' })

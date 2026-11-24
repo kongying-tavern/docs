@@ -1,4 +1,4 @@
-import type { useImageAttachmentQueue } from '@/src/forum/composables/view/useImageAttachmentQueue.ts'
+import type { useImageAttachmentQueue } from '@/src/forum/hooks/view/useImageAttachmentQueue.ts'
 import type { ImageAttachmentError } from '@/src/forum/services/form/imageAttachment.ts'
 import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
 import { onScopeDispose, reactive } from 'vue'

@@ -3,7 +3,7 @@ import type { ToasterProps } from 'vue-sonner'
 import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon, XIcon } from '@lucide/vue'
 import { computed } from 'vue'
 import { Toaster as Sonner } from 'vue-sonner'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import { cn } from '../../../lib/tailwind.ts'
 import { buttonVariants } from '../button/index.ts'
 

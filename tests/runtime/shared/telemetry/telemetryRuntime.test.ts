@@ -14,7 +14,7 @@ type ModuleAPI = typeof import('../../../../src/services/telemetry/clarity.ts')
   & typeof import('../../../../src/services/telemetry/session.ts')
   & typeof import('../../../../src/services/telemetry/ops.ts')
   & typeof import('../../../../src/services/telemetry/pageAlert.ts')
-  & typeof import('../../../../src/forum/composables/auth/executeWithAuth.ts')
+  & typeof import('../../../../src/forum/lib/executeWithAuth.ts')
 
 function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
   const calls: unknown[][] = []
@@ -61,7 +61,7 @@ function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
           return { toast: { error() {} } }
         if (dependency === '@/src/services/telemetry/index' || dependency === '@/src/services/telemetry/toast')
           return { toast: { error: (_message: string, options: unknown) => toasts.push(options) } }
-        if (dependency === '@/src/forum/composables/auth/auth-helpers')
+        if (dependency === '@/src/forum/lib/authHelpers')
           return { withAuth: { execute: (action: () => Promise<unknown>) => action() } }
         if (dependency === '@/src/services/apiUtils')
           return { catchError: (promise: Promise<unknown>) => promise.then(value => [null, value], error => [error, undefined]) }
@@ -124,7 +124,7 @@ test('an expired stored record cannot override the memory fallback when writes f
 
 test('handled deletion failure returns false and preserves the original error in its toast', async () => {
   const env = runtime()
-  const { executeWithAuth } = env.load('../../forum/composables/auth/executeWithAuth.ts')
+  const { executeWithAuth } = env.load('../../forum/lib/executeWithAuth.ts')
   const error = new Error('Permission denied')
   const result = await executeWithAuth(async () => {
     throw error

@@ -4,8 +4,8 @@ import { Button } from '@theme/components/ui/button/index.ts'
 import { ClipboardCopyButton } from '@theme/components/ui/clipboard-copy-button/index.ts'
 import { computed, isVNode } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
-import { useToastDiagnostics } from '@/src/composables/useToastDiagnostics.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
+import { useToastDiagnostics } from '@/src/hooks/useToastDiagnostics.ts'
 
 type DescriptionContent = (() => string | Component) | string | Component
 

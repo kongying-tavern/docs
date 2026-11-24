@@ -2,7 +2,7 @@ import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
 import { createImageUploadCache } from '../../../../src/forum/api/interknot.site/imageUploadCache.ts'
-import { useImageAttachmentQueue } from '../../../../src/forum/composables/view/useImageAttachmentQueue.ts'
+import { useImageAttachmentQueue } from '../../../../src/forum/hooks/view/useImageAttachmentQueue.ts'
 import { serializeUploadedAttachments, validateImageBatch } from '../../../../src/forum/services/form/imageAttachment.ts'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../../../src/forum/services/forumConfig.ts'
 

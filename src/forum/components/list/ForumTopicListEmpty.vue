@@ -12,10 +12,10 @@ import {
 import { ContentSwap, MorphFrame } from '@theme/components/ui/swap-motion/index.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
 import { GiteeAPIError } from '@/src/forum/api/gitee/index.ts'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
-import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
+import { useForumSearchToken } from '@/src/forum/hooks/view/useForumSearchToken.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import ForumOpenFeedbackFormButton from '../form/ForumOpenFeedbackFormButton.vue'
 import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 

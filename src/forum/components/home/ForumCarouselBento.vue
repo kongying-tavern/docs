@@ -7,7 +7,7 @@ import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSiteHref } from '@/src/constants/site.ts'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
 import ForumContextMenu from '../ui/ForumContextMenu.vue'
 import BentoGridItem from './ForumBento.vue'
 

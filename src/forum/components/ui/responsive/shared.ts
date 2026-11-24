@@ -1,4 +1,4 @@
-import type { FORUM } from '../../types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { SELECT_TRIGGER_CLASSES } from '@theme/components/ui/select/index.ts'
 
 /**

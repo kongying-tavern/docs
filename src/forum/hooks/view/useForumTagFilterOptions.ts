@@ -1,0 +1,24 @@
+import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useForumLabelStore } from '@/src/forum/hooks/state/useForumLabelStore.ts'
+import { useTopicTagDisplay } from '@/src/forum/hooks/view/useTopicTagDisplay.ts'
+import { getTopicTagLabelGetter } from '@/src/forum/services/getTopicTagLabelGetter.ts'
+import { getTopicTagMap } from '@/src/forum/services/getTopicTagMap.ts'
+
+export function useForumTagFilterOptions() {
+  const { t } = useI18n({ useScope: 'global' })
+  const labelStore = useForumLabelStore()
+  const labelGetter = getTopicTagLabelGetter()
+  const { getTagDisplay } = useTopicTagDisplay()
+  const options = computed(() => {
+    const labels = [...getTopicTagMap(t).keys()].map(tag => labelGetter.getLabel(tag) ?? tag)
+    labels.push(...labelStore.categoryLabels.value.map(label => label.name))
+    return [...new Set(labels)].map(id => ({ id, label: getTagDisplay(id) }))
+  })
+
+  onMounted(() => {
+    void labelStore.loadLabels()
+  })
+
+  return { options }
+}

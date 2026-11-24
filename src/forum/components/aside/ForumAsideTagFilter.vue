@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
-import { useForumTagFilterOptions } from '@/src/forum/composables/view/useForumTagFilterOptions.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
+import { useForumTagFilterOptions } from '@/src/forum/hooks/view/useForumTagFilterOptions.ts'
 import { parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery.ts'
 import ForumTagList from '../ui/ForumTagList.vue'
 

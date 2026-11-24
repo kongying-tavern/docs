@@ -3,7 +3,7 @@ import { Button } from '@theme/components/ui/button/index.ts'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog/index.ts'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@theme/components/ui/drawer/index.ts'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 
 defineProps<{ embeddedMobile?: boolean, title: string }>()
 const emit = defineEmits<{ close: [] }>()

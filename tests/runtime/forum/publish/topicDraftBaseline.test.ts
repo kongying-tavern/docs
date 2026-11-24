@@ -35,7 +35,7 @@ vi.mock('vue-i18n', async (importOriginal) => {
   const i18n = actual.createI18n({ legacy: false, locale: 'zh', messages: { zh: loadTestMessages('zh') } })
   return { ...actual, useI18n: () => i18n.global }
 })
-vi.mock('../../../../src/forum/composables/auth/useRuleChecks.ts', async () => {
+vi.mock('../../../../src/forum/hooks/auth/useRuleChecks.ts', async () => {
   const { ref } = await import('vue')
   return { useRuleChecks: () => ({ hasAnyPermissions: () => ref(false) }) }
 })

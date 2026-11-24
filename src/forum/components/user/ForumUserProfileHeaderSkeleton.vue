@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { FORUM } from '../types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { SearchField } from '@theme/components/ui/search-field/index.ts'
 import { Skeleton } from '@theme/components/ui/skeleton/index.ts'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
 import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig.ts'
 import ForumProfileTabs from './ForumProfileTabs.vue'
 

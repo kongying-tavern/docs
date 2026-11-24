@@ -6,7 +6,7 @@ import { Switch } from '@theme/components/ui/switch/index.ts'
 import { useI18n } from 'vue-i18n'
 import SettingsRow from '@/src/features/settings/SettingsRow.vue'
 import SettingsSection from '@/src/features/settings/SettingsSection.vue'
-import { useForumShortcutRecorder } from '@/src/forum/composables/view/useForumShortcutRecorder.ts'
+import { useForumShortcutRecorder } from '@/src/forum/hooks/view/useForumShortcutRecorder.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 

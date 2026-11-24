@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 import { issue, localAuth } from '../../../fixtures/gitee.ts'
+import { sourceModuleUrl } from '../../support/modules.ts'
 import { expect, test } from '../../support/test.ts'
 
 const topics = Array.from({ length: 45 }, (_, index) => issue({
@@ -13,14 +13,15 @@ test.use({ scenario: { topics, comments: [] } })
 test('pending prefetch does not schedule another request after unmount @source', async ({ page }) => {
   await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(20, { timeout: 30_000 })
-  const probeUrl = `/@fs/${fileURLToPath(new URL('../../support/list-prefetch-probe.ts', import.meta.url)).replaceAll('\\', '/')}`
-  await page.evaluate(async (probeUrl) => {
+  const probeUrl = sourceModuleUrl('tests/e2e/support/list-prefetch-probe.ts')
+  const moduleUrl = sourceModuleUrl('src/forum/hooks/view/useForumListPrefetch.ts')
+  await page.evaluate(async ({ probeUrl, moduleUrl }) => {
     const { mountListPrefetchProbe } = await import(/* @vite-ignore */ probeUrl)
-    const probe = await mountListPrefetchProbe()
+    const probe = await mountListPrefetchProbe(moduleUrl)
     Object.assign(window, { prefetchProbe: probe })
     window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' })
     probe.start()
-  }, probeUrl)
+  }, { probeUrl, moduleUrl })
   const calls = () => page.evaluate(() => (window as unknown as { prefetchProbe: { calls: () => number } }).prefetchProbe.calls())
   await expect.poll(calls).toBe(1)
   await page.evaluate(() => {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { FORUM } from '../types.d.ts'
 import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { User } from '@theme/components/ui/user/index.ts'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'

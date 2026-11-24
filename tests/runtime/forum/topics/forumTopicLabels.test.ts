@@ -3,7 +3,6 @@ import assert from 'node:assert/strict'
 import { test } from 'vitest'
 import { isTopicTypeChangeConfirmed } from '../../../../src/forum/api/gitee/issues.ts'
 import { normalizeIssue } from '../../../../src/forum/api/gitee/normalize.ts'
-import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../../../src/forum/composables/util/composeTopicBody.ts'
 import { decodeTopicBody } from '../../../../src/forum/services/forumContentCodec.ts'
 import {
   buildTopicCreationLabels,
@@ -22,6 +21,7 @@ import {
   replaceTopicStatus,
   topicStatusHidesTopic,
 } from '../../../../src/forum/services/forumTopicStatus.ts'
+import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../../../src/forum/utils/composeTopicBody.ts'
 
 test('topic label edits preserve provider labels and keep one type', () => {
   const labels = ['WEB-FEEDBACK', 'LC-ZH', 'TYP-BUG', 'CATA-DOCS', 'PINNED']

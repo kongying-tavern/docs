@@ -28,8 +28,8 @@ export default defineConfig({
       provider: 'v8',
       reportOnFailure: true,
       include: [
-        'src/forum/{api,composables,hooks,router,services,stores,utils}/**/*.ts',
-        'src/{composables,services,utils}/**/*.ts',
+        'src/forum/{api,hooks,lib,router,services,stores,utils}/**/*.ts',
+        'src/{hooks,services,utils}/**/*.ts',
         '.vitepress/theme/components/ui/fluid-hover/**/*.ts',
         '.vitepress/theme/components/ui/utils/spring.ts',
         '.vitepress/theme/hooks/{useQRCode,useThemeTransition}.ts',
@@ -43,7 +43,7 @@ export default defineConfig({
         'statements': 50,
         'functions': 48,
         'branches': 49,
-        'src/forum/hooks/{useAuthRefresh,useSSORefreshManager}.ts': {
+        'src/forum/hooks/auth/{useAuthRefresh,useSSORefreshManager}.ts': {
           perFile: true,
           lines: 65,
           branches: 60,

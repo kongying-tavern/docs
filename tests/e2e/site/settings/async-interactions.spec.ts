@@ -1,6 +1,9 @@
 import type { Page } from '@playwright/test'
 import { currentUser, localAuth } from '../../../fixtures/gitee.ts'
+import { sourceModuleUrl } from '../../support/modules.ts'
 import { expect, test } from '../../support/test.ts'
+
+const tagsEditorModule = sourceModuleUrl('src/forum/hooks/state/useTopicTagsEditor.ts')
 
 async function holdModule(page: Page, module: string): Promise<() => void> {
   let release!: () => void
@@ -126,7 +129,7 @@ test('tag editor displays loading feedback and can be canceled before its module
     await page.goto('feedback')
     await expect(page.locator('.forum-topic-item').first()).toBeVisible({ timeout: 30_000 })
     await page.evaluate(`(async () => {
-      const { useTopicTagsEditor } = await import('/forum/composables/state/useTopicTagsEditor.ts')
+      const { useTopicTagsEditor } = await import('${tagsEditorModule}')
       useTopicTagsEditor().openTopicTagsEditorDialog({ id: '123', type: 'FEAT', tags: [] })
     })()`)
     const loading = page.getByRole('dialog', { name: '加载中', exact: true })
@@ -135,7 +138,7 @@ test('tag editor displays loading feedback and can be canceled before its module
     await expect(loading).toHaveCount(0)
     release()
     await page.evaluate(`(async () => {
-      const { useTopicTagsEditor } = await import('/forum/composables/state/useTopicTagsEditor.ts')
+      const { useTopicTagsEditor } = await import('${tagsEditorModule}')
       useTopicTagsEditor().openTopicTagsEditorDialog({ id: '123', type: 'FEAT', tags: [] })
     })()`)
     await expect(page.getByRole('dialog', { name: '编辑反馈标签（#123）' })).toBeVisible()

@@ -1,7 +1,7 @@
-import type { ThemePreference } from '@/src/composables/useSitePreferences.ts'
+import type { ThemePreference } from '@/src/hooks/useSitePreferences.ts'
 import { useData } from 'vitepress'
 import { nextTick } from 'vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import { enableTransitions } from '../lib/transitions.ts'
 
 let isAnimating = false

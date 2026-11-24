@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
-import { useMobileEditorViewport } from '../../../../src/forum/composables/view/useMobileEditorViewport.ts'
+import { useMobileEditorViewport } from '../../../../src/forum/hooks/view/useMobileEditorViewport.ts'
 
 test('mobile viewport distinguishes keyboard from zoom and removes scheduled work on close', async () => {
   class Element {

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
-import { useRuleChecks } from '../../../../src/forum/composables/auth/useRuleChecks.ts'
+import { useRuleChecks } from '../../../../src/forum/hooks/auth/useRuleChecks.ts'
 
 const mocks = vi.hoisted(() => ({
   userId: undefined as number | undefined,
@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('../../../../src/forum/stores/auth/useUserInfo.ts', () => ({
   useUserInfoStore: () => ({ info: mocks.userId === undefined ? undefined : { id: mocks.userId } }),
 }))
-vi.mock('../../../../src/forum/composables/auth/usePermissionData.ts', async () => {
+vi.mock('../../../../src/forum/hooks/auth/usePermissionData.ts', async () => {
   const { computed } = await import('vue')
   return {
     usePermissionData: () => ({

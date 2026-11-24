@@ -2,7 +2,7 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { Avatar } from '@theme/components/ui/avatar/index.ts'
 import { ref } from 'vue'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
 import ForumTopicTranslator from '../topic/ForumTopicTranslator.vue'
 import ForumImage from '../ui/ForumImage.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'

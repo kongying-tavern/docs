@@ -5,7 +5,7 @@ import { Button } from '@theme/components/ui/button/index.ts'
 import { TextMorph } from '@theme/components/ui/text-morph/index.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useTopicsReaction } from '@/src/forum/composables/data/useTopicsReaction.ts'
+import { useTopicsReaction } from '@/src/forum/hooks/data/useTopicsReaction.ts'
 
 const { autoload = true, topicId, refetchOnMount } = defineProps<{
   topicId: string

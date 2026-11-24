@@ -6,7 +6,7 @@ import { test } from 'vitest'
 import { createSSRApp, effectScope, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import teamMembers from '../../../../data/static/common/team-member-list.gen.json'
-import { useArchivedFeedbackAccess } from '../../../../src/forum/composables/auth/useArchivedFeedbackAccess.ts'
+import { useArchivedFeedbackAccess } from '../../../../src/forum/hooks/auth/useArchivedFeedbackAccess.ts'
 import { useUserAuthStore } from '../../../../src/forum/stores/auth/useUserAuth.ts'
 import { useUserInfoStore } from '../../../../src/forum/stores/auth/useUserInfo.ts'
 

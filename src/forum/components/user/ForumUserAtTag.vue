@@ -2,8 +2,8 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
 
 const props = defineProps<{
   user: ForumAPI.User

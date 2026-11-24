@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 
 const props = defineProps<{
   /** 形变标识：变化后紧随的一次内容高度变化做高度过渡；窗口外的被动 reflow（窗口缩放、字体换用）直接就位 */

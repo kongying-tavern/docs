@@ -9,10 +9,10 @@ import ForumAsideRelatedTopics from '../../../../src/forum/components/aside/Foru
 
 const mocks = vi.hoisted(() => ({ topics: [] as ForumAPI.Topic[] }))
 
-vi.mock('../../../../src/forum/composables/data/useForumQueries.ts', () => ({
+vi.mock('../../../../src/forum/hooks/data/useForumQueries.ts', () => ({
   useForumTopicsQuery: () => ({ rows: ref(mocks.topics) }),
 }))
-vi.mock('../../../../src/forum/composables/state/useForumRoute.ts', () => ({
+vi.mock('../../../../src/forum/hooks/state/useForumRoute.ts', () => ({
   useForumRoute: () => ({ topicHref: (id: string) => `/feedback/topic/${id}` }),
 }))
 vi.mock('../../../../.vitepress/theme/components/ui/user/User.vue', () => ({ default: { render: () => null } }))

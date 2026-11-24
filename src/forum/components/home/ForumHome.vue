@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumTopicsQuery, usePinnedTopicsQuery } from '@/src/forum/composables/data/useForumQueries.ts'
-import { forumTopicTransitioning, useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumTopicsQuery, usePinnedTopicsQuery } from '@/src/forum/hooks/data/useForumQueries.ts'
+import { forumTopicTransitioning, useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
 import { resolveForumListScope } from '@/src/forum/services/forumListSkeleton.ts'
 import { parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery.ts'
 import ForumAside from '../aside/ForumAside.vue'

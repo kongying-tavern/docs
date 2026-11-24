@@ -2,7 +2,7 @@ import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
 import { useForm } from 'vee-validate'
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
 import {
   createDefaultTopicDraft,
   readTopicDraft,

@@ -5,9 +5,9 @@ import { useEventListener } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref, toValue, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import { closeSettingsDialog, closeSettingsPage } from './settingsNavigation.ts'
 import {
   isSettingsSectionId,

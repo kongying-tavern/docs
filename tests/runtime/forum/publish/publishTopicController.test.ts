@@ -38,11 +38,11 @@ vi.mock('../../../../src/forum/components/utils/submitFormUi.ts', async importOr
   ...await importOriginal<typeof import('../../../../src/forum/components/utils/submitFormUi.ts')>(),
   formatImageAttachmentError: () => '',
 }))
-vi.mock('../../../../src/forum/composables/data/useForumQueries.ts', async importOriginal => ({
-  ...await importOriginal<typeof import('../../../../src/forum/composables/data/useForumQueries.ts')>(),
+vi.mock('../../../../src/forum/hooks/data/useForumQueries.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('../../../../src/forum/hooks/data/useForumQueries.ts')>(),
   useForumTopicQuery: () => ({ data: ref(undefined), error: ref(null), isLoading: ref(false) }),
 }))
-vi.mock('../../../../src/forum/hooks/useHashChecker.ts', () => ({ useHashChecker: (_hash: unknown, handler: (hash: string) => unknown) => mocks.hashHandler = handler }))
+vi.mock('../../../../src/hooks/useHashChecker.ts', () => ({ useHashChecker: (_hash: unknown, handler: (hash: string) => unknown) => mocks.hashHandler = handler }))
 vi.mock('../../../../src/forum/services/form/topicDraft.ts', async importOriginal => ({
   ...await importOriginal<typeof import('../../../../src/forum/services/form/topicDraft.ts')>(),
   readTopicDraft: (type: TopicFormData['type']) => mocks.drafts.get(type),

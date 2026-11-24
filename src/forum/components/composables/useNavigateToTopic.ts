@@ -4,7 +4,7 @@ import { getLangPath } from '@theme/lib/locale.ts'
 import { isString } from 'lodash-es'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed } from 'vue'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
 import { forumKeys } from '@/src/forum/services/forumQueryContracts.ts'
 
 export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | string) {

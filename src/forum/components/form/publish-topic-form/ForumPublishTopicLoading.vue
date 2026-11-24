@@ -9,7 +9,7 @@ import { createReusableTemplate, useBrowserLocation, useMediaQuery } from '@vueu
 import { computed, unref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AsyncLoadError from '@/src/components/async/AsyncLoadError.vue'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
 import { resolvePublishTopicType } from '@/src/forum/services/form/publishTopicEntry.ts'
 import { readQuotedTopicRequest } from '@/src/forum/services/forumTopicQuote.ts'
 import { getFormTabsConfig } from './form-config.ts'

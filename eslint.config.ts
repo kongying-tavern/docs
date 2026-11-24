@@ -130,7 +130,7 @@ export default antfu({
 }, {
   name: 'project/src-theme-boundary',
   files: ['src/**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,vue}'],
-  ignores: ['src/forum/types.ts', 'src/composables/usePostData.ts'],
+  ignores: ['src/forum/types.ts', 'src/features/blog/postPaths.ts'],
   rules: {
     'no-restricted-imports': ['error', {
       patterns: themeImportRestrictions,
@@ -144,8 +144,8 @@ export default antfu({
     'no-restricted-imports': ['error', {
       patterns: [
         ...themeImportRestrictions,
-        { group: ['@/src/forum/components', '@/src/forum/components/**', '@/src/forum/composables', '@/src/forum/composables/**'], message: 'forum services/api must not import upward from components/composables' },
-        { regex: '^\\.{1,2}/(?:\\.\\./)*(?:components|composables)(?:/|$)', message: 'forum services/api must not import upward from components/composables' },
+        { group: ['@/src/forum/components', '@/src/forum/components/**', '@/src/forum/hooks', '@/src/forum/hooks/**', '@/src/forum/lib', '@/src/forum/lib/**'], message: 'forum services/api must not import upward from components/hooks/lib' },
+        { regex: '^\\.{1,2}/(?:\\.\\./)*(?:components|hooks|lib)(?:/|$)', message: 'forum services/api must not import upward from components/hooks/lib' },
       ],
     }],
   },

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { useMediaQuery } from '@vueuse/core'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
 import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import ForumCommentItem from '../comment/ForumCommentItem.vue'
 
 const { topic, compact, cardMode, showComment, inReply } = defineProps<{

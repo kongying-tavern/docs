@@ -1,8 +1,8 @@
-import type { MotionPreference } from '@/src/features/settings/settingsOptions.ts'
+import type { MotionPreference } from '@/src/constants/preferences.ts'
 // config/head.ts 的原生 Node 加载链不解析 `~` 别名，此处只可用相对导入
 import { SITE_DESKTOP_MEDIA_QUERY } from '../constants/breakpoints.ts'
 
-export type { MotionPreference } from '@/src/features/settings/settingsOptions.ts'
+export type { MotionPreference } from '@/src/constants/preferences.ts'
 
 export const POINTER_CURSOR_STORAGE_KEY = 'site-use-pointer-cursor'
 export const MOTION_STORAGE_KEY = 'site-motion-preference'

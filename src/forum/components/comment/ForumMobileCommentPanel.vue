@@ -7,8 +7,8 @@ import { Dialog, DialogContent, DialogTitle } from '@theme/components/ui/dialog/
 import { createReusableTemplate, useEventListener, useMutationObserver } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
-import { useMobileEditorViewport } from '@/src/forum/composables/view/useMobileEditorViewport.ts'
+import { useMobileEditorViewport } from '@/src/forum/hooks/view/useMobileEditorViewport.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import { useCommentEditorMorph } from './composables/useCommentEditorMorph.ts'
 
 const props = defineProps<{ embedded: boolean, pending: boolean, origin?: HTMLElement, replyUser?: ForumAPI.User, error?: string }>()

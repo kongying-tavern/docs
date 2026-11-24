@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FORUM } from '../types.d.ts'
 import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { Avatar } from '@theme/components/ui/avatar/index.ts'
 import { Button } from '@theme/components/ui/button/index.ts'
 import { useDebounceFn, useElementBounding, useEventListener, useMediaQuery } from '@vueuse/core'

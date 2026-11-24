@@ -10,8 +10,8 @@ import {
 } from '@theme/components/ui/dialog/index.ts'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useTopicManager } from '@/src/forum/composables/state/useTopicManager.ts'
-import { useTopicTagsEditor } from '@/src/forum/composables/state/useTopicTagsEditor.ts'
+import { useTopicManager } from '@/src/forum/hooks/state/useTopicManager.ts'
+import { useTopicTagsEditor } from '@/src/forum/hooks/state/useTopicTagsEditor.ts'
 import { getEditableTopicLabels } from '@/src/forum/services/forumTopicLabels.ts'
 import ForumTagsInput from '../form/publish-topic-form/ForumTagsInput.vue'
 

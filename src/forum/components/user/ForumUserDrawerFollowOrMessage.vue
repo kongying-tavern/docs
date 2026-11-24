@@ -4,7 +4,7 @@ import { Button } from '@theme/components/ui/button/index.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getGiteeMessagesHref } from '@/src/constants/site.ts'
-import { useFollowUser } from '@/src/forum/composables/data/useFollowUser.ts'
+import { useFollowUser } from '@/src/forum/hooks/data/useFollowUser.ts'
 import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 
 const { user } = defineProps<{
