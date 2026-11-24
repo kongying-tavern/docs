@@ -8,6 +8,20 @@ const RE_VALID_COMPONENT = /^[A-Z]/
 const RE_DOUBLE_QUOTE = /"/g
 const RE_CONTAINER_LINE = /^:{2,}\s*([A-Z][\w-]*)/i
 const RE_INLINE_COMPONENT_NAME = /^:([\w$-]+)/
+const RE_INLINE_SELF_CLOSING = /^:([A-Z][\w-]*)\{([^{}]*)\}/
+const RE_INLINE_PROP = /([\w-]+)(?:=(?:"([^"]*)"|'([^']*)'|([^\s"']+)))?/g
+
+/** Same opening context Comark requires for an inline component. */
+const INLINE_PREV_CHARS = new Set([' ', '\t', '\n', '*', '_', '['])
+
+function parseInlineProps(raw: string): Array<[string, string]> {
+  const attrs: Array<[string, string]> = []
+  for (const match of raw.matchAll(RE_INLINE_PROP)) {
+    const [, key, doubleQuoted, singleQuoted, bare] = match
+    attrs.push([key, doubleQuoted ?? singleQuoted ?? bare ?? 'true'])
+  }
+  return attrs
+}
 
 /**
  * 容器名保留名单:VitePress 内置容器(tip/raw/…)与 markdown-ext 下所有扩展
@@ -65,6 +79,39 @@ function isJsonValue(value: string): boolean {
     || RE_JSON_NUMBER.test(value)
 }
 
+interface InlineToken {
+  type: string
+  tag: string
+  nesting: number
+  attrs?: Array<[string, string]> | null
+}
+
+/**
+ * Props written after `[内容]` are attached to the component's closing token,
+ * not its opening one. An opening tag therefore has to look ahead for the token
+ * that closes it and borrow the props from there.
+ */
+function attrsOfClosingToken(tokens: InlineToken[], idx: number): Array<[string, string]> | null {
+  const { tag } = tokens[idx]
+  let depth = 0
+  for (let i = idx; i < tokens.length; i++) {
+    const token = tokens[i]
+    if (token.type !== 'mdc_inline_component' || token.tag !== tag) {
+      continue
+    }
+    if (token.nesting === 1) {
+      depth += 1
+    }
+    else if (token.nesting === -1) {
+      depth -= 1
+      if (depth === 0) {
+        return token.attrs ?? null
+      }
+    }
+  }
+  return null
+}
+
 /**
  * Apply compatibility patches for @comark/markdown-it to work with
  * Vue template compiler (used by VitePress).
@@ -73,7 +120,30 @@ function isJsonValue(value: string): boolean {
  * emit valid Vue component tags, and bind JSON props with :attr syntax.
  */
 export function applyComarkPatches(md: MarkdownIt): void {
-  const renderToken = md.renderer.renderToken.bind(md.renderer)
+  // Inline props follow the same rules as block props: JSON values bind as
+  // expressions, everything else stays a plain attribute. A bare flag arrives
+  // as an empty string, which Vue reads as a falsy prop, so it is passed on as
+  // a boolean literal.
+  const renderInlineAttrs = (attrs: Array<[string, string]> | null | undefined): string => {
+    let html = ''
+    for (const [key, value] of attrs ?? []) {
+      const literal = value === '' ? 'true' : value
+      if (isJsonValue(literal)) {
+        let normalized: string
+        try {
+          normalized = JSON.stringify(JSON.parse(literal))
+        }
+        catch {
+          normalized = JSON.stringify(literal)
+        }
+        html += ` :${key}="${normalized.replace(RE_DOUBLE_QUOTE, '&quot;')}"`
+      }
+      else {
+        html += ` ${md.utils.escapeHtml(key)}="${md.utils.escapeHtml(value)}"`
+      }
+    }
+    return html
+  }
 
   // Yield ordinary colon text and emoji before tokenization, so later
   // inline rules can still process them instead of restoring plain text.
@@ -90,20 +160,50 @@ export function applyComarkPatches(md: MarkdownIt): void {
   }
 
   // ── inlineComponent: only render valid component names as HTML ──────
-  md.renderer.rules.mdc_inline_component = (tokens, idx, options, _env, self) => {
+  // A component without a `[槽]` keeps its props as plain text, because Comark
+  // only tokenizes props behind a slot. Emit the self-closing token with its
+  // props directly, so `:Placeholder{inline hint="…"}` works inside a sentence.
+  md.inline.ruler.before('mdc_inline_component', 'mdc_inline_component_props', (state, silent) => {
+    const start = state.pos
+    if (state.src[start] !== ':') {
+      return false
+    }
+    if (start > 0 && !INLINE_PREV_CHARS.has(state.src[start - 1])) {
+      return false
+    }
+    const match = RE_INLINE_SELF_CLOSING.exec(state.src.slice(start, state.posMax))
+    if (!match) {
+      return false
+    }
+    if (silent) {
+      return true
+    }
+    const token = state.push('mdc_inline_component', match[1], 0)
+    token.attrs = parseInlineProps(match[2])
+    state.pos = start + match[0].length
+    return true
+  })
+
+  md.renderer.rules.mdc_inline_component = (tokens, idx) => {
     const token = tokens[idx]
     const { tag: name, nesting } = token
 
     // Valid component: contains hyphen (custom element) or starts uppercase (Vue)
     if (name.includes('-') || RE_VALID_COMPONENT.test(name)) {
+      // Props sit on the closing token, and Vue drops attributes written on an
+      // end tag, so they are emitted on the opening tag instead.
+      if (nesting === -1) {
+        return `</${name}>`
+      }
+      const attrs = [
+        ...(token.attrs ?? []),
+        ...(nesting === 1 ? attrsOfClosingToken(tokens as unknown as InlineToken[], idx) ?? [] : []),
+      ]
+      const html = `<${name}${renderInlineAttrs(attrs)}`
       // Self-closing tokens must render as <tag></tag> pair because
       // Vue's compiler treats <tag /> as an opening tag for non-void
       // elements (per HTML spec), expecting a closing </tag>.
-      if (nesting === 0) {
-        const attrs = self.renderAttrs(token)
-        return `<${name}${attrs}></${name}>`
-      }
-      return renderToken(tokens, idx, options)
+      return nesting === 0 ? `${html}></${name}>` : `${html}>`
     }
 
     // Non-component name (digit, GFM emoji code, table alignment, etc.)
@@ -121,6 +221,16 @@ export function applyComarkPatches(md: MarkdownIt): void {
   }
 
   // ── blockComponent: emit :attr for JSON-valued props ───────────────
+  // A line that starts with `:Name{…}` is parsed as a self-closing shorthand and
+  // rendered as a lone opening tag, which the Vue compiler rejects. Pair it up.
+  md.renderer.rules.mdc_block_shorthand = (tokens, idx, options, _env, self) => {
+    const token = tokens[idx]
+    if (token.nesting === 0) {
+      return `<${token.tag}${renderInlineAttrs(token.attrs)}></${token.tag}>`
+    }
+    return self.renderToken(tokens, idx, options)
+  }
+
   md.renderer.rules.mdc_block_open = (tokens, idx) => {
     const token = tokens[idx]
     let html = `<${token.tag}`

@@ -283,3 +283,12 @@ test('timeline demos omit outline anchors without hiding following guide section
   assert.equal(guide.match(/<h2 class='timeline-dot-title title'>/g)?.length, 3)
   assert.match(guide, /<h2 id="mdc"[^>]*>MDC/)
 })
+
+test('inline component props land on the opening tag', async () => {
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
+  const html = await markdown.renderAsync('前 :Spoiler[文本]{width=300} 后， :Placeholder[图标]{inline hint="待补"} 结束。')
+
+  assert.match(html, /<Spoiler :width="300">文本<\/Spoiler>/)
+  assert.match(html, /<Placeholder :inline="true" hint="待补">图标<\/Placeholder>/)
+  assert.doesNotMatch(html, /<\/[a-z][\w-]* [^>]*>/i)
+})
