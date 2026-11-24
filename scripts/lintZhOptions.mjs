@@ -59,5 +59,46 @@ export function createLintZhOptions(root = './') {
     return data
   })
 
+  // MDC 组件不是中文散文：`:Name[槽]{...}` 的冒号、属性名与引号都是语法，
+  // 按散文规则会被要求改成全角标点。整段作为 opaque 区域跳过，槽内文字一并略过。
+  const MDC_INLINE_COMPONENT_REGEX = /(^|[ \t]):[A-Z][\w-]*(?:\[[^\]]*\](?:\{[^{}]*\})?|\{[^{}]*\})/gm
+  options.hyperParse.unshift((data) => {
+    data.modifiedValue = data.modifiedValue.replace(
+      MDC_INLINE_COMPONENT_REGEX,
+      (originValue, leading, index) => {
+        const value = originValue.slice(leading.length)
+        data.ignoredByParsers.push({
+          name: 'mdc-inline-component',
+          meta: 'mdc-inline-component',
+          index: index + leading.length,
+          length: value.length,
+          originValue: value,
+        })
+        return `${leading}${'@'.repeat(value.length)}`
+      },
+    )
+    return data
+  })
+
+  // 容器写法 `:::Name{...}` 的冒号是语法，属性块里是类名与字符串。
+  const MDC_BLOCK_PROPS_REGEX = /^(:{2,}[A-Z][\w-]*)\{[^{}]*\}/gm
+  options.hyperParse.unshift((data) => {
+    data.modifiedValue = data.modifiedValue.replace(
+      MDC_BLOCK_PROPS_REGEX,
+      (originValue, head, index) => {
+        const props = originValue.slice(head.length)
+        data.ignoredByParsers.push({
+          name: 'mdc-block-props',
+          meta: 'mdc-block-props',
+          index: index + head.length,
+          length: props.length,
+          originValue: props,
+        })
+        return `${head}${'@'.repeat(props.length)}`
+      },
+    )
+    return data
+  })
+
   return options
 }
