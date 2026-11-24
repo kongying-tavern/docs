@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ImgHTMLAttributes } from 'vue'
-import { autoSizes as _autoSizes, lazyLoad, triggerLoad } from 'unlazy'
+import { lazyLoad } from 'unlazy'
 import { nextTick, onBeforeUnmount, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
@@ -68,19 +68,12 @@ watchEffect(async () => {
   // Emit load start event when lazy loading begins
   handleImageLoadStart()
 
-  if (props.preload) {
-    if (props.autoSizes) {
-      _autoSizes(target.value)
-    }
-
-    cleanup = triggerLoad(target.value, { onImageLoad: handleImageLoaded })
-    return
-  }
-
   cleanup = lazyLoad(target.value, {
     hash: props.thumbhash || props.blurhash,
     hashType: props.thumbhash ? 'thumbhash' : 'blurhash',
     placeholderSize: props.placeholderSize,
+    preload: props.preload,
+    updateSizesOnResize: props.autoSizes,
     onImageLoad: handleImageLoaded,
     onImageError: (_image: HTMLImageElement, error: Event) => {
       handleImageError(error)

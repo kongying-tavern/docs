@@ -101,15 +101,6 @@ export default defineConfig(({ mode }) => ({
     process.env.VITE_DEVTOOLS !== 'false' && vueDevTools({ appendTo: /vitepress\/dist\/client\/app\/index\.js$/ }),
     process.env.VITE_DEVTOOLS !== 'false' && medula(),
     loadEnv(mode, process.cwd(), 'VITE_COLADA_DEVTOOLS').VITE_COLADA_DEVTOOLS !== 'false' && PiniaColadaDevtools(),
-    {
-      name: 'llms-resolved-base',
-      apply: 'build',
-      configResolved({ vitepress }) {
-        // llms.txt reads userConfig.base, which VitePress leaves untouched by --base.
-        if (vitepress)
-          vitepress.userConfig.base = vitepress.site.base
-      },
-    },
     llmstxt({
       // Chinese is the source locale; translated copies would duplicate the corpus.
       workDir: DEFAULT_LOCALE,

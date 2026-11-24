@@ -404,7 +404,7 @@ test('lightweight legacy parsing preserves nested marks, lists, entities and lit
 
 test('read-only rich rendering preserves mark nesting and rejects attribute injection', () => {
   const marks = [{ type: 'italic' }, { type: 'bold' }]
-  assert.equal(renderTiptapToHtml({ type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: '<x>', marks }] }] }), '<p><strong><em>&lt;x&gt;</em></strong></p>')
+  assert.equal(renderTiptapToHtml({ type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: '<x>', marks }] }] }), '<p><em><strong>&lt;x&gt;</strong></em></p>')
   const html = renderTiptapToHtml({ type: 'doc', content: [
     { type: 'heading', attrs: { level: '2 onclick=evil' }, content: [{ type: 'text', text: 'Title' }] },
     { type: 'orderedList', attrs: { start: '1 onclick=evil' }, content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Item' }] }] }] },

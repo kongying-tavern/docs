@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": "true",
-  "packageManager": "pnpm@12.3.4",
+  "packageManager": "pnpm@12.21.0",
   "license": "MIT",
   "imports": {
     "#data/*": "./data/*"
@@ -107,7 +107,6 @@
     "medium-zoom": "catalog:frontend",
     "morphicons": "catalog:",
     "motion-v": "catalog:conflicts_frontend_h1_7_1",
-    "path-to-regexp": "catalog:frontend",
     "pinia": "catalog:frontend",
     "qrcode": "catalog:frontend",
     "reka-ui": "catalog:frontend",

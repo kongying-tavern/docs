@@ -20,10 +20,6 @@ interface Options {
   template: Template
 }
 
-interface LunariaConfig {
-  locales: Array<{ label: string, lang: string }>
-}
-
 function fail(msg: string): never {
   console.error(`✗ ${msg}`)
   process.exit(1)
@@ -97,10 +93,6 @@ function initLocale(options: Options): void {
   }
 
   // Validate registration and template inputs before creating either target directory.
-  const lunariaPath = join(ROOT, 'lunaria.config.json')
-  const lunaria = JSON.parse(readFileSync(lunariaPath, 'utf8')) as LunariaConfig
-  if (lunaria.locales.some(entry => entry.lang === code))
-    fail(`lunaria.config.json already contains ${code}`)
   const templateSite = join(ROOT, `.vitepress/locales/${template}/site.yml`)
   const site = load(readFileSync(templateSite, 'utf8'), { schema: JSON_SCHEMA }) as Record<string, unknown>
   if (!site || typeof site !== 'object' || !site.title || !site.themeConfig)
@@ -126,10 +118,6 @@ function initLocale(options: Options): void {
   writeFileSync(sitePath, dump(site, { noRefs: true, lineWidth: 110 }))
   console.log('✓ Updated locale identity in site.yml')
 
-  lunaria.locales.push({ label, lang: code })
-  writeFileSync(lunariaPath, `${JSON.stringify(lunaria, null, 2)}\n`)
-  console.log('✓ Registered in lunaria.config.json')
-
   console.log(`
 Done. Locale "${label}" (${code}) initialized from the ${template} template.
 Next steps:
@@ -137,7 +125,7 @@ Next steps:
 2. Translate .vitepress/locales/${code}/*.yml (site.yml includes the site title, metadata, menus and language suggestion)
 3. Verify: pnpm i18n:check && pnpm typecheck && pnpm dev (preview /docs/${code}/)
 4. Follow .github/trans-guide-new-language.md to claim files and submit PRs
-localesConfig needs no manual edits: languages are auto-discovered from the locales directory.`)
+Site and Lunaria locales are auto-discovered from .vitepress/locales; no registration file needs a manual edit.`)
 }
 
 const cli = cac('pnpm init:locale')

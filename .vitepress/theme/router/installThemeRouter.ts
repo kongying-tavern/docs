@@ -4,7 +4,6 @@ import { publishForumLocation } from '@/src/forum/composables/state/useForumRout
 import { isForumToBlogNavigation, transitionForumBlog } from '@/src/forum/router/forumViewTransition.ts'
 import { parseForumLocation } from '@/src/forum/services/forumRoute.ts'
 import { identifySessionIfEnabled } from '@/src/services/telemetry/index.ts'
-import { routes } from '../../routes/index.ts'
 import { interfaceLocaleForHref } from '../i18n/index.ts'
 import { preloadForumEntry } from './forumPreload.ts'
 import handleRouteMatching from './handleRouteMatching.ts'
@@ -85,7 +84,7 @@ export function installThemeRouter(router: Router, siteData: Ref<SiteData>, init
         loadingForumShell = false
       }
     }
-    const shouldLoadPage = await handleRouteMatching(to, siteData.value.base, routes, router, siteData.value.locales)
+    const shouldLoadPage = await handleRouteMatching(to, siteData.value.base, router, siteData.value.locales)
     identifySessionIfEnabled()
     return shouldLoadPage
   }
