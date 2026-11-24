@@ -35,6 +35,7 @@ const Emoji = defineAsyncComponent(() => import('./components/ui/emoji/Emoji.vue
 const Forum = defineAsyncComponent(loadForumLayout)
 const Headline = defineAsyncComponent(() => import('./layouts/Headline.vue'))
 const LinkGrid = defineAsyncComponent(() => import('./components/ui/link-grid/LinkGrid.vue'))
+const Placeholder = defineAsyncComponent(() => import('./markdown-ext/placeholder/Placeholder.vue'))
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'))
@@ -82,6 +83,7 @@ export default {
     app.component('Kbd', Kbd)
     app.component('KbdGroup', KbdGroup)
     app.component('KeyboardShortcut', KeyboardShortcut)
+    app.component('Placeholder', Placeholder)
     // Comark kebab-cases the MDC tag `::QA` to `<qa>`, and Vue resolves that to
     // the registered name `Qa`; a `QA` registration would never match.
     app.component('Qa', QA)

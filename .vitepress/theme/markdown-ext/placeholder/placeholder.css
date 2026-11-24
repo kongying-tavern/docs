@@ -1,0 +1,48 @@
+/* A slot that still has to be filled in. Dashed and tinted so it reads as a
+   marker rather than as content, and never as a warning to readers. */
+.doc-placeholder {
+  border: 1px dashed var(--vp-c-warning-1);
+  border-radius: 6px;
+  background-color: var(--vp-c-warning-soft);
+  /* A file name or a URL can be wider than the text column. */
+  overflow-wrap: break-word;
+  cursor: help;
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* Hovering any part of the marker tints the whole marker, so a hint that wraps
+   across lines still reads as one region. */
+.doc-placeholder:hover {
+  background-color: color-mix(in srgb, var(--vp-c-warning-1) 24%, transparent);
+}
+
+.doc-placeholder-block {
+  margin: 1rem 0;
+  padding: 0.6rem 0.8rem;
+}
+
+.doc-placeholder-block:hover {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--vp-c-warning-1) 18%, transparent);
+}
+
+.doc-placeholder-hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--vp-c-text-3);
+  text-align: center;
+}
+
+/* Kept `inline` rather than `inline-block` so a long hint breaks across lines
+   with the surrounding text instead of being pushed onto a line of its own.
+   `clone` gives every line fragment its own border and rounded corners. */
+.doc-placeholder-inline {
+  display: inline;
+  padding: 0 0.35em;
+  border-radius: 4px;
+  font-size: 0.875em;
+  line-height: 1.7;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
