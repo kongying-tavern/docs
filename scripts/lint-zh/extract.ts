@@ -102,6 +102,21 @@ function stripHtmlTags(content: string): string {
 }
 
 /**
+ * 块级 HTML 里的可见文字：丢掉注释与 `<script>`/`<style>` 整段，
+ * 标签之间的每段文字各成一项（标签同样是块边界，与 `html_inline` 一致）。
+ *
+ * 这里不做实体解码：返回值要和源码逐字对应，`charMap` 才能按字符下标映射回去。
+ */
+function visibleHtmlRuns(content: string): string[] {
+  return content
+    .replaceAll(/<!--[\s\S]*?-->/gu, '')
+    .replaceAll(/<(script|style)\b[\s\S]*?<\/\1>/giu, '')
+    .split(/<[^>]*>/u)
+    .map(run => run.trim())
+    .filter(run => run.length > 0)
+}
+
+/**
  * 按 Vue 运行时解析组件的规则查表：精确匹配 → camelize → capitalize。
  * MDC 的块标签已经 kebab 化（`::QA` → `qa`），行内标签保留原写法（`:Kbd`）；
  * 两种都由这套规则覆盖，不需要自己再做大小写转换。
@@ -469,11 +484,26 @@ export async function extractBlocks(src: string): Promise<ExtractedBlock[]> {
       await pushVisibleProps(componentStack.pop())
       continue
     }
-    if (token.type === 'html_block' && ZHLINT_IGNORE_REGEX.test(token.content ?? '')) {
+    if (token.type === 'html_block') {
+      const content = token.content ?? ''
+      // zhlint ignore 注释必须原样进检查文本，它注册的忽略规则才生效。
+      const hasIgnore = ZHLINT_IGNORE_REGEX.test(content)
       ZHLINT_IGNORE_REGEX.lastIndex = 0
-      const pos = locate(token.content.trim())
-      if (pos >= 0)
-        pushBlock([{ text: token.content.trim(), srcStart: pos }])
+      if (hasIgnore) {
+        const pos = locate(content.trim())
+        if (pos >= 0)
+          pushBlock([{ text: content.trim(), srcStart: pos }])
+        continue
+      }
+      // 块级 HTML 的正文此前整段被当成标记跳过；现在按标签切开，逐段定位。
+      // `<script setup>` 里的代码随 `<script>` 段一起丢掉，不会当成正文。
+      for (const run of visibleHtmlRuns(content)) {
+        if (!hasNonAscii(run))
+          continue
+        const pos = locate(run)
+        if (pos >= 0)
+          pushBlock([{ text: run, srcStart: pos }])
+      }
       continue
     }
     if (token.type !== 'inline' || !token.children)
