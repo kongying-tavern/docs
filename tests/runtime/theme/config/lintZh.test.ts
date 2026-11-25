@@ -93,6 +93,29 @@ test('text wrapped in html_inline is checked, while its markup is not', async ()
   assert.equal(run(checkText, createLintZhOptions()).result, checkText.replaceAll('中文: 测试', '中文：测试'))
 })
 
+test('text inside block-level html is checked, while its code is not', async () => {
+  const source = [
+    '<script setup>',
+    'const label = \'脚本里的中文\'',
+    '</script>',
+    '',
+    '<div style="text-align: center;"><h3>中文: 测试</h3></div>',
+  ].join('\n')
+  const checkText = await checkTextOf(source)
+
+  assert.ok(checkText.includes('中文: 测试'))
+  assert.ok(!checkText.includes('脚本里的中文'))
+  assert.ok(!checkText.includes('text-align'))
+  assert.equal(run(checkText, createLintZhOptions()).result, checkText.replaceAll('中文: 测试', '中文：测试'))
+})
+
+test('tags in block-level html break the block, as they do inline', async () => {
+  // 标签两侧各自成块，围在标签外的空格不会被当成相邻正文之间的关系。
+  const checkText = await checkTextOf('<div>前文中文<span>中间中文</span>后文中文</div>')
+
+  assert.deepEqual(checkText.split('\n'), ['前文中文', '中间中文', '后文中文'])
+})
+
 test('the web changelog stays clean through extraction and still renders emoji', async () => {
   const source = readFileSync(resolve('pages/zh/blog/posts/changelog-web.md'), 'utf8')
   const checkText = await checkTextOf(source)
