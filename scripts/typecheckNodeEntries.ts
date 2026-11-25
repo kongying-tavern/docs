@@ -6,6 +6,10 @@
  * 拒绝（ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX）。`tsc --noEmit` 默认允许它们，所以这里
  * 用 `erasableSyntaxOnly` 对同一批入口再跑一遍。
  *
+ * 装饰器是另一条路：它本身是合法 JS 语法，`erasableSyntaxOnly` 因此放行，但 Node
+ * 不生成 `__decorate` 之类的辅助代码，V8 也还没实现装饰器，运行到就会 SyntaxError。
+ * 这一条由下面的 AST 检查补。
+ *
  * 入口取自 `package.json` 的 scripts，导入链由 tsc 自动跟随，不维护第二份文件清单；
  * 新增一个 `node *.ts` 脚本会自动纳入检查。
  *
@@ -73,25 +77,57 @@ interface AliasImport {
   specifier: string
 }
 
+/**
+ * 装饰器不经过 tsc 的 `erasableSyntaxOnly`：它在语法层是合法的，只是运行时缺实现。
+ * 这里按 AST 判一次，覆盖类、成员、参数上的全部写法。
+ */
+export function findDecoratorNodes(sourceFile: ts.SourceFile): ts.Node[] {
+  const found: ts.Node[] = []
+  const visit = (node: ts.Node): void => {
+    if (ts.canHaveDecorators(node)) {
+      const decorators = ts.getDecorators(node)
+      if (decorators?.length)
+        found.push(...decorators)
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  return found
+}
+
 /** 只跳过声明文件与依赖；文件名由 tsc 规范化成正斜杠，不能再和 fileURLToPath 比前缀。 */
 function isProjectFile(fileName: string): boolean {
   return !fileName.replaceAll('\\', '/').includes('/node_modules/')
 }
 
-/** 导入链里的值导入（类型导入会被擦除，不算运行时依赖）。 */
-function collectAliasImports(program: ts.Program): AliasImport[] {
-  const found: AliasImport[] = []
+interface DecoratorUsage {
+  sourceFile: ts.SourceFile
+  node: ts.Node
+}
+
+interface RuntimeIssues {
+  aliasImports: AliasImport[]
+  decorators: DecoratorUsage[]
+}
+
+/** 导入链里的值导入（类型导入会被擦除，不算运行时依赖）与 node 跑不起来的装饰器。 */
+function collectRuntimeIssues(program: ts.Program): RuntimeIssues {
+  const aliasImports: AliasImport[] = []
+  const decorators: DecoratorUsage[] = []
   let scanned = 0
 
   const check = (sourceFile: ts.SourceFile, literal: ts.Node): void => {
     if (ts.isStringLiteralLike(literal) && !nodeResolves(literal.text))
-      found.push({ sourceFile, node: literal, specifier: literal.text })
+      aliasImports.push({ sourceFile, node: literal, specifier: literal.text })
   }
 
   for (const sourceFile of program.getSourceFiles()) {
     if (sourceFile.isDeclarationFile || !isProjectFile(sourceFile.fileName))
       continue
     scanned++
+
+    for (const decorator of findDecoratorNodes(sourceFile))
+      decorators.push({ sourceFile, node: decorator })
 
     for (const statement of sourceFile.statements) {
       if (ts.isImportDeclaration(statement) && !statement.importClause?.isTypeOnly)
@@ -115,15 +151,24 @@ function collectAliasImports(program: ts.Program): AliasImport[] {
   if (!scanned)
     throw new Error('scanned no node entry; check the entry paths and file-name separators')
 
-  return found
+  return { aliasImports, decorators }
 }
 
-/** 与 tsc 的 `file:line:col - error` 对齐，两类问题能读成同一份输出。 */
-function formatAliasImport({ sourceFile, node, specifier }: AliasImport): string {
+/** 与 tsc 的 `file:line:col - error` 对齐，几类问题能读成同一份输出。 */
+function formatLocation(sourceFile: ts.SourceFile, node: ts.Node): string {
   const { line, character } = sourceFile.getLineAndCharacterOfPosition(node.getStart(sourceFile))
   const file = relative(ROOT, sourceFile.fileName).replaceAll('\\', '/')
-  return `${file}:${line + 1}:${character + 1} - error: node cannot resolve the tsconfig alias `
+  return `${file}:${line + 1}:${character + 1} - error: `
+}
+
+function formatAliasImport({ sourceFile, node, specifier }: AliasImport): string {
+  return `${formatLocation(sourceFile, node)}node cannot resolve the tsconfig alias `
     + `'${specifier}'; use a relative path, or a '#...' entry in package.json imports`
+}
+
+function formatDecorator({ sourceFile, node }: DecoratorUsage): string {
+  return `${formatLocation(sourceFile, node)}node cannot run decorators; type stripping `
+    + 'leaves them as syntax and V8 does not implement it, so remove the decorator'
 }
 
 function main(): void {
@@ -146,19 +191,21 @@ function main(): void {
 
   const program = ts.createProgram({ rootNames: entries, options: config.options })
   const diagnostics = ts.getPreEmitDiagnostics(program).filter(isErasableSyntaxDiagnostic)
-  const aliasImports = collectAliasImports(program)
+  const { aliasImports, decorators } = collectRuntimeIssues(program)
 
   if (diagnostics.length)
     console.error(ts.formatDiagnosticsWithColorAndContext(diagnostics, formatHost))
   for (const aliasImport of aliasImports)
     console.error(formatAliasImport(aliasImport))
+  for (const decorator of decorators)
+    console.error(formatDecorator(decorator))
 
-  if (diagnostics.length || aliasImports.length) {
+  if (diagnostics.length || aliasImports.length || decorators.length) {
     process.exitCode = 1
     return
   }
 
-  console.log(`[typecheck:node] checked ${entries.length} node entry point(s): erasable syntax, no tsconfig aliases`)
+  console.log(`[typecheck:node] checked ${entries.length} node entry point(s): erasable syntax, no tsconfig aliases, no decorators`)
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url))

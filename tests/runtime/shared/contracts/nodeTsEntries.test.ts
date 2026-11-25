@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
+import ts from 'typescript'
 import { test } from 'vitest'
-import { collectNodeEntries, nodeResolves } from '../../../../scripts/typecheckNodeEntries.ts'
+import { collectNodeEntries, findDecoratorNodes, nodeResolves } from '../../../../scripts/typecheckNodeEntries.ts'
 
 interface PackageJson {
   scripts: Record<string, string>
@@ -47,6 +48,23 @@ test('resolves # imports natively and rejects tsconfig aliases', () => {
   assert.equal(nodeResolves('@theme/components/ui.ts'), false)
   assert.equal(nodeResolves('~/config/markdown.ts'), false)
   assert.equal(nodeResolves('@/src/constants/site.ts'), false)
+})
+
+test('finds decorators, which erasableSyntaxOnly lets through', () => {
+  const sourceFile = ts.createSourceFile(
+    'probe.ts',
+    [
+      'function dec(_v: unknown): void {}',
+      '@dec',
+      'class Decorated {',
+      '  @dec method(): void {}',
+      '}',
+      'class Plain {}',
+    ].join('\n'),
+    ts.ScriptTarget.ESNext,
+    true,
+  )
+  assert.equal(findDecoratorNodes(sourceFile).length, 2)
 })
 
 test('resolves every collected entry to a file on disk', () => {
