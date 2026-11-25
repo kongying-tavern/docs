@@ -92,6 +92,15 @@ function hasNonAscii(value: unknown): boolean {
     && [...value].some(char => (char.codePointAt(0) ?? 0) > 0x7F)
 }
 
+/** `html_inline` 的内容是渲染后的 HTML，剥掉标签与注释才是可见文字。 */
+function stripHtmlTags(content: string): string {
+  return content
+    .replaceAll(/<!--[\s\S]*?-->/gu, '')
+    .replaceAll(/<[^>]*>/gu, '')
+    .replaceAll('&nbsp;', ' ')
+    .trim()
+}
+
 /**
  * 按 Vue 运行时解析组件的规则查表：精确匹配 → camelize → capitalize。
  * MDC 的块标签已经 kebab 化（`::QA` → `qa`），行内标签保留原写法（`:Kbd`）；
@@ -476,6 +485,39 @@ export async function extractBlocks(src: string): Promise<ExtractedBlock[]> {
     let textSegments: TextSegment[] = []
     const children = token.children
 
+    /** 把一段文字定位回源码，并同步到它所在的组件槽。 */
+    const addSegment = (text: string): void => {
+      const pos = locate(text)
+      if (pos < 0)
+        return
+      const segment = { text, srcStart: pos }
+      const innermost = inlineSegmentsStack.at(-1)
+      if (innermost)
+        innermost.push(segment)
+      else
+        textSegments.push(segment)
+      for (const instance of componentStack) {
+        const slot = instance.slotStack.at(-1) ?? 'default'
+        const parts = instance.slots[slot] ??= []
+        parts.push(text)
+      }
+    }
+
+    /**
+     * 标签是块边界：先结束当前块，标签两侧的文字各自独立检查。
+     * 这样标签周围的空格（写法问题）不会被当成相邻正文之间的关系。
+     */
+    const flushSegments = (): void => {
+      const innermost = inlineSegmentsStack.at(-1)
+      if (innermost) {
+        if (innermost.length)
+          pushBlock(innermost.splice(0, innermost.length))
+        return
+      }
+      pushBlock(textSegments)
+      textSegments = []
+    }
+
     for (let index = 0; index < children.length; index++) {
       const child = children[index]
 
@@ -484,19 +526,18 @@ export async function extractBlocks(src: string): Promise<ExtractedBlock[]> {
         // 不是正文；交给 zhlint 会被当成标题尾部的多余空格。
         if (child.type === 'text' && isBeforeHeaderAnchor(children, index))
           continue
-        const pos = locate(child.content)
-        if (pos >= 0) {
-          const segment = { text: child.content, srcStart: pos }
-          const innermost = inlineSegmentsStack.at(-1)
-          if (innermost)
-            innermost.push(segment)
-          else
-            textSegments.push(segment)
-          for (const instance of componentStack) {
-            const slot = instance.slotStack.at(-1) ?? 'default'
-            const parts = instance.slots[slot] ??= []
-            parts.push(child.content)
-          }
+        addSegment(child.content)
+        continue
+      }
+      // 扩展语法（`{color:}…{/color}`）和手写 HTML 都把文字包进 html_inline。
+      // 剥掉标签后能定位回源码的部分才是正文；变量注入的值没有源码位置，
+      // 仍然会漏掉。标签本身就是块边界，两侧空格不参与排版判断。
+      if (child.type === 'html_inline') {
+        flushSegments()
+        const visible = stripHtmlTags(child.content ?? '')
+        if (hasNonAscii(visible)) {
+          addSegment(visible)
+          flushSegments()
         }
         continue
       }
