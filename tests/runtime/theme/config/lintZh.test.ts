@@ -2,11 +2,16 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { createMarkdownRenderer } from 'vitepress'
-import { afterAll, test } from 'vitest'
+import { afterAll, beforeAll, test } from 'vitest'
 import { run } from 'zhlint'
 import { markdownConfig } from '../../../../.vitepress/config/markdown.ts'
 import { closeExtractRenderer, extractBlocks } from '../../../../scripts/lint-zh/extract.mjs'
 import { createLintZhOptions } from '../../../../scripts/lint-zh/options.mjs'
+
+// 首次提取要编译文档用到的组件；预热一次，避免各用例各自承担冷启动。
+beforeAll(async () => {
+  await extractBlocks('预热')
+}, 60000)
 
 afterAll(closeExtractRenderer)
 
@@ -44,6 +49,9 @@ test('component rendering decides whether a prop is visible text', async () => {
     'title: 中文标题',
     'desc: 中文描述',
     'link: /docs/',
+    // 只进 style / img src，渲染后不是文字：不该交给 zhlint。
+    'color: 红色底',
+    'logo: 中文图标',
     '---',
     '::',
   ].join('\n')
@@ -52,7 +60,28 @@ test('component rendering decides whether a prop is visible text', async () => {
   assert.ok(checkText.includes('中文标题'))
   assert.ok(checkText.includes('中文描述'))
   assert.ok(!checkText.includes('/docs/'))
-}, 30000)
+  assert.ok(!checkText.includes('红色底'))
+  assert.ok(!checkText.includes('中文图标'))
+}, 60000)
+
+test('MDC tags resolve to registered components the way Vue resolves them', async () => {
+  // 块标签已 kebab（`::QA` → `qa`），行内标签保留原写法（`Kbd`）；
+  // 两者都靠 Vue 的 精确 → camelize → capitalize 规则命中注册名。
+  const inline = await checkTextOf('这是 :Kbd[中文快捷键] 结束')
+  assert.ok(inline.includes('中文快捷键'))
+
+  const block = await checkTextOf(':::QAGroup\n中文问题\n:::')
+  assert.ok(block.includes('中文问题'))
+}, 60000)
+
+test('single-line components decide props by rendering too', async () => {
+  // `:Name[槽]{属性}` 的属性写在槽之后，不能被源码游标越过。
+  const checkText = await checkTextOf(':Card[槽内容]{title="中文标题" logo="中文图标"}')
+
+  assert.ok(checkText.includes('槽内容'))
+  assert.ok(checkText.includes('中文标题'))
+  assert.ok(!checkText.includes('中文图标'))
+}, 60000)
 
 test('the web changelog stays clean through extraction and still renders emoji', async () => {
   const source = readFileSync(resolve('pages/zh/blog/posts/changelog-web.md'), 'utf8')
