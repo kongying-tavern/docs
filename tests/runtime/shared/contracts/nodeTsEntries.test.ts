@@ -21,6 +21,10 @@ test('collects the .ts file node runs, with flags around it', () => {
     ['scripts/lint-zh/index.ts'],
   )
   assert.deepEqual(
+    collectNodeEntries({ lintMd: 'node scripts/lintMd.ts' }),
+    ['scripts/lintMd.ts'],
+  )
+  assert.deepEqual(
     collectNodeEntries({ watch: 'node --enable-source-maps ./scripts/a.ts' }),
     ['./scripts/a.ts'],
   )
@@ -33,7 +37,6 @@ test('collects the .ts file node runs, with flags around it', () => {
 test('ignores inline scripts, .mjs entry points and tsx', () => {
   assert.deepEqual(collectNodeEntries({
     clean: 'node -e "require(\'node:fs\').rmSync(\'./dist\')"',
-    lintMd: 'node scripts/lintMd.mjs',
     buildFonts: 'tsx ./scripts/buildFonts.ts',
     testUi: 'node --test tests/harness/a/browser.test.mjs',
   }), [])
