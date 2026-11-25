@@ -2,6 +2,9 @@
   "type": "module",
   "private": "true",
   "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": "^22.18.0 || >=23.6.0"
+  },
   "license": "MIT",
   "imports": {
     "#data/*": "./data/*"
@@ -27,10 +30,11 @@
     "lint:eslint:fix": "eslint --cache --fix .",
     "lint:md": "node scripts/lintMd.mjs",
     "lint:md:fix": "node scripts/lintMd.mjs --fix",
-    "lint:zh": "node scripts/lintZh.mjs",
-    "lint:zh:fix": "node scripts/lintZh.mjs --fix",
-    "typecheck": "pnpm typecheck:ts && pnpm typecheck:vue",
+    "lint:zh": "node scripts/lint-zh/index.ts",
+    "lint:zh:fix": "node scripts/lint-zh/index.ts --fix",
+    "typecheck": "pnpm typecheck:ts && pnpm typecheck:node && pnpm typecheck:vue",
     "typecheck:ts": "tsc --noEmit",
+    "typecheck:node": "node scripts/typecheckNodeEntries.ts",
     "typecheck:vue": "vue-tsc --noEmit --project tsconfig.vue.json",
     "typecheck:forum:ui": "tsc --noEmit --project tests/e2e/tsconfig.json",
     "test": "vitest run",

@@ -1,7 +1,7 @@
 import type { Plugin } from 'vite'
 import type { ComponentMeta } from 'vue-component-meta'
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { normalizePath } from 'vite'
 import { createCheckerByJson } from 'vue-component-meta'
@@ -11,7 +11,12 @@ const currentDir = fileURLToPath(new URL('.', import.meta.url))
 const projectRoot = resolve(currentDir, '..', '..')
 const outFile = resolve(projectRoot, '.vitepress/theme/mdc-components.gen.mjs')
 const themeEntry = normalizePath(resolve(projectRoot, '.vitepress/theme/index.ts'))
-const themeDir = resolve(themeEntry, '..')
+// 组件注册拆进 lib 下的两个模块，index.ts 只调用它们；三份都要扫，缺一份就会漏标签。
+const registrationEntries = [
+  themeEntry,
+  normalizePath(resolve(projectRoot, '.vitepress/theme/lib/markdownComponents.ts')),
+  normalizePath(resolve(projectRoot, '.vitepress/theme/lib/layoutComponents.ts')),
+]
 const compDir = normalizePath(resolve(projectRoot, '.vitepress/theme/components'))
 const PASCAL_BOUNDARY_RE = /([a-z0-9])([A-Z])/g
 const BARREL_EXPORT_RE = /^[ \t]*export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*['"](.+\.vue)['"]/gm
@@ -116,14 +121,14 @@ function importedBindings(clause: string): string[] {
 }
 
 /** Absolute path of a theme-internal specifier; page-level and external ones yield `undefined`. */
-function resolveModulePath(specifier: string): string | undefined {
+function resolveModulePath(specifier: string, fromDir: string): string | undefined {
   const alias = matchPathAlias(specifier)
   let base: string
 
   if (alias?.alias === THEME_ALIAS)
     base = resolve(projectRoot, alias.alias.root, alias.rest)
   else if (specifier.startsWith('.'))
-    base = resolve(themeDir, specifier)
+    base = resolve(fromDir, specifier)
   else
     return undefined
 
@@ -134,8 +139,8 @@ function resolveModulePath(specifier: string): string | undefined {
 }
 
 /** The `.vue` file a module exposes under `binding`, following its directory barrel. */
-function resolveComponentFile(specifier: string, binding: string): string | undefined {
-  const modulePath = resolveModulePath(specifier)
+function resolveComponentFile(specifier: string, binding: string, fromDir: string): string | undefined {
+  const modulePath = resolveModulePath(specifier, fromDir)
   if (!modulePath)
     return undefined
   if (modulePath.endsWith('.vue'))
@@ -161,9 +166,13 @@ export function resolveGlobalComponents(): Map<string, string> {
       components.set(name, file)
   }
 
-  // 2. theme/index.ts: individually registered via app.component('Name', Binding)
-  if (existsSync(themeEntry)) {
-    const src = readFileSync(themeEntry, 'utf-8')
+  // 2. 全局注册处：`app.component('Name', Binding)`，见 theme/lib/*Components.ts
+  for (const entry of registrationEntries) {
+    if (!existsSync(entry))
+      continue
+    const src = readFileSync(entry, 'utf-8')
+    // 相对路径按各自文件所在目录解析，注册模块换位置不用改这里。
+    const entryDir = dirname(entry)
     const importMap = new Map<string, string>()
 
     // Only theme-internal imports join the registry; page-level components that are
@@ -172,7 +181,7 @@ export function resolveGlobalComponents(): Map<string, string> {
       if (m[1])
         continue
       for (const binding of importedBindings(m[2])) {
-        const file = resolveComponentFile(m[3], binding)
+        const file = resolveComponentFile(m[3], binding, entryDir)
         if (file)
           importMap.set(binding, file)
       }
@@ -180,7 +189,7 @@ export function resolveGlobalComponents(): Map<string, string> {
 
     // `const Foo = defineAsyncComponent(() => import('./Foo.vue'))`
     for (const m of src.matchAll(ASYNC_COMPONENT_RE)) {
-      const file = resolveModulePath(m[2])
+      const file = resolveModulePath(m[2], entryDir)
       if (file)
         importMap.set(m[1], file)
     }
@@ -244,7 +253,7 @@ export function mdcMetadataPlugin(): Plugin {
       // The metadata is shared by all environments; regenerate once per edit.
       if (this.environment.name !== 'client')
         return
-      if (ctx.file.startsWith(`${compDir}/`) || ctx.file === themeEntry)
+      if (ctx.file.startsWith(`${compDir}/`) || registrationEntries.includes(ctx.file))
         generate()
     },
   }

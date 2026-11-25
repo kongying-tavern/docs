@@ -9,7 +9,7 @@ import UnoCSS from 'unocss/vite'
 import { defineConfig, loadEnv } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
-import { PATH_ALIASES } from './.vitepress/config/aliases.ts'
+import { expandPathAliases } from './.vitepress/config/aliases.ts'
 import { getLocaleDirs } from './.vitepress/config/localeDirs.ts'
 import { loadSiteLocale } from './.vitepress/config/siteLocale.ts'
 import { getDeploymentOrigin } from './.vitepress/config/utils.ts'
@@ -77,10 +77,7 @@ export default defineConfig(({ mode }) => ({
           new URL('./.vitepress/theme/components/footer/Footer.vue', import.meta.url),
         ),
       },
-      ...PATH_ALIASES.map(({ prefix, root }) => ({
-        find: prefix,
-        replacement: root === '.' ? repoRoot : fileURLToPath(new URL(`./${root}`, import.meta.url)),
-      })),
+      ...expandPathAliases(repoRoot),
     ],
   },
   plugins: [

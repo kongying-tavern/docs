@@ -32,6 +32,20 @@ export interface PathAliasMatch {
   rest: string
 }
 
+export interface ViteAlias {
+  find: string
+  replacement: string
+}
+
+/** 按仓库根展开成 Vite 的 `resolve.alias`；站点配置与 lint 的临时服务共用一份。 */
+export function expandPathAliases(rootDir: string): ViteAlias[] {
+  const root = rootDir.replaceAll('\\', '/').replace(/\/+$/u, '')
+  return PATH_ALIASES.map(({ prefix, root: target }) => ({
+    find: prefix,
+    replacement: target === '.' ? root : `${root}/${target}`,
+  }))
+}
+
 /** Match a bare alias specifier against the alias table. */
 export function matchPathAlias(specifier: string): PathAliasMatch | null {
   for (const alias of PATH_ALIASES) {

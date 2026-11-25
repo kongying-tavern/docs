@@ -1,10 +1,4 @@
 {
-  "caseIgnores": {
-    "IgnoredCase": {
-      "textEnd": ":",
-      "textStart": "[^"
-    }
-  },
   "preset": "default",
   "rules": {
     "adjustedFullwidthPunctuation": "‘’",

@@ -11,7 +11,7 @@ comment: false
 title: 你的影月月
 link: https://space.bilibili.com/431073645
 logo: /imgs/common/friend-links/5b6e078ee8f63c4638dca02ba80e44b44225bf1b.jpg
-desc: bilibili 2023百大UP主、知名游戏UP主、直播高能主播
+desc: bilibili 2023 百大 UP 主、知名游戏 UP 主、直播高能主播
 theme: medium
 ---
 ::
@@ -21,7 +21,7 @@ theme: medium
 title: 莴苣某人
 link: https://space.bilibili.com/1773346
 logo: /imgs/common/friend-links/2a973191e45f611699c85d404baee50163a6f2ec.jpg
-desc: bilibili 2022百大UP主、知名游戏UP主、直播高能主播
+desc: bilibili 2022 百大 UP 主、知名游戏 UP 主、直播高能主播
 theme: medium
 ---
 ::
@@ -41,7 +41,7 @@ theme: medium
 title: 提瓦特图研所
 link: https://space.bilibili.com/1872522256
 logo: /imgs/common/friend-links/05e032429ff23c49f7786255eed4027fcb751df8.jpg
-desc: bilibili 知名游戏UP主、以提瓦特地图研究为主的同好组织
+desc: bilibili 知名游戏 UP 主、以提瓦特地图研究为主的同好组织
 theme: medium
 ---
 ::
@@ -51,7 +51,7 @@ theme: medium
 title: 蒸汽鸟报
 link: https://space.bilibili.com/356433080
 logo: /imgs/common/friend-links/2f849d8d63cf78445c7c61f9914d3cf5c5d03537.jpg
-desc: bilibili 知名游戏UP主
+desc: bilibili 知名游戏 UP 主
 theme: medium
 ---
 ::
