@@ -12,13 +12,18 @@
  * 不做全文 diff，避免长文档上 O(n*m) 退化。
  */
 import { globSync, readFileSync, writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import { report, run } from 'zhlint'
+import { PAGES_DIR } from '../../.vitepress/config/pagesDir.ts'
+import { DEFAULT_LOCALE } from '../../src/constants/site.ts'
 import { closeExtractRenderer, extractBlocks } from './extract.mjs'
 import { createLintZhOptions } from './options.mjs'
 
+const ROOT = fileURLToPath(new URL('../..', import.meta.url))
 const fix = process.argv.includes('--fix')
-const options = createLintZhOptions()
+const options = createLintZhOptions(ROOT)
 
 /** LCS diff，把相邻的删除 + 插入合并成同一锚点的替换。 */
 function diffOps(a, b) {
@@ -80,9 +85,12 @@ function toSourcePos(charMap, checkPos) {
 
 const resultList = []
 try {
-  for (const file of globSync('pages/zh/**/*.md')) {
+  // 路径一律按脚本自身位置解析：从仓库根或子目录调用都检查同一批文件，
+  // 不会因为 cwd 不在 docs/ 而 glob 到 0 个文件、误报通过。
+  for (const file of globSync(`${PAGES_DIR}/${DEFAULT_LOCALE}/**/*.md`, { cwd: ROOT })) {
     console.log(`[start] ${file}`)
-    const origin = readFileSync(file, { encoding: 'utf8' })
+    const fullPath = resolve(ROOT, file)
+    const origin = readFileSync(fullPath, { encoding: 'utf8' })
     const blocks = await extractBlocks(origin)
 
     // 块间用 \n 拼接后整体检查：块边界的语义让 zhlint 不去拼合相邻块，
@@ -122,7 +130,7 @@ try {
       chars.splice(edit.pos, edit.del, edit.ins)
     const result = chars.join('')
 
-    resultList.push({ file, origin, result, validations })
+    resultList.push({ file, fullPath, origin, result, validations })
   }
 }
 finally {
@@ -132,9 +140,9 @@ finally {
 const exitCode = report(resultList)
 
 if (fix) {
-  resultList.forEach(({ file, origin, result }) => {
+  resultList.forEach(({ fullPath, origin, result }) => {
     if (origin !== result)
-      writeFileSync(file, result)
+      writeFileSync(fullPath, result)
   })
 }
 else if (exitCode) {
