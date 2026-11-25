@@ -11,6 +11,7 @@
  * 每块独立 diff 并映射回原文偏移。块通常只有一段话，LCS 规模很小；
  * 不做全文 diff，避免长文档上 O(n*m) 退化。
  */
+import type { Validation } from 'zhlint'
 import { globSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import process from 'node:process'
@@ -19,14 +20,32 @@ import { report, run } from 'zhlint'
 import { PAGES_DIR } from '../../.vitepress/config/pagesDir.ts'
 import { DEFAULT_LOCALE } from '../../src/constants/site.ts'
 import { closeExtractRenderer, extractBlocks } from './extract.ts'
-import { createLintZhOptions } from './options.mjs'
+import { createLintZhOptions } from './options.ts'
+
+interface Edit {
+  pos: number
+  del: number
+  ins: string
+}
+
+interface LintEntry {
+  /** 相对仓库根的路径，只用于报告。 */
+  file: string
+  /** 绝对路径，读写都用它。 */
+  fullPath: string
+  origin: string
+  result: string
+  validations: Validation[]
+  /** zhlint 的 `report` 要求显式给出；这里所有文件都参与检查。 */
+  disabled: false
+}
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
 const fix = process.argv.includes('--fix')
 const options = createLintZhOptions(ROOT)
 
 /** LCS diff，把相邻的删除 + 插入合并成同一锚点的替换。 */
-function diffOps(a, b) {
+function diffOps(a: string, b: string): Edit[] {
   const n = a.length
   const m = b.length
   const dp = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1))
@@ -37,7 +56,11 @@ function diffOps(a, b) {
         : Math.max(dp[i + 1][j], dp[i][j + 1])
     }
   }
-  const raw = []
+  type RawOp
+    = | { type: 'keep', pos: number }
+      | { type: 'del', pos: number }
+      | { type: 'ins', pos: number, ch: string }
+  const raw: RawOp[] = []
   let i = 0
   let j = 0
   while (i < n && j < m) {
@@ -58,8 +81,8 @@ function diffOps(a, b) {
   while (i < n) raw.push({ type: 'del', pos: i++ })
   while (j < m) raw.push({ type: 'ins', pos: n, ch: b[j++] })
 
-  const ops = []
-  let current = null
+  const ops: Edit[] = []
+  let current: Edit | null = null
   for (const op of raw) {
     if (op.type === 'keep') {
       current = null
@@ -77,13 +100,13 @@ function diffOps(a, b) {
 }
 
 /** 检查文本位置 → 原文偏移；末尾插入落在最后一个字符之后。 */
-function toSourcePos(charMap, checkPos) {
+function toSourcePos(charMap: number[], checkPos: number): number {
   if (checkPos < charMap.length)
     return charMap[checkPos]
   return charMap.length ? charMap[charMap.length - 1] + 1 : 0
 }
 
-const resultList = []
+const resultList: LintEntry[] = []
 try {
   // 路径一律按脚本自身位置解析：从仓库根或子目录调用都检查同一批文件，
   // 不会因为 cwd 不在 docs/ 而 glob 到 0 个文件、误报通过。
@@ -97,7 +120,7 @@ try {
     // 同时块内仍是连续正文，跨链接标记的规则照常触发。
     // zhlint 不增删换行，因此 result 可以按 \n 切回各块。
     const checkText = blocks.map(block => block.checkText).join('\n')
-    const globalCharMap = []
+    const globalCharMap: number[] = []
     blocks.forEach((block, index) => {
       if (index)
         globalCharMap.push(-1)
@@ -112,8 +135,7 @@ try {
       index: toSourcePos(globalCharMap, validation.index),
     }))
 
-    /** @type {Array<{ pos: number, del: number, ins: string }>} */
-    const edits = []
+    const edits: Edit[] = []
     blocks.forEach((block, index) => {
       const fixedLine = resultLines[index] ?? block.checkText
       for (const op of diffOps(block.checkText, fixedLine)) {
@@ -130,7 +152,7 @@ try {
       chars.splice(edit.pos, edit.del, edit.ins)
     const result = chars.join('')
 
-    resultList.push({ file, fullPath, origin, result, validations })
+    resultList.push({ file, fullPath, origin, result, validations, disabled: false })
   }
 }
 finally {
