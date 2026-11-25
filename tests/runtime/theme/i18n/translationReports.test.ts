@@ -4,8 +4,10 @@ import { tmpdir } from 'node:os'
 import { resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { createJiti } from 'jiti'
 import { load } from 'js-yaml'
 import { expect, test } from 'vitest'
+import { DEFAULT_LOCALE } from '../../../../.vitepress/locales/common.ts'
 
 const root = fileURLToPath(new URL('../../../..', import.meta.url))
 const read = (path: string) => readFileSync(resolve(root, path), 'utf8')
@@ -16,14 +18,33 @@ interface Step {
   with?: Record<string, string>
 }
 
-const lunaria = JSON.parse(read('lunaria.config.json'))
+interface LunariaFile {
+  include: string[]
+  pattern: string
+  exclude?: string[]
+  type: string
+}
+
+interface LunariaConfig {
+  outDir: string
+  sourceLocale: { lang: string }
+  locales: { lang: string }[]
+  tracking: { ignoredKeywords: string[] }
+  files: LunariaFile[]
+}
+
+const jiti = createJiti(import.meta.url)
+const lunaria = await jiti.import<LunariaConfig>(resolve(root, 'lunaria.config.ts'), { default: true })
 
 test('Lunaria tracks articles only and retains the claim bot status contract', () => {
   expect(lunaria.files.length).toBeGreaterThan(0)
   for (const entry of lunaria.files) {
-    expect(entry.location).toMatch(/^pages\/.*\.md$/)
+    expect(entry.include).toEqual([`pages/${DEFAULT_LOCALE}/**/*.md`])
     expect(entry.pattern).toBe('pages/@lang/@path')
+    expect(entry.exclude).toContain(`pages/${DEFAULT_LOCALE}/blog/[path].md`)
   }
+  expect(lunaria.sourceLocale.lang).toBe(DEFAULT_LOCALE)
+  expect(lunaria.tracking.ignoredKeywords).toEqual(['@ignore', '\\[ci\\]', '\\[format\\]'])
   const sync = load(read('.github/workflows/sync.yml')) as { jobs: { sync: { steps: Step[] } } }
   const bot = sync.jobs.sync.steps.find(step => step.uses?.startsWith('jiazengp/lunaria-claim@'))!
   expect(resolve(root, bot.with!['status-json'])).toBe(resolve(root, lunaria.outDir, 'status.json'))
@@ -54,14 +75,17 @@ test('renaming the article tree preserves an outdated translation in Lunaria', (
     const config = {
       ...lunaria,
       locales: [lunaria.locales[0]],
-      files: [{ ...lunaria.files[0], location: `${dir}/**/*.md`, pattern: `${dir}/@lang/@path` }],
+      files: [{ ...lunaria.files[0], include: [`${dir}/**/*.md`], pattern: `${dir}/@lang/@path` }],
     }
     const script = `
-      import { LunariaConfigSchema } from ${JSON.stringify(import.meta.resolve('@lunariajs/core/config'))}
-      import { getLocalizationStatus } from ${JSON.stringify(import.meta.resolve('@lunariajs/core/status'))}
-      const config = LunariaConfigSchema.parse(JSON.parse(process.argv[1]))
-      const [article] = await getLocalizationStatus(config, false)
-      console.log(JSON.stringify(article.localizations.en.isOutdated))
+      import { createLunaria } from ${JSON.stringify(import.meta.resolve('@lunariajs/core'))}
+      const lunaria = await createLunaria({
+        config: JSON.parse(process.argv[1]),
+        force: true,
+        logLevel: 'silent',
+      })
+      const [article] = await lunaria.getFullStatus()
+      console.log(JSON.stringify(article.localizations.find(entry => entry.lang === 'en')?.status === 'outdated'))
     `
     const output = execFileSync(process.execPath, ['--input-type=module', '--eval', script, JSON.stringify(config)], {
       cwd: fixture,
@@ -91,7 +115,7 @@ test('renaming the article tree preserves an outdated translation in Lunaria', (
   finally {
     rmSync(fixture, { recursive: true, force: true })
   }
-})
+}, 15000)
 
 test('all published site artifacts include both reports after the site build', () => {
   for (const [workflow, siteBuild, publishAction] of [
