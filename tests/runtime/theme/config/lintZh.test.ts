@@ -5,7 +5,7 @@ import { createMarkdownRenderer } from 'vitepress'
 import { afterAll, beforeAll, test } from 'vitest'
 import { run } from 'zhlint'
 import { markdownConfig } from '../../../../.vitepress/config/markdown.ts'
-import { closeExtractRenderer, extractBlocks } from '../../../../scripts/lint-zh/extract.mjs'
+import { closeExtractRenderer, extractBlocks } from '../../../../scripts/lint-zh/extract.ts'
 import { createLintZhOptions } from '../../../../scripts/lint-zh/options.mjs'
 
 // 首次提取要编译文档用到的组件；预热一次，避免各用例各自承担冷启动。

@@ -10,6 +10,10 @@
  * 让“链接左右空格”这类跨标记规则仍能触发）；行内组件、块组件和可见 prop
  * 各自成块，避免和相邻正文拼成一句话。
  */
+import type MarkdownIt from 'markdown-it'
+import type { Plugin, ViteDevServer } from 'vite'
+import type { Component } from 'vue'
+import type { I18n } from 'vue-i18n'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import vue from '@vitejs/plugin-vue'
@@ -24,6 +28,29 @@ import { PAGES_DIR } from '../../.vitepress/config/pagesDir.ts'
 import { DEFAULT_LOCALE } from '../../src/constants/site.ts'
 
 const ROOT = resolve(fileURLToPath(new URL('../..', import.meta.url)))
+
+/** 按块聚合的可见文本，以及每个字符在源文件中的偏移。 */
+export interface ExtractedBlock {
+  checkText: string
+  charMap: number[]
+}
+
+interface TextSegment {
+  text: string
+  srcStart: number
+}
+
+/** 一个 MDC 组件实例：属性、待定位的候选文本与各槽收集到的正文。 */
+interface ComponentInstance {
+  tag: string
+  props: Record<string, unknown>
+  candidates: TextSegment[]
+  pendingTexts: string[] | null
+  slots: Record<string, string[]>
+  slotStack: string[]
+}
+
+type Token = ReturnType<MarkdownIt['parse']>[number]
 
 // 可见文本 token。image 的 content 是 alt，加载失败时可见，也需要检查。
 const VISIBLE_TEXT_TOKENS = new Set(['text', 'image'])
@@ -43,16 +70,16 @@ const INLINE_FLOW_TOKENS = new Set([
 ])
 const HEADER_ANCHOR_CLASS = 'header-anchor'
 
-let rendererPromise
+let rendererPromise: ReturnType<typeof createMarkdownRenderer> | undefined
 
-function getRenderer() {
+function getRenderer(): ReturnType<typeof createMarkdownRenderer> {
   if (!rendererPromise)
     rendererPromise = createMarkdownRenderer(resolve(ROOT, PAGES_DIR), markdownConfig)
   return rendererPromise
 }
 
 /** 该 text token 是否是紧邻 header-anchor link 的语法空格。 */
-function isBeforeHeaderAnchor(children, index) {
+function isBeforeHeaderAnchor(children: Token[], index: number): boolean {
   const next = children[index + 1]
   return !!next
     && next.type === 'link_open'
@@ -60,9 +87,9 @@ function isBeforeHeaderAnchor(children, index) {
 }
 
 /** 属性值是否会由组件渲染成需要中文排版检查的可见文字。 */
-function hasNonAscii(value) {
+function hasNonAscii(value: unknown): boolean {
   return typeof value === 'string'
-    && [...value].some(char => char.codePointAt(0) > 0x7F)
+    && [...value].some(char => (char.codePointAt(0) ?? 0) > 0x7F)
 }
 
 /**
@@ -70,32 +97,32 @@ function hasNonAscii(value) {
  * MDC 的块标签已经 kebab 化（`::QA` → `qa`），行内标签保留原写法（`:Kbd`）；
  * 两种都由这套规则覆盖，不需要自己再做大小写转换。
  */
-function resolveTag(components, tag) {
+function resolveTag(components: Map<string, Component>, tag: string): Component | null {
   for (const name of [tag, camelize(tag), capitalize(camelize(tag))]) {
     if (components.has(name))
-      return components.get(name)
+      return components.get(name) ?? null
   }
   return null
 }
 
-let viteServerPromise
-let componentsPromise
-const componentCache = new Map()
+let viteServerPromise: Promise<ViteDevServer> | undefined
+let componentsPromise: Promise<Map<string, Component>> | undefined
+const componentCache = new Map<string, Component | null>()
 
-const vitepressStub = {
+const vitepressStub: Plugin = {
   name: 'lint-zh-vitepress-stub',
   enforce: 'pre',
-  resolveId(id) {
+  resolveId(id: string) {
     if (id === 'vitepress')
       return '\0lint-zh-vitepress'
   },
-  load(id) {
+  load(id: string) {
     if (id === '\0lint-zh-vitepress')
       return 'export const withBase = path => path'
   },
 }
 
-function getViteServer() {
+function getViteServer(): Promise<ViteDevServer> {
   if (!viteServerPromise) {
     viteServerPromise = createServer({
       configFile: false,
@@ -119,14 +146,13 @@ function getViteServer() {
  * 执行主题自己的正文组件注册函数，得到「注册名 → 组件」。
  * 注册表只有 theme/lib/markdownComponents.ts 一份，这里不解析任何写法。
  */
-function getComponents() {
+function getComponents(): Promise<Map<string, Component>> {
   componentsPromise ??= (async () => {
     const server = await getViteServer()
     const { installMarkdownComponents } = await server.ssrLoadModule('@theme/lib/markdownComponents.ts')
-    /** @type {Map<string, any>} */
-    const components = new Map()
+    const components = new Map<string, Component>()
     installMarkdownComponents({
-      component(name, definition) {
+      component(name: string, definition: Component) {
         components.set(name, definition)
       },
     })
@@ -135,25 +161,34 @@ function getComponents() {
   return componentsPromise
 }
 
-async function loadComponent(tag) {
-  if (!componentCache.has(tag)) {
-    const component = resolveTag(await getComponents(), tag)
-    // 注册项可能是 defineAsyncComponent；先解析成真实组件，避免每次渲染都走 loader。
-    const loaded = component?.__asyncLoader ? await component.__asyncLoader() : component
-    // SSR 下的 .vue 模块可能不带 default，两种形状都接受。
-    componentCache.set(tag, loaded?.default ?? loaded ?? null)
-  }
-  return componentCache.get(tag)
+/** 注册项可能是 `defineAsyncComponent`，先解析成真实组件，避免每次渲染都走 loader。 */
+async function resolveAsyncLoader(component: Component | null): Promise<unknown> {
+  const loader = (component as (Component & { __asyncLoader?: () => Promise<unknown> }) | null)?.__asyncLoader
+  return loader ? await loader() : component
+}
+
+/** SSR 下的 `.vue` 模块可能是 `{ default: Component }`，也可能就是组件本身。 */
+function unwrapComponent(loaded: unknown): Component | null {
+  if (!loaded)
+    return null
+  const asModule = loaded as { default?: Component }
+  return asModule.default ?? (loaded as Component)
+}
+
+async function loadComponent(tag: string): Promise<Component | null> {
+  if (!componentCache.has(tag))
+    componentCache.set(tag, unwrapComponent(await resolveAsyncLoader(resolveTag(await getComponents(), tag))))
+  return componentCache.get(tag) ?? null
 }
 
 /** ClientOnly 在 SSR 下不输出内容；lint 只关心属性是否会变成文字，直接透传。 */
-const passthrough = {
+const passthrough: Component = {
   setup(_props, { slots }) {
     return () => slots.default?.()
   },
 }
 
-let i18n
+let i18n: I18n | undefined
 
 function getI18n() {
   // 只为让 useI18n 在 SSR 下可用；文案留空，t() 回退为 ASCII key，
@@ -170,12 +205,12 @@ function getI18n() {
 }
 
 /** 用槽哨兵渲染组件，返回的文本里只可能来自 props。 */
-async function renderVisibleText(tag, props, slots) {
+async function renderVisibleText(tag: string, props: Record<string, unknown>, slots: Record<string, string>): Promise<string | null> {
   const component = await loadComponent(tag)
   if (!component)
     return null
 
-  const markerSlots = Object.fromEntries(
+  const markerSlots: Record<string, () => string> = Object.fromEntries(
     Object.keys(slots).map(name => [name, () => `__LINT_ZH_SLOT_${name}__`]),
   )
   const app = createSSRApp({
@@ -202,10 +237,10 @@ async function renderVisibleText(tag, props, slots) {
     })
 }
 
-function normalizeProp(key, rawValue) {
+function normalizeProp(key: string, rawValue: string): { name: string, value: unknown } {
   const bound = key.startsWith(':') || key.startsWith('v-bind:')
   const name = camelize(bound ? key.replace(/^v-bind:/u, '').replace(/^:/u, '') : key)
-  let value = rawValue
+  let value: unknown = rawValue
 
   if (bound) {
     try {
@@ -237,12 +272,11 @@ function normalizeProp(key, rawValue) {
 }
 
 /** 对象 / 数组属性（如 AccordionPanels 的 items）逐叶取值，不把整段 JSON 当一句话。 */
-function propCandidates(value) {
-  /** @type {string[]} */
-  const result = []
-  const seen = new Set()
+function propCandidates(value: unknown): string[] {
+  const result: string[] = []
+  const seen = new Set<string>()
 
-  const visit = (item) => {
+  const visit = (item: unknown) => {
     if (typeof item === 'string') {
       if (hasNonAscii(item) && !seen.has(item)) {
         seen.add(item)
@@ -261,7 +295,7 @@ function propCandidates(value) {
 }
 
 /** 关闭 Vite SSR 容器；检查脚本在报告前调用。 */
-export async function closeExtractRenderer() {
+export async function closeExtractRenderer(): Promise<void> {
   if (viteServerPromise) {
     const server = await viteServerPromise
     await server.close()
@@ -270,26 +304,24 @@ export async function closeExtractRenderer() {
 }
 
 /**
- * @param {string} src
- * @returns {Promise<Array<{ checkText: string, charMap: number[] }>>} 按块聚合的可见文本及其到源文件的偏移映射
+ * 提取一块块可见文本，`charMap` 把检查文本的每个字符映射回源文件偏移。
  */
-export async function extractBlocks(src) {
+export async function extractBlocks(src: string): Promise<ExtractedBlock[]> {
   const md = await getRenderer()
   const tokens = md.parse(src, {})
 
-  const lineStarts = []
+  const lineStarts: number[] = []
   let acc = 0
   for (const line of src.split('\n')) {
     lineStarts.push(acc)
     acc += line.length + 1
   }
 
-  /** @type {Array<{ checkText: string, charMap: number[] }>} */
-  const blocks = []
+  const blocks: ExtractedBlock[] = []
   // 源码游标：片段按 token 顺序出现，顺序 indexOf 既能定位又能处理重复文本。
   let cursor = 0
 
-  const locate = (text) => {
+  const locate = (text: string): number => {
     if (!text)
       return -1
     const pos = src.indexOf(text, cursor)
@@ -298,7 +330,7 @@ export async function extractBlocks(src) {
     return pos
   }
 
-  const pushBlock = (segments) => {
+  const pushBlock = (segments: TextSegment[]): void => {
     if (!segments.length)
       return
     segments.sort((a, b) => a.srcStart - b.srcStart)
@@ -326,15 +358,15 @@ export async function extractBlocks(src) {
    * `:Name[槽]{属性}` 的属性和槽在源码里是反序的（槽在前、属性在后），
    * 属性值要等槽内容定位完再收，否则源码游标会越过槽文本导致漏检。
    */
-  const createInstance = (tag, attrs, { afterSlot = false } = {}) => {
-    /** @type {Record<string, unknown>} */
-    const props = {}
-    /** @type {Array<{ text: string, srcStart: number }>} */
-    const candidates = []
-    /** @type {string[] | null} */
-    let pendingTexts = null
-    /** @type {Record<string, string[]>} */
-    const slots = {}
+  const createInstance = (
+    tag: string,
+    attrs: readonly (readonly [string, string])[] | null | undefined,
+    { afterSlot = false }: { afterSlot?: boolean } = {},
+  ): ComponentInstance => {
+    const props: Record<string, unknown> = {}
+    const candidates: TextSegment[] = []
+    let pendingTexts: string[] | null = null
+    const slots: Record<string, string[]> = {}
 
     for (const [key, rawValue] of attrs || []) {
       const { name, value } = normalizeProp(key, rawValue)
@@ -358,7 +390,7 @@ export async function extractBlocks(src) {
     return { tag, props, candidates, pendingTexts, slots, slotStack: ['default'] }
   }
 
-  const pushVisibleProps = async (instance) => {
+  const pushVisibleProps = async (instance: ComponentInstance | undefined): Promise<void> => {
     if (!instance)
       return
     // 槽内容已在前面定位，此时再收属性值，源码位置顺序才正确。
@@ -370,12 +402,13 @@ export async function extractBlocks(src) {
     instance.pendingTexts = null
     if (!instance.candidates.length)
       return
-    for (const [name, parts] of Object.entries(instance.slots))
-      instance.slots[name] = parts.join('')
+    const slots = Object.fromEntries(
+      Object.entries(instance.slots).map(([name, parts]) => [name, parts.join('')]),
+    )
 
-    let visibleText = null
+    let visibleText: string | null = null
     try {
-      visibleText = await renderVisibleText(instance.tag, instance.props, instance.slots)
+      visibleText = await renderVisibleText(instance.tag, instance.props, slots)
     }
     catch {
       // 组件无法单独渲染时保守纳入，避免漏掉真实问题。
@@ -387,10 +420,8 @@ export async function extractBlocks(src) {
     }
   }
 
-  /** @type {Array<ReturnType<typeof createInstance>>} */
-  const componentStack = []
-  /** @type {Array<Array<{ text: string, srcStart: number }>>} */
-  const inlineSegmentsStack = []
+  const componentStack: ComponentInstance[] = []
+  const inlineSegmentsStack: TextSegment[][] = []
 
   for (const token of tokens) {
     // `:Name[槽]{属性}` 写在行首时是独立的块级组件：属性挂在开标签上，
@@ -442,8 +473,7 @@ export async function extractBlocks(src) {
     if (token.map)
       cursor = Math.max(cursor, lineStarts[token.map[0]] ?? 0)
 
-    /** @type {Array<{ text: string, srcStart: number }>} */
-    let textSegments = []
+    let textSegments: TextSegment[] = []
     const children = token.children
 
     for (let index = 0; index < children.length; index++) {
@@ -457,8 +487,9 @@ export async function extractBlocks(src) {
         const pos = locate(child.content)
         if (pos >= 0) {
           const segment = { text: child.content, srcStart: pos }
-          if (inlineSegmentsStack.length)
-            inlineSegmentsStack.at(-1).push(segment)
+          const innermost = inlineSegmentsStack.at(-1)
+          if (innermost)
+            innermost.push(segment)
           else
             textSegments.push(segment)
           for (const instance of componentStack) {
@@ -508,7 +539,7 @@ export async function extractBlocks(src) {
     }
     pushBlock(textSegments)
     while (inlineSegmentsStack.length)
-      pushBlock(inlineSegmentsStack.pop())
+      pushBlock(inlineSegmentsStack.pop() ?? [])
   }
 
   return blocks

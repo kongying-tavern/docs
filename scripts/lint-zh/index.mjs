@@ -1,7 +1,7 @@
 /**
  * zh 文档的中文排版检查。
  *
- * 用项目 Markdown 渲染器的 token 流提取可见文本（见 extract.mjs），
+ * 用项目 Markdown 渲染器的 token 流提取可见文本（见 extract.ts），
  * 再按"块元素"边界逐块交给 zhlint：
  * - 块内片段连续拼接，跨链接等语法标记的规则（如链接左右空格）仍能触发；
  * - 行内 / 块级 MDC 组件各自成块，组件渲染出的 div/span 不会和相邻正文
@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url'
 import { report, run } from 'zhlint'
 import { PAGES_DIR } from '../../.vitepress/config/pagesDir.ts'
 import { DEFAULT_LOCALE } from '../../src/constants/site.ts'
-import { closeExtractRenderer, extractBlocks } from './extract.mjs'
+import { closeExtractRenderer, extractBlocks } from './extract.ts'
 import { createLintZhOptions } from './options.mjs'
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
