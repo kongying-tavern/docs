@@ -1,14 +1,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import process from 'node:process'
+import { fileURLToPath } from 'node:url'
+import { PAGES_DIR } from '../.vitepress/config/pagesDir.ts'
 
 interface IconData {
   [key: string]: string
 }
 
+// 资源目录按模块位置定位，不跟随调用方的 cwd。
+const svgDir = fileURLToPath(new URL(`../${PAGES_DIR}/public/imgs/common/svg`, import.meta.url))
+
 export function resolveCustomIcons(): IconData {
-  // 以仓库根（进程工作目录）定位资源目录；脚本运行于仓库根，无需相对路径回溯
-  const svgDir = path.resolve(process.cwd(), 'pages/public/imgs/common/svg')
   const data: IconData = {}
 
   // Ensure the directory exists before reading
