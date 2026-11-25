@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
 import { test } from 'vitest'
-import { collectNodeEntries } from '../../../../scripts/typecheckNodeEntries.ts'
+import { collectNodeEntries, nodeResolves } from '../../../../scripts/typecheckNodeEntries.ts'
 
 interface PackageJson {
   scripts: Record<string, string>
@@ -36,6 +36,17 @@ test('ignores inline scripts, .mjs entry points and tsx', () => {
     buildFonts: 'tsx ./scripts/buildFonts.ts',
     testUi: 'node --test tests/harness/a/browser.test.mjs',
   }), [])
+})
+
+test('resolves # imports natively and rejects tsconfig aliases', () => {
+  assert.equal(nodeResolves('../x.ts'), true)
+  assert.equal(nodeResolves('vite'), true)
+  assert.equal(nodeResolves('@vitejs/plugin-vue'), true)
+  // `#` 前缀镜像在 package.json 的 imports 里，Node 自己就能解析。
+  assert.equal(nodeResolves('#data/x.ts'), true)
+  assert.equal(nodeResolves('@theme/components/ui.ts'), false)
+  assert.equal(nodeResolves('~/config/markdown.ts'), false)
+  assert.equal(nodeResolves('@/src/constants/site.ts'), false)
 })
 
 test('resolves every collected entry to a file on disk', () => {

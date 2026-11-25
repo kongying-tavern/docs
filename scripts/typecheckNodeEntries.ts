@@ -8,12 +8,17 @@
  *
  * 入口取自 `package.json` 的 scripts，导入链由 tsc 自动跟随，不维护第二份文件清单；
  * 新增一个 `node *.ts` 脚本会自动纳入检查。
+ *
+ * 同一批入口还有一条模块解析约束：Node 只认相对路径、裸包名和 `package.json` 的
+ * `imports`（`#` 前缀）。tsconfig 的 `paths` 只有打包器与 tsc 认识，运行时必抛
+ * ERR_MODULE_NOT_FOUND，所以值导入里出现别名也在这里报出来。
  */
 import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { relative, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
+import { matchPathAlias } from '../.vitepress/config/aliases.ts'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const TSCONFIG = resolve(ROOT, 'tsconfig.json')
@@ -54,12 +59,79 @@ const formatHost: ts.FormatDiagnosticsHost = {
   getNewLine: () => ts.sys.newLine,
 }
 
+/**
+ * 说明符在 Node 下能否解析：`#` 走 `package.json` 的 `imports`，其余别名
+ * （`@theme/`、`~/`、`@/`）只存在于 tsconfig 与 Vite。
+ */
+export function nodeResolves(specifier: string): boolean {
+  return specifier.startsWith('#') || !matchPathAlias(specifier)
+}
+
+interface AliasImport {
+  sourceFile: ts.SourceFile
+  node: ts.Node
+  specifier: string
+}
+
+/** 只跳过声明文件与依赖；文件名由 tsc 规范化成正斜杠，不能再和 fileURLToPath 比前缀。 */
+function isProjectFile(fileName: string): boolean {
+  return !fileName.replaceAll('\\', '/').includes('/node_modules/')
+}
+
+/** 导入链里的值导入（类型导入会被擦除，不算运行时依赖）。 */
+function collectAliasImports(program: ts.Program): AliasImport[] {
+  const found: AliasImport[] = []
+  let scanned = 0
+
+  const check = (sourceFile: ts.SourceFile, literal: ts.Node): void => {
+    if (ts.isStringLiteralLike(literal) && !nodeResolves(literal.text))
+      found.push({ sourceFile, node: literal, specifier: literal.text })
+  }
+
+  for (const sourceFile of program.getSourceFiles()) {
+    if (sourceFile.isDeclarationFile || !isProjectFile(sourceFile.fileName))
+      continue
+    scanned++
+
+    for (const statement of sourceFile.statements) {
+      if (ts.isImportDeclaration(statement) && !statement.importClause?.isTypeOnly)
+        check(sourceFile, statement.moduleSpecifier)
+      if (ts.isExportDeclaration(statement) && !statement.isTypeOnly && statement.moduleSpecifier)
+        check(sourceFile, statement.moduleSpecifier)
+    }
+
+    const visit = (node: ts.Node): void => {
+      if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
+        const [argument] = node.arguments
+        if (argument)
+          check(sourceFile, argument)
+      }
+      ts.forEachChild(node, visit)
+    }
+    visit(sourceFile)
+  }
+
+  // 扫描不到入口说明上面的过滤条件失效了（分隔符、路径前缀），宁可报错也别静默放过。
+  if (!scanned)
+    throw new Error('scanned no node entry; check the entry paths and file-name separators')
+
+  return found
+}
+
+/** 与 tsc 的 `file:line:col - error` 对齐，两类问题能读成同一份输出。 */
+function formatAliasImport({ sourceFile, node, specifier }: AliasImport): string {
+  const { line, character } = sourceFile.getLineAndCharacterOfPosition(node.getStart(sourceFile))
+  const file = relative(ROOT, sourceFile.fileName).replaceAll('\\', '/')
+  return `${file}:${line + 1}:${character + 1} - error: node cannot resolve the tsconfig alias `
+    + `'${specifier}'; use a relative path, or a '#...' entry in package.json imports`
+}
+
 function main(): void {
   const { scripts } = JSON.parse(readFileSync(PACKAGE_JSON, 'utf8')) as PackageJson
   const entries = collectNodeEntries(scripts ?? {}).map(entry => resolve(ROOT, entry))
 
   if (!entries.length) {
-    console.log('[typecheck:node] package.json 里没有 `node *.ts` 入口，跳过。')
+    console.log('[typecheck:node] no `node *.ts` entry in package.json, nothing to check')
     return
   }
 
@@ -74,14 +146,19 @@ function main(): void {
 
   const program = ts.createProgram({ rootNames: entries, options: config.options })
   const diagnostics = ts.getPreEmitDiagnostics(program).filter(isErasableSyntaxDiagnostic)
+  const aliasImports = collectAliasImports(program)
 
-  if (diagnostics.length) {
+  if (diagnostics.length)
     console.error(ts.formatDiagnosticsWithColorAndContext(diagnostics, formatHost))
+  for (const aliasImport of aliasImports)
+    console.error(formatAliasImport(aliasImport))
+
+  if (diagnostics.length || aliasImports.length) {
     process.exitCode = 1
     return
   }
 
-  console.log(`[typecheck:node] ${entries.length} 个 Node 入口及其导入链可被类型剥离。`)
+  console.log(`[typecheck:node] checked ${entries.length} node entry point(s): erasable syntax, no tsconfig aliases`)
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url))
