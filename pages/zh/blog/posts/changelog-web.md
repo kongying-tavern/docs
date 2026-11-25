@@ -829,7 +829,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=网页版%0A�
 
 ### {%= T_SECURITY %}
 
-- 新增内容安全策略(CSP)。
+- 新增内容安全策略 (CSP)。
 
 ### {%= T_DEPRECATE %}
 
@@ -1173,7 +1173,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=网页版%0A�
 
 - 更新部分宝箱。
 - 添加部分清心、马尾、莲蓬点位。
-- 更新先遣队、盗宝团(璃月)、骗骗花、蒙德大型丘丘人、蒙德深渊法师、蒙德遗迹守卫点位。
+- 更新先遣队、盗宝团 (璃月)、骗骗花、蒙德大型丘丘人、蒙德深渊法师、蒙德遗迹守卫点位。
 
 :::
 

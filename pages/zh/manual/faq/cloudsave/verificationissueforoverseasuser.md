@@ -16,9 +16,9 @@
 
 1. 請確保你的 IP 位址不在中國大陸地區。
 
-2. 建議使用 [Edge](https://www.microsoft.com/zh-cn/edge/download) 瀏覽器(其他瀏覽器未經測試，無法保證成功)。
+2. 建議使用 [Edge](https://www.microsoft.com/zh-cn/edge/download) 瀏覽器 (其他瀏覽器未經測試，無法保證成功)。
 
-3. 你可以點擊此[連結](https://gitee.com/language/en)切換至英文版 Gitee(選填)。
+3. 你可以點擊此[連結](https://gitee.com/language/en)切換至英文版 Gitee (選填)。
 
 4. 點擊首頁右上角的「註冊」，進入註冊頁面。
 
