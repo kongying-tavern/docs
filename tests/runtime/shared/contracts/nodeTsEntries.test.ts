@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
 import ts from 'typescript'
 import { test } from 'vitest'
-import { collectNodeEntries, findDecoratorNodes, nodeResolves } from '../../../../scripts/typecheckNodeEntries.ts'
+import { collectNodeEntries, findCjsGlobals, findDecoratorNodes, findJsonImports, nodeResolves } from '../../../../scripts/typecheckNodeEntries.ts'
 
 interface PackageJson {
   scripts: Record<string, string>
@@ -69,6 +69,48 @@ test('finds decorators, which erasableSyntaxOnly lets through', () => {
   )
   assert.equal(findDecoratorNodes(sourceFile).length, 2)
 })
+
+test('rejects .json imports that miss the type attribute', () => {
+  const parse = (text: string) => ts.createSourceFile('probe.ts', text, ts.ScriptTarget.ESNext, true)
+
+  assert.deepEqual(findJsonImports(parse(`import data from './a.json'`)).map(node => node.text), ['./a.json'])
+  assert.deepEqual(findJsonImports(parse(`import data from './a.json' with { type: 'json' }`)), [])
+  assert.deepEqual(findJsonImports(parse(`const data = import('./a.json')`)).map(node => node.text), ['./a.json'])
+  assert.deepEqual(findJsonImports(parse(`import data from './a.ts'`)), [])
+  // 类型导入会被擦掉，运行时不存在这次加载。
+  assert.deepEqual(findJsonImports(parse(`import type data from './a.json'`)), [])
+})
+
+test('rejects CommonJS globals that only exist in @types/node', () => {
+  const options: ts.CompilerOptions = {
+    target: ts.ScriptTarget.ESNext,
+    module: ts.ModuleKind.ESNext,
+    moduleResolution: ts.ModuleResolutionKind.Bundler,
+    types: ['node'],
+    noEmit: true,
+  }
+
+  /** 用内存里的单文件 program 拿到真实 checker，`@types/node` 从仓库依赖解析。 */
+  const probe = (text: string): string[] => {
+    const host = ts.createCompilerHost(options)
+    const name = 'probe.ts'
+    const getSourceFile = host.getSourceFile.bind(host)
+    host.getSourceFile = (fileName, languageVersion) =>
+      fileName === name
+        ? ts.createSourceFile(name, text, languageVersion, true)
+        : getSourceFile(fileName, languageVersion)
+    const program = ts.createProgram([name], options, host)
+    const file = program.getSourceFile(name)
+    assert.ok(file, 'probe file should be in the program')
+    return findCjsGlobals(program, file).map(node => node.text)
+  }
+
+  assert.deepEqual(probe(`console.log(__dirname, require('node:fs'))`), ['__dirname', 'require'])
+  // 同名本地声明、属性名与参数都不是全局引用，不能误报。
+  assert.deepEqual(probe(`const module = { exports: 1 }\nconsole.log(module.exports)`), [])
+  assert.deepEqual(probe(`const box = { module: 1 }\nconsole.log(box.module)`), [])
+  assert.deepEqual(probe(`function read(module: string): string { return module }`), [])
+}, 60000)
 
 test('resolves every collected entry to a file on disk', () => {
   const entries = collectNodeEntries(realScripts())

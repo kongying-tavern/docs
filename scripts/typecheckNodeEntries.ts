@@ -16,8 +16,13 @@
  * 同一批入口还有一条模块解析约束：Node 只认相对路径、裸包名和 `package.json` 的
  * `imports`（`#` 前缀）。tsconfig 的 `paths` 只有打包器与 tsc 认识，运行时必抛
  * ERR_MODULE_NOT_FOUND，所以值导入里出现别名也在这里报出来。
+ *
+ * 另有两条「tsc 放行、node 必崩」的写法，靠同一个 program 的 checker 补：
+ * - `.json` 导入缺 `with { type: 'json' }` → ERR_IMPORT_ATTRIBUTE_MISSING；
+ * - ESM 里的 CJS 全局量（`require`/`module`/`exports`/`__dirname`/`__filename`）
+ *   → ReferenceError，而 tsc 从 `@types/node` 拿到声明，不会报错。
  */
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { relative, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -33,6 +38,9 @@ const PACKAGE_JSON = resolve(ROOT, 'package.json')
  * 排除引号与 shell 连接符，`node -e "..."` 这类内联脚本因此不会被误判。
  */
 const NODE_TS_ENTRY = /(?:^|[\s&|;(])node\s+(?:-\S+\s+)*([^\s"'&|;]+\.ts)(?=\s|$)/gu
+
+/** Node 的 ESM 加载器在运行时才检查这些；tsc 从 `@types/node` 拿到声明后一律放行。 */
+const CJS_GLOBALS = new Set(['require', 'module', 'exports', '__dirname', '__filename'])
 
 interface PackageJson {
   scripts?: Record<string, string>
@@ -77,6 +85,18 @@ interface AliasImport {
   specifier: string
 }
 
+interface JsonImport {
+  sourceFile: ts.SourceFile
+  node: ts.Node
+  specifier: string
+}
+
+interface CjsGlobalUsage {
+  sourceFile: ts.SourceFile
+  node: ts.Node
+  name: string
+}
+
 /**
  * 装饰器不经过 tsc 的 `erasableSyntaxOnly`：它在语法层是合法的，只是运行时缺实现。
  * 这里按 AST 判一次，覆盖类、成员、参数上的全部写法。
@@ -88,6 +108,78 @@ export function findDecoratorNodes(sourceFile: ts.SourceFile): ts.Node[] {
       const decorators = ts.getDecorators(node)
       if (decorators?.length)
         found.push(...decorators)
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  return found
+}
+
+/** `with { type: 'json' }`：缺了它 Node 的 ESM 加载器直接抛 ERR_IMPORT_ATTRIBUTE_MISSING。 */
+function hasJsonTypeAttribute(attributes: ts.ImportAttributes | undefined): boolean {
+  return !!attributes?.elements.some(element => element.name.text === 'type'
+    && ts.isStringLiteralLike(element.value)
+    && element.value.text === 'json')
+}
+
+/**
+ * `.json` 导入：静态导入看 import 子句的 attributes；动态导入只有带第二个参数
+ * 才可能声明 attributes，没写就是运行时才报错的那种。
+ */
+export function findJsonImports(sourceFile: ts.SourceFile): ts.StringLiteralLike[] {
+  const found: ts.StringLiteralLike[] = []
+  const isJsonSpecifier = (specifier: ts.Expression): specifier is ts.StringLiteralLike =>
+    ts.isStringLiteralLike(specifier) && specifier.text.endsWith('.json')
+
+  const visit = (node: ts.Node): void => {
+    if (ts.isImportDeclaration(node)
+      && !node.importClause?.isTypeOnly
+      && isJsonSpecifier(node.moduleSpecifier)
+      && !hasJsonTypeAttribute(node.attributes)) {
+      found.push(node.moduleSpecifier)
+    }
+    if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
+      const [specifier, options] = node.arguments
+      if (specifier && isJsonSpecifier(specifier) && !options)
+        found.push(specifier)
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  return found
+}
+
+/**
+ * 名字出现在不能算「引用」的位置：属性名、导入导出名、声明名。
+ * 剩下的交给 checker，本地声明因此不会被误判成全局。
+ */
+function isNamePosition(node: ts.Identifier): boolean {
+  const { parent } = node
+  if (ts.isPropertyAccessExpression(parent) && parent.name === node)
+    return true
+  if (ts.isQualifiedName(parent) && parent.right === node)
+    return true
+  if (ts.isPropertyAssignment(parent) || ts.isMethodDeclaration(parent) || ts.isPropertyDeclaration(parent))
+    return parent.name === node
+  if (ts.isVariableDeclaration(parent) || ts.isParameter(parent) || ts.isFunctionDeclaration(parent))
+    return parent.name === node
+  if (ts.isImportSpecifier(parent) || ts.isExportSpecifier(parent) || ts.isNamespaceImport(parent))
+    return true
+  if (ts.isImportClause(parent))
+    return parent.name === node
+  return ts.isEnumMember(parent) && parent.name === node
+}
+
+/** 引用了由声明文件（`@types/node`）提供的全局量，也就是 ESM 里跑不起来的 CJS 名字。 */
+export function findCjsGlobals(program: ts.Program, sourceFile: ts.SourceFile): ts.Identifier[] {
+  const checker = program.getTypeChecker()
+  const found: ts.Identifier[] = []
+
+  const visit = (node: ts.Node): void => {
+    if (ts.isIdentifier(node) && CJS_GLOBALS.has(node.text) && !isNamePosition(node)) {
+      const symbol = checker.getSymbolAtLocation(node)
+      if (symbol?.declarations?.some(declaration => declaration.getSourceFile().isDeclarationFile))
+        found.push(node)
     }
     ts.forEachChild(node, visit)
   }
@@ -108,12 +200,16 @@ interface DecoratorUsage {
 interface RuntimeIssues {
   aliasImports: AliasImport[]
   decorators: DecoratorUsage[]
+  jsonImports: JsonImport[]
+  cjsGlobals: CjsGlobalUsage[]
 }
 
-/** 导入链里的值导入（类型导入会被擦除，不算运行时依赖）与 node 跑不起来的装饰器。 */
+/** 导入链里的值导入（类型导入会被擦除，不算运行时依赖），以及 node 跑不起来的写法。 */
 function collectRuntimeIssues(program: ts.Program): RuntimeIssues {
   const aliasImports: AliasImport[] = []
   const decorators: DecoratorUsage[] = []
+  const jsonImports: JsonImport[] = []
+  const cjsGlobals: CjsGlobalUsage[] = []
   let scanned = 0
 
   const check = (sourceFile: ts.SourceFile, literal: ts.Node): void => {
@@ -128,6 +224,12 @@ function collectRuntimeIssues(program: ts.Program): RuntimeIssues {
 
     for (const decorator of findDecoratorNodes(sourceFile))
       decorators.push({ sourceFile, node: decorator })
+
+    for (const node of findJsonImports(sourceFile))
+      jsonImports.push({ sourceFile, node, specifier: node.text })
+
+    for (const node of findCjsGlobals(program, sourceFile))
+      cjsGlobals.push({ sourceFile, node, name: node.text })
 
     for (const statement of sourceFile.statements) {
       if (ts.isImportDeclaration(statement) && !statement.importClause?.isTypeOnly)
@@ -151,7 +253,7 @@ function collectRuntimeIssues(program: ts.Program): RuntimeIssues {
   if (!scanned)
     throw new Error('scanned no node entry; check the entry paths and file-name separators')
 
-  return { aliasImports, decorators }
+  return { aliasImports, decorators, jsonImports, cjsGlobals }
 }
 
 /** 与 tsc 的 `file:line:col - error` 对齐，几类问题能读成同一份输出。 */
@@ -171,12 +273,32 @@ function formatDecorator({ sourceFile, node }: DecoratorUsage): string {
     + 'leaves them as syntax and V8 does not implement it, so remove the decorator'
 }
 
+function formatJsonImport({ sourceFile, node, specifier }: JsonImport): string {
+  return `${formatLocation(sourceFile, node)}node needs \`with { type: 'json' }\` for `
+    + `'${specifier}'; without it the ESM loader throws ERR_IMPORT_ATTRIBUTE_MISSING`
+}
+
+function formatCjsGlobal({ sourceFile, node, name }: CjsGlobalUsage): string {
+  return `${formatLocation(sourceFile, node)}'${name}' is a CommonJS global and undefined in ESM; `
+    + 'tsc finds it in @types/node, node throws a ReferenceError — use import.meta.url or import()'
+}
+
 function main(): void {
   const { scripts } = JSON.parse(readFileSync(PACKAGE_JSON, 'utf8')) as PackageJson
   const entries = collectNodeEntries(scripts ?? {}).map(entry => resolve(ROOT, entry))
 
   if (!entries.length) {
     console.log('[typecheck:node] no `node *.ts` entry in package.json, nothing to check')
+    return
+  }
+
+  // tsc 把「找不到 root 文件」报成 6053，会被 erasableSyntaxOnly 的过滤丢掉；
+  // 入口路径写错时必须在这里失败，否则检查会对着不存在的文件报“通过”。
+  const missing = entries.filter(entry => !existsSync(entry))
+  if (missing.length) {
+    for (const entry of missing)
+      console.error(`${relative(ROOT, entry).replaceAll('\\', '/')} - error: node entry not found; check the script path in package.json`)
+    process.exitCode = 1
     return
   }
 
@@ -191,7 +313,7 @@ function main(): void {
 
   const program = ts.createProgram({ rootNames: entries, options: config.options })
   const diagnostics = ts.getPreEmitDiagnostics(program).filter(isErasableSyntaxDiagnostic)
-  const { aliasImports, decorators } = collectRuntimeIssues(program)
+  const { aliasImports, decorators, jsonImports, cjsGlobals } = collectRuntimeIssues(program)
 
   if (diagnostics.length)
     console.error(ts.formatDiagnosticsWithColorAndContext(diagnostics, formatHost))
@@ -199,13 +321,20 @@ function main(): void {
     console.error(formatAliasImport(aliasImport))
   for (const decorator of decorators)
     console.error(formatDecorator(decorator))
+  for (const jsonImport of jsonImports)
+    console.error(formatJsonImport(jsonImport))
+  for (const cjsGlobal of cjsGlobals)
+    console.error(formatCjsGlobal(cjsGlobal))
 
-  if (diagnostics.length || aliasImports.length || decorators.length) {
+  const issues = diagnostics.length + aliasImports.length + decorators.length
+    + jsonImports.length + cjsGlobals.length
+  if (issues) {
     process.exitCode = 1
     return
   }
 
-  console.log(`[typecheck:node] checked ${entries.length} node entry point(s): erasable syntax, no tsconfig aliases, no decorators`)
+  console.log(`[typecheck:node] checked ${entries.length} node entry point(s): erasable syntax, `
+    + 'no tsconfig aliases, no decorators, no ESM/CJS mismatches')
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url))

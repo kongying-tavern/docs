@@ -20,7 +20,7 @@
     "build:fonts": "tsx ./scripts/buildFonts.ts",
     "build:vitepress": "vitepress build",
     "build:mpa": "vitepress build --mpa",
-    "build:analyze": "dotenv -v VITE_BUILD_ANALYZE=true -v VITE_DEVTOOLS_ROLLDOWN=true -- vitepress build --outDir .vitepress/cache/build-analysis && node scripts/pruneBuildAnalysis.mjs",
+    "build:analyze": "dotenv -v VITE_BUILD_ANALYZE=true -v VITE_DEVTOOLS_ROLLDOWN=true -- vitepress build --outDir .vitepress/cache/build-analysis && node scripts/pruneBuildAnalysis.ts",
     "build:data": "pnpm use-data-env && pnpm use-data-env pnpm build:member",
     "build:member": "tsx ./scripts/refreshMemberListData.ts",
     "build:emoji": "tsx ./scripts/emojiLoader.ts",
