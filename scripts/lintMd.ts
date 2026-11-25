@@ -5,6 +5,8 @@
  * dist 与构建产物。这里以 `.markdownlintignore` 作为唯一忽略源——VSCode 的
  * markdownlint 扩展读同一份文件，编辑器与 CI 因此不会漂移——再按批把文件列表
  * 传给 mdclint，避开命令行长度上限。
+ *
+ * 由 `node` 直接运行：只用可擦除语法，导入只走相对路径、内置模块与裸包。
  */
 import { spawnSync } from 'node:child_process'
 import { globSync, readFileSync } from 'node:fs'
@@ -20,16 +22,16 @@ const fix = process.argv.includes('--fix')
 const MAX_BATCH_CHARS = 16_000
 
 /** 目录型模式（`dist`、`plans/`）要补成 `dist/**` 才会被 glob 当作子树排除。 */
-function toExcludePatterns(pattern) {
+function toExcludePatterns(pattern: string): string[] {
   const trimmed = pattern.replace(/\/+$/, '')
   if (/[*?[\]{}]/.test(trimmed))
     return [trimmed]
   return [trimmed, `${trimmed}/**`]
 }
 
-function toBatches(files) {
-  const batches = []
-  let batch = []
+function toBatches(files: string[]): string[][] {
+  const batches: string[][] = []
+  let batch: string[] = []
   let chars = 0
   for (const file of files) {
     if (batch.length > 0 && chars + file.length > MAX_BATCH_CHARS) {
