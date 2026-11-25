@@ -39,7 +39,7 @@ test('Chinese formatting sees visible MDC text without touching its syntax', asy
   assert.ok(checkText.includes('普通中文: 测试'))
   assert.ok(checkText.includes('中文标题'))
   assert.ok(checkText.includes('中文描述'))
-  assert.equal(run(checkText, createLintZhOptions()).result, checkText.replace('中文: 测试', '中文：测试'))
+  assert.equal(run(checkText, createLintZhOptions()).result, checkText.replaceAll('中文: 测试', '中文：测试'))
 }, 30000)
 
 test('component rendering decides whether a prop is visible text', async () => {
@@ -82,6 +82,16 @@ test('single-line components decide props by rendering too', async () => {
   assert.ok(checkText.includes('中文标题'))
   assert.ok(!checkText.includes('中文图标'))
 }, 60000)
+
+test('text wrapped in html_inline is checked, while its markup is not', async () => {
+  // `{color:}…{/color}` 由插件渲染成三段 html_inline，中文只存在于 content 里。
+  const checkText = await checkTextOf('{color:red}中文: 测试{/color}')
+
+  assert.ok(checkText.includes('中文: 测试'))
+  assert.ok(!checkText.includes('color:red'))
+  assert.ok(!checkText.includes('<span'))
+  assert.equal(run(checkText, createLintZhOptions()).result, checkText.replaceAll('中文: 测试', '中文：测试'))
+})
 
 test('the web changelog stays clean through extraction and still renders emoji', async () => {
   const source = readFileSync(resolve('pages/zh/blog/posts/changelog-web.md'), 'utf8')
