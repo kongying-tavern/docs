@@ -16,6 +16,19 @@ Run `corepack enable && pnpm install` before first use. `pnpm dev` launches Vite
 ## Coding Style & Naming Conventions
 The repo enforces 2-space indentation and LF endings via `.editorconfig`. Follow ESLint rules defined in `eslint.config.ts`, UnoCSS utilities, and the existing component catalogue. Vue single-file components stay PascalCase (e.g., `TeamCard.vue`), composables use `useX`, stores follow `useXStore`, and locale-specific markdown keeps kebab-case filenames. Component-local constants live beside the SFC that reads them: pure class/style tokens go in `styles.ts`, fixed literal tables in `constants.ts` (storage keys, selectors, timings), and the configuration a component reads — prop defaults, size maps — in `config.ts`. Prior to committing, rely on `pnpm lint:eslint:fix` and `pnpm lint:md:fix` to resolve style drift.
 
+### Markdown Reference Definitions
+
+Markdown reference definitions (`[text][label]` for links, `![alt][label]` for images) keep destinations in one place, so an address change does not have to be repeated and missed across a document. This is a recommended workflow, not a requirement.
+
+When following it:
+
+- Use `link:xxx` labels for links and `img:xxx` for images.
+- Put extracted definitions at the end of the relevant section; choose small-section or large-section granularity by practical need.
+- Extract same-page anchor links as well. Give every heading a semantic `{#xxx}` anchor so any heading can be targeted.
+- Leave Placeholder components and links whose destination is still pending out of the definition blocks.
+
+If an author explicitly asks to normalize a document to this workflow, confirm the concrete choices before editing: which of the optional points above apply, which range of link and image destinations to extract, and where the definitions should be placed.
+
 ## Testing Guidelines
 All maintained tests live under root `tests/`, grouped by how they run: Vitest logic tests in `tests/runtime/` (`forum/`, `theme/`, `shared/`, `fonts/` domains), Playwright page journeys in `tests/e2e/` (`forum/` and `site/` domains), and component browser harnesses in `tests/harness/`; split every domain into feature modules. Shared helpers live in `tests/support/` and reusable raw-data fixtures in `tests/fixtures/`; runner-specific scaffolding stays inside its owning suite in `fixtures/` and `support/`; do not add test files to production source directories. Test imports use relative specifiers only, never path aliases, and any barrel they reach must stay free of side effects: the telemetry barrel must not re-export UI components. `pnpm test` recursively discovers `tests/runtime/**/*.test.ts`; `pnpm test:list` lists them. Use `pnpm test:runtime`, `pnpm test:forum`, `pnpm test:shared`, `pnpm test:theme` (shared + theme), and `pnpm test:fonts` for focused runs. `pnpm test:forum:ui` runs the Playwright journeys for the `forum/` and `site/` domains; `pnpm test:theme:ui` runs the keyboard-shortcut and swipe-actions browser harnesses with their own fixtures. Browser checks stay separate from the default logic test entry. See `tests/README.md` for placement and maintenance rules. Additional quality checks include linting, type checks, localized markdown validation, and ensuring `pnpm build` completes without warnings. When touching generated content, rerun the relevant `pnpm build-*` script and spot-check the rendered page via `pnpm dev`. Document manual verification steps in your PR description.
 
