@@ -76,6 +76,13 @@ Lunaria does not track these files, so they do not appear on the article progres
 
 - Commands, arguments, paths and code samples in fenced and inline code.
 
+## Wording
+
+- Use the official wording from Genshin Impact or Kongying Tavern, not community slang or made-up abbreviations.
+- Keep official and industry-standard abbreviations.
+- Check the project's terminology reference for game proper nouns, and UI messages and the [forum glossary](./forum-glossary.md) for product feature names.
+- Use one term for the same concept across all locations.
+
 ## Special cases
 
 - If a page is unavailable in a locale, link to an existing translation and label its language.
