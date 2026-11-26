@@ -37,6 +37,7 @@ Markdown reference definitions (`[text][label]` for links, `![alt][label]` for i
 When following it:
 
 - Use `link:xxx` labels for links and `img:xxx` for images.
+- Write an alt for every image whose content is known, describing what the image shows so readers know what it is for when it cannot be displayed.
 - Put extracted definitions at the end of the relevant section; choose small-section or large-section granularity by practical need.
 - Extract same-page anchor links as well. Give every heading a semantic `{#xxx}` anchor so any heading can be targeted.
 - Leave Placeholder components and links whose destination is still pending out of the definition blocks.
