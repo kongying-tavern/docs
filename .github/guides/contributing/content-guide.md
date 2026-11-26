@@ -1,9 +1,9 @@
 # 内容写作指引
 
-这份指引面向人工撰写或改写页面正文与项目内指引的人。它规定内容的组织方式和表达目标，也说明站点页面的标题锚点写法。通用 Markdown 语法、链接写法和检查命令见对应文档：
+这份指引面向人工撰写或改写页面正文与项目内指引的人。它规定内容的组织方式和表达目标，也说明站点页面的标题锚点和引用地址。通用 Markdown 语法、链接写法和检查命令见对应文档：
 
 - 链接、图片、检查命令和 AI 写作约束：[AGENTS.md](../../../AGENTS.md)
-- 站点特有组件和 Markdown 扩展：[Markdown 增强语法指南](../../../pages/zh/md-enhance-guide.md)
+- 站点特有组件和 Markdown 扩展：[Markdown 增强语法指南](https://yuanshen.site/docs/md-enhance-guide)
 - 翻译流程和作者备注：[翻译指南](../translation/translation-guide.md)
 
 ## 动笔前
@@ -22,6 +22,11 @@
 - 站点页面由 VitePress 渲染，在标题末尾写 `{#锚点名}` 可以固定这个标题的链接目标，例如 `## 安装流程 {#installation}`。
 - 这是 VitePress 的 Markdown 扩展，GitHub 等大部分 Markdown 渲染器不支持。它们会把 `{#installation}` 当成标题文字显示。
 - 只在 `pages/` 的页面里写语义锚点。仓库根目录和 `.github` 下的 Markdown 不写，需要指向标题时用渲染器按标题文字生成的锚点。
+
+## 引用站点页面
+
+- `.github` 下的文档引用 `pages/` 里的页面时，用站点地址，例如 `https://yuanshen.site/docs/md-enhance-guide`。
+- 这些页面使用 VitePress 特有语法和组件。直接链接 Markdown 文件只能看到源码，看不到实际渲染效果。
 
 ## 介绍工具或功能
 
