@@ -332,6 +332,11 @@ img[data-emoji] {
   text-align: center;
 }
 
+/* VitePress 的 img 是块级元素，text-align 无法使其居中，需靠左右自动外边距。 */
+.vp-doc figure img {
+  margin-inline: auto;
+}
+
 .vp-doc figure figcaption {
   font-weight: bold;
   line-height: 1.5;
