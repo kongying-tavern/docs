@@ -19,7 +19,7 @@ Find articles to translate and claim instructions on the [claim board](https://g
 - [Article translation progress (Lunaria)](https://yuanshen.site/docs/_translations/): articles that need translation or updates.
 - [UI translation dashboard (x18n)](https://yuanshen.site/docs/_i18n/): interface text, coverage and diagnostics. The published dashboard is read-only.
 
-Start with the [beginner tutorial](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-no-exp-en.md). File locations and submission requirements are in the [translation guide](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md).
+Start with the [beginner tutorial](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-no-exp-en.md). File locations and submission requirements are in the [translation guide](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/translation-guide.md).
 
 ## Archived Languages {#archived-languages}
 
@@ -34,4 +34,4 @@ Client translations use our internal platform. To participate, contact us on [QQ
 
 ## Add a Language {#starting-a-new-translation}
 
-To add a language, follow the [new language guide (Chinese)](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md).
+To add a language, follow the [new language guide (Chinese)](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-new-language.md).

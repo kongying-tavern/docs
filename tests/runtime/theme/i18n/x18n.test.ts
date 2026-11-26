@@ -119,7 +119,7 @@ describe('x18n native YAML integration', () => {
       encoding: 'utf8',
       timeout: 30000,
     })
-    expect(prompt).toContain('.github/forum-glossary.md')
+    expect(prompt).toContain('.github/guides/translation/forum-glossary.md')
     expect(prompt).toContain('contextual exceptions')
     expect(prompt).toContain('{name}')
   }, 35000)

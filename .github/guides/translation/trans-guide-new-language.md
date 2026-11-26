@@ -14,7 +14,7 @@
 
 ### 生成初始文件
 
-准备好[本地环境](../README.md#contributing)后运行：
+准备好[本地环境](../../../README.md#contributing)后运行：
 
 ```sh
 pnpm init:locale

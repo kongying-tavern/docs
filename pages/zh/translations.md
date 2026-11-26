@@ -19,7 +19,7 @@ description: 查看文档翻译进度，了解参与翻译的方法。
 - [文章翻译进度 (Lunaria)](https://yuanshen.site/docs/_translations/)：查看哪些文章尚未翻译或需要更新。
 - [界面词条看板 (x18n)](https://yuanshen.site/docs/_i18n/)：查看界面文案、覆盖率和检查结果。线上看板只读。
 
-参与翻译可从[翻译入门](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-no-exp.md)开始，文件位置和提交要求见[翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)。
+参与翻译可从[翻译入门](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-no-exp.md)开始，文件位置和提交要求见[翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/translation-guide.md)。
 
 ## 已归档的翻译 {#archived-languages}
 
@@ -34,4 +34,4 @@ description: 查看文档翻译进度，了解参与翻译的方法。
 
 ## 新增语言 {#starting-a-new-translation}
 
-新增语言请按[新语言教程](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)初始化。
+新增语言请按[新语言教程](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-new-language.md)初始化。

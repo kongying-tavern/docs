@@ -19,7 +19,7 @@ The repo enforces 2-space indentation and LF endings via `.editorconfig`. Follow
 ## Checks by Change Type
 Choose checks by what changed rather than defaulting to `pnpm lint`:
 
-- Any Markdown edit (under `pages/`, `.github/*.md`, or the repository root) → `pnpm lint:md`. `scripts/lintMd.ts` globs `**/*.md` minus `.markdownlintignore`, so it covers every Markdown file even outside `pages/`. This is the required check for a Markdown-only change.
+- Any Markdown edit (under `pages/`, `.github/**/*.md`, or the repository root) → `pnpm lint:md`. `scripts/lintMd.ts` globs `**/*.md` minus `.markdownlintignore`, so it covers every Markdown file even outside `pages/`. This is the required check for a Markdown-only change.
 - Edits under `pages/zh/**/*.md` → also `pnpm lint:zh` for Chinese typography. `lint:zh` globs only the default locale (`pages/zh/**/*.md`); it does not examine Chinese text in `.github/` or the repo root, and there is no typography check for English or Japanese pages.
 - `.vitepress/locales/**/*.yml` → `pnpm i18n:check`.
 - Code (`*.ts`, `*.vue`, `*.js`, `*.mjs`, `*.cjs`, `*.mts`, `*.cts`, plus JSON/YAML/CSS) → `pnpm lint:eslint` (`eslint --cache .`, autofix via `pnpm lint:eslint:fix`). ESLint ignores `**/*.md`, so it never substitutes for `lint:md`.
@@ -35,4 +35,4 @@ All maintained tests live under root `tests/`, grouped by how they run: Vitest l
 Commits follow Conventional Commits with commitlint scopes limited to `i18n`, `forum`, `blog`, and `theme`. Use `pnpm commit` (Commitizen) for guided prompts. Keep messages imperative (`feat(theme): add dark header token`). For PRs, include a concise summary, link the tracking issue or task, attach before/after screenshots for UI shifts, and list any data scripts invoked so reviewers can reproduce.
 
 ## Data & Localization Tips
-Keep data refresh credentials in `.env.data`. UI messages and localized site settings live in `.vitepress/locales`. For translation or i18n integration tasks, read the [Agent i18n workflow](.agents/i18n.md) first. The [translation guide](.github/translation-guide.md) covers contributor instructions and shared translation rules.
+Keep data refresh credentials in `.env.data`. UI messages and localized site settings live in `.vitepress/locales`. For translation or i18n integration tasks, read the [Agent i18n workflow](.agents/i18n.md) first. The [translation guide](.github/guides/translation/translation-guide.md) covers contributor instructions and shared translation rules.

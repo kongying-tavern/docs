@@ -8,7 +8,7 @@ This guide walks you through a translation locally: prepare the tools, find the 
 
 This site is built with VitePress. `pnpm dev` starts a local preview and prints an address in the terminal; open that address in a browser to see the pages as readers will see them.
 
-- The commands to install dependencies and start the preview are in [local development](../README.md#contributing).
+- The commands to install dependencies and start the preview are in [local development](../../../README.md#contributing).
 - Pages update automatically when you save changes, so a manual restart is usually unnecessary.
 - To stop the preview, press `Ctrl+C` in the terminal; run `pnpm dev` again the next time you want to view it.
 

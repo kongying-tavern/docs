@@ -34,7 +34,7 @@ Use these terms in `forum.yml`. General syntax and submission rules are in the [
 
 1. Use sentence case in English: `Searching…`, `Hide feedback`, `Back to previous page`.
 2. Keep established product names and technical abbreviations consistent, including Gitee, Meta Seq2Seq, SSO, FAQ and QR.
-3. Preserve named placeholders and component slots as described in [message syntax](../scripts/x18n/README.md#组件用法).
+3. Preserve named placeholders and component slots as described in [message syntax](../../../scripts/x18n/README.md#组件用法).
 4. Use punctuation appropriate to the language. Preserve code, URLs and emoticons.
 5. Translate the sidebar blog titles in `aside.teamBlog.items`. Their destinations come from shared configuration.
 6. Use the same terms in announcement permission messages and validation errors: 管理员 / administrators / 管理者.

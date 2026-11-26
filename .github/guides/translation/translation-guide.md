@@ -32,7 +32,7 @@ The extension is **required for all contributors**: notes are visible only throu
 ## Translation rules
 
 - Translate from the Chinese source and retain its page structure. Translate frontmatter titles and descriptions; keep explicit heading anchors such as `{#installation}` and component names.
-- For site-specific Markdown syntax such as cards, timelines, and custom emoji, see the [Markdown enhancements guide (Chinese)](../pages/zh/md-enhance-guide.md).
+- For site-specific Markdown syntax such as cards, timelines, and custom emoji, see the [Markdown enhancements guide (Chinese)](../../../pages/zh/md-enhance-guide.md).
 - Keep YAML keys, `{name}` placeholders, component slot names and plural separators `|`. x18n also lists links and regular expression patterns in `site.yml`; change them only when the task calls for it.
 - Keep menu grouping and order aligned across locales: array entries are matched by index. If a page is unavailable in a locale, link to an existing translation and label its language.
 - Follow the [forum glossary](./forum-glossary.md) for forum messages. Check short labels, interpolated values and links in the affected page.
@@ -53,4 +53,4 @@ Preview with `pnpm dev` and open the URL printed by VitePress. Before submitting
 
 In the pull request, describe the language, changed content and checks performed. Commit source files only; exclude `dist/` and generated fonts.
 
-See the [i18n development guide](../scripts/x18n/README.md#命令说明) for command behavior, file writes and Vue usage.
+See the [i18n development guide](../../../scripts/x18n/README.md#命令说明) for command behavior, file writes and Vue usage.

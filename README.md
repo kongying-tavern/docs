@@ -25,7 +25,7 @@ This project requires Node.js `^20.19.0` or `>=22.12.0` (what Vite itself requir
 
 ## Working on the content
 
-- Use the translation guide to find the locale files and check changes before submitting. [Translation guide](./.github/translation-guide.md#files-and-tools)
+- Use the translation guide to find the locale files and check changes before submitting. [Translation guide](./.github/guides/translation/translation-guide.md#files-and-tools)
 - Use `githubPagesOnly: true` in the frontmatter of a page that should ship only on GitHub Pages. [Frontmatter guide](./pages/zh/frontmatter.md)
 - See VitePress docs on supported [Markdown Extensions](https://vitepress.vuejs.org/guide/markdown) and the ability to [use Vue syntax inside markdown](https://vitepress.vuejs.org/guide/using-vue).
 
