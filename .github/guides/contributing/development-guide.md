@@ -118,4 +118,4 @@ VitePress 从 `pages/{en,zh,ja}` 读取本地化 Markdown 与路由定义，从 
 - 组件本地常量放在读取它的 SFC 旁边：`styles.ts` 放 class/style token，`constants.ts` 放固定表（storage keys、selectors、timings），`config.ts` 放组件读取的配置（prop 默认值、尺寸映射）。
 - 提交前用 `pnpm lint:eslint:fix` 与 `pnpm lint:md:fix` 处理风格漂移。
 
-提交格式、scope 与 PR 要求见 [提交约定](commit-convention.md)，翻译流程见 [翻译指南](../translation/translation-guide.md)。
+提交格式、scope 与 PR 要求见 [提交约定](commit-convention.md)，翻译流程见 [翻译指南](../translation/translation-guide-zh.md)。

@@ -4,7 +4,7 @@
 
 - 链接、图片、检查命令和 AI 写作约束：[AGENTS.md](../../../AGENTS.md)
 - 站点特有组件和 Markdown 扩展：[Markdown 增强语法指南](https://yuanshen.site/docs/md-enhance-guide)
-- 翻译流程和作者备注：[翻译指南](../translation/translation-guide.md)
+- 翻译流程和作者备注：[翻译指南](../translation/translation-guide-zh.md)
 
 ## 动笔前
 

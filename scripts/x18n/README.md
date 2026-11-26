@@ -1,6 +1,6 @@
 # i18n 开发说明
 
-界面文案使用 [vue-i18n](https://vue-i18n.intlify.dev/)，[x18n](https://github.com/x18n-dev/x18n) 负责编辑与检查。翻译文件的位置、认领和提交步骤见[翻译指南](../../.github/guides/translation/translation-guide.md)。
+界面文案使用 [vue-i18n](https://vue-i18n.intlify.dev/)，[x18n](https://github.com/x18n-dev/x18n) 负责编辑与检查。翻译文件的位置、认领和提交步骤见[翻译指南](../../.github/guides/translation/translation-guide-zh.md)。
 
 本页供开发者查阅命令和代码用法。Agent 执行翻译任务前，先读 [Agent 工作流](../../.agents/i18n.md)。
 
@@ -16,7 +16,7 @@
 | `pnpm i18n:build` | 生成只读界面词条看板 | 扫描当前项目，将页面和检查结果写入 `dist/_i18n/`，不修改词条 |
 | `pnpm translations:build` | 生成两个翻译看板 | 先运行 `lunaria:build`，成功后再运行 `i18n:build`；输出 `dist/_translations/` 和 `dist/_i18n/` |
 
-新增语言另用 `pnpm init:locale`，步骤见[新增语言](../../.github/guides/translation/trans-guide-new-language.md)。
+新增语言另用 `pnpm init:locale`，步骤见[新增语言](../../.github/guides/translation/trans-guide-new-language-zh.md)。
 
 ### 工作原理
 
@@ -65,7 +65,7 @@ pnpm i18n get forum.loadMore
 pnpm i18n usages forum.loadMore
 ```
 
-用 `get` 查看一个 key 的各语言文案，用 `usages` 定位使用位置。翻译检查命令见[提交前检查](../../.github/guides/translation/translation-guide.md#checks-and-submission)。
+用 `get` 查看一个 key 的各语言文案，用 `usages` 定位使用位置。翻译检查命令见[提交前检查](../../.github/guides/translation/translation-guide-zh.md#检查与提交)。
 
 `site.yml` 使用原始 YAML 路径，例如 `site.themeConfig.nav.0.text`。链接和匹配规则等字段也会显示，可在 x18n 中编辑；数组按下标对应，不自动匹配菜单含义。调整菜单结构时核对各语言的对应项。
 

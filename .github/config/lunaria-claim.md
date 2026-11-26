@@ -8,7 +8,7 @@
 
 看板只覆盖文章。界面词条不在认领范围内，请到 [x18n](https://yuanshen.site/docs/_i18n/) 查看。
 
-相关链接：[文章翻译进度]({{dashboard_url}}) · [翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/translation-guide.md) · [新增语言](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-new-language.md)
+相关链接：[文章翻译进度]({{dashboard_url}}) · [翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/translation-guide-zh.md)（[English](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/translation-guide-en.md)） · [新增语言](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-new-language-zh.md)（[Adding a language](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-new-language-en.md)）
 
 > 韩语与法语已归档，如需恢复请联系维护者。
 
