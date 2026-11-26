@@ -33,7 +33,7 @@ VitePress 从 `pages/{en,zh,ja}` 读取本地化 Markdown 与路由定义，从 
 | `.vitepress` | 站点外壳、主题与 VitePress 配置 |
 | `scripts` | 工具脚本 |
 
-`eslint.config.ts` 的导入规则保证论坛 services 与 API 代码不依赖 UI 层，并限制从 `src` 导入 `.vitepress` 时只能走批准的入口。
+目录间的导入约束见[导入与路径](#导入与路径)。
 
 ## 导入与路径
 
