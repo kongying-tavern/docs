@@ -9,7 +9,7 @@ import { dump, JSON_SCHEMA, load } from 'js-yaml'
 const ROOT = resolve(fileURLToPath(import.meta.url), '../..')
 const LOCALE_CODE_RE = /^[a-z]{2}$/
 const TEMPLATES = ['zh', 'en'] as const
-const ZH_ONLY_PAGES = ['frontmatter.md', 'md-enhance-guide.md', 'announcement.md']
+const ZH_ONLY_PAGES = ['frontmatter.md', 'md-enhance-guide.md']
 
 type Template = typeof TEMPLATES[number]
 

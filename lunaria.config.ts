@@ -36,7 +36,6 @@ export default defineConfig({
         `pages/${DEFAULT_LOCALE}/staff.md`,
         `pages/${DEFAULT_LOCALE}/md-enhance-guide.md`,
         `pages/${DEFAULT_LOCALE}/team.md`,
-        `pages/${DEFAULT_LOCALE}/announcement.md`,
         `pages/${DEFAULT_LOCALE}/blog/[path].md`,
       ],
       type: 'universal',
