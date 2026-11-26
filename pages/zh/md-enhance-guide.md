@@ -274,9 +274,6 @@ collapsed: true
 
 #### 示例
 
-<!-- zhlint ignore: [[Ctrl+K, Ctrl+Alt+C]] -->
-<!-- zhlint ignore: [[G, I]] -->
-
 :::: demo
 
 | 用法 | 示例 |
@@ -367,7 +364,7 @@ Windows：[[Mod+K]]{platform=windows}；macOS：[[Mod+K]]{platform=mac}。
 ==<标记文本>==
 ```
 
-> 请注意，`==` 外侧需要添加空格(详见示例)。
+> 请注意，`==` 外侧需要添加空格 (详见示例)。
 
 #### 示例
 
@@ -510,8 +507,6 @@ paragraph _style me_{.vp-link} more text
 #### 示例
 
 :::: demo
-<!-- zhlint ignore: :1.小黄脸/呲牙.png: -->
-<!-- zhlint ignore: :2.原神/芙宁娜-乐.png: -->
 
 大家好~**:1.小黄脸/呲牙.png:**
 :1.小黄脸/呲牙.png:

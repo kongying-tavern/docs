@@ -1,7 +1,10 @@
 {
   "type": "module",
   "private": "true",
-  "packageManager": "pnpm@12.3.4",
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": "^22.18.0 || >=23.6.0"
+  },
   "license": "MIT",
   "imports": {
     "#data/*": "./data/*"
@@ -17,7 +20,7 @@
     "build:fonts": "tsx ./scripts/buildFonts.ts",
     "build:vitepress": "vitepress build",
     "build:mpa": "vitepress build --mpa",
-    "build:analyze": "dotenv -v VITE_BUILD_ANALYZE=true -v VITE_DEVTOOLS_ROLLDOWN=true -- vitepress build --outDir .vitepress/cache/build-analysis && node scripts/pruneBuildAnalysis.mjs",
+    "build:analyze": "dotenv -v VITE_BUILD_ANALYZE=true -v VITE_DEVTOOLS_ROLLDOWN=true -- vitepress build --outDir .vitepress/cache/build-analysis && node scripts/pruneBuildAnalysis.ts",
     "build:data": "pnpm use-data-env && pnpm use-data-env pnpm build:member",
     "build:member": "tsx ./scripts/refreshMemberListData.ts",
     "build:emoji": "tsx ./scripts/emojiLoader.ts",
@@ -25,12 +28,13 @@
     "lint": "eslint --cache . && pnpm lint:zh",
     "lint:eslint": "eslint --cache .",
     "lint:eslint:fix": "eslint --cache --fix .",
-    "lint:md": "node scripts/lintMd.mjs",
-    "lint:md:fix": "node scripts/lintMd.mjs --fix",
-    "lint:zh": "node scripts/lintZh.mjs",
-    "lint:zh:fix": "node scripts/lintZh.mjs --fix",
-    "typecheck": "pnpm typecheck:ts && pnpm typecheck:vue",
+    "lint:md": "node scripts/lintMd.ts",
+    "lint:md:fix": "node scripts/lintMd.ts --fix",
+    "lint:zh": "node scripts/lint-zh/index.ts",
+    "lint:zh:fix": "node scripts/lint-zh/index.ts --fix",
+    "typecheck": "pnpm typecheck:ts && pnpm typecheck:node && pnpm typecheck:vue",
     "typecheck:ts": "tsc --noEmit",
+    "typecheck:node": "node scripts/typecheckNodeEntries.ts",
     "typecheck:vue": "vue-tsc --noEmit --project tsconfig.vue.json",
     "typecheck:forum:ui": "tsc --noEmit --project tests/e2e/tsconfig.json",
     "test": "vitest run",
@@ -107,7 +111,6 @@
     "medium-zoom": "catalog:frontend",
     "morphicons": "catalog:",
     "motion-v": "catalog:conflicts_frontend_h1_7_1",
-    "path-to-regexp": "catalog:frontend",
     "pinia": "catalog:frontend",
     "qrcode": "catalog:frontend",
     "reka-ui": "catalog:frontend",

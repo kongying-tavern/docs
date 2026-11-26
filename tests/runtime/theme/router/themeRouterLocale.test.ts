@@ -9,7 +9,6 @@ vi.mock('../../../../src/forum/composables/state/useForumRoute.ts', () => ({ pub
 vi.mock('../../../../src/forum/router/forumViewTransition.ts', () => ({ isForumToBlogNavigation: () => false, transitionForumBlog: vi.fn() }))
 vi.mock('../../../../src/forum/services/forumRoute.ts', () => ({ parseForumLocation: () => null }))
 vi.mock('../../../../src/services/telemetry/index.ts', () => ({ identifySessionIfEnabled: vi.fn() }))
-vi.mock('../../../../.vitepress/routes/index.ts', () => ({ routes: [] }))
 vi.mock('../../../../.vitepress/theme/router/handleRouteMatching.ts', () => ({ default: async () => true }))
 vi.mock('../../../../.vitepress/theme/router/forumPreload.ts', () => ({ preloadForumEntry: vi.fn() }))
 

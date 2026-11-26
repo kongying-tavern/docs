@@ -57,7 +57,7 @@ function parseLegacyTokens(tokens: Token[]): JSONContent[] {
     else if (token.type !== 'code_block') {
       const text = token.type === 'softbreak' ? '\n' : token.content
       if (text) {
-        const textMarks = (token.type === 'code_inline' ? [...marks, { type: 'code' }] : [...marks]).reverse()
+        const textMarks = token.type === 'code_inline' ? [...marks, { type: 'code' }] : [...marks]
         const previous = content.at(-1)
         if (previous?.type === 'text' && JSON.stringify(previous.marks ?? []) === JSON.stringify(textMarks))
           previous.text = (previous.text ?? '') + text
