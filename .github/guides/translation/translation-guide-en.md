@@ -60,6 +60,7 @@ Lunaria does not track these files, so they do not appear on the article progres
 
 - Syntax markers such as headings, lists, quotes and code fences.
 - Container markers, parameter separators, attribute markers and explicit heading anchors. Keep component and parameter names as they are, but translate the text shown to users.
+- For site-specific Markdown syntax such as cards, timelines and custom emoji, see the [Markdown enhancements guide (Chinese)](https://yuanshen.site/docs/md-enhance-guide).
 
 **Program identifiers**
 
@@ -70,19 +71,16 @@ Lunaria does not track these files, so they do not appear on the article progres
 **Matching rules**
 
 - Regular expressions and title matching strings in `site.yml` and shared configuration.
-- Menu arrays are matched by index, so do not reorder them across locales.
 
 **Code**
 
 - Commands, arguments, paths and code samples in fenced and inline code.
 
-## Translation rules
+## Special cases
 
-- Translate from the Chinese source and retain its page structure. Handle the content listed in [Translation scope](#translation-scope) as described there.
-- For site-specific Markdown syntax such as cards, timelines, and custom emoji, see the [Markdown enhancements guide (Chinese)](https://yuanshen.site/docs/md-enhance-guide).
 - If a page is unavailable in a locale, link to an existing translation and label its language.
 - Follow the [forum glossary](./forum-glossary.md) for forum messages. Check short labels, interpolated values and links in the affected page.
-- Review each warning against the source text and its use on the page. Update the translation when the source changes.
+- Review each warning against the source text and its use on the page.
 
 ## Checks and submission
 

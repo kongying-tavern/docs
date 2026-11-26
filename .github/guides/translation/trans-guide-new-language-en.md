@@ -42,4 +42,4 @@ VitePress and the translation dashboards scan `.vitepress/locales` automatically
 1. Translate the articles under `pages/zh/` into the new language, starting with the key pages.
 2. Translate all the copied YAML files, including the site text and the language suggestion banner in `site.yml`. Changes to `site.yml` are reloaded by VitePress.
 3. Add the new entry to the language list in each locale's `translations.md`.
-4. Review the wording against the [translation rules](./translation-guide-en.md#translation-rules), complete the [submission checks](./translation-guide-en.md#checks-and-submission), then open a pull request.
+4. Review the wording against the [translation scope](./translation-guide-en.md#translation-scope), complete the [submission checks](./translation-guide-en.md#checks-and-submission), then open a pull request.

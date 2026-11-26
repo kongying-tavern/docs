@@ -38,7 +38,7 @@ Before translating an article, check the [claim board](https://github.com/kongyi
 - **Articles**: Markdown files, edited directly in VS Code.
 - **UI messages**: run `pnpm i18n:ui`, open the authentication link printed in the terminal, and edit in the editor that opens. Saving writes your changes back to the corresponding YAML file.
 - **Site configuration**: besides messages, `site.yml` holds settings such as navigation menus, links and matching rules. You can edit it in the same editor or directly in VS Code. Both ways change the same file with the same result.
-- Follow the [translation rules](./translation-guide-en.md#translation-rules) and preview the affected language page.
+- Follow the [translation scope](./translation-guide-en.md#translation-scope) and preview the affected language page.
 
 ## Check and submit
 
