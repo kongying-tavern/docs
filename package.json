@@ -2,12 +2,12 @@
   "type": "module",
   "private": "true",
   "packageManager": "pnpm@12.21.0",
-  "engines": {
-    "node": "^22.18.0 || >=23.6.0"
-  },
   "license": "MIT",
   "imports": {
     "#data/*": "./data/*"
+  },
+  "engines": {
+    "node": "^22.18.0 || >=23.6.0"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
