@@ -97,7 +97,13 @@ VitePress 从 `pages/{en,zh,ja}` 读取本地化 Markdown 与路由定义，从 
 - 站点字符只影响 `fonts-subset.gen.css` 的 `cjk.min` 层；script tiers（`latin`、`latin-ext`、`symbols`、`kana`、`cjk-punct`）与固定的 Google Fonts buckets 保持稳定。
 - 生成的分块命名为 `{stem}.{group}.{NN}.{hash}.gen.woff2`，如 `hywenhei_45w.cjk.l1.01.<hash>.gen.woff2`。`*.gen.woff2` 与两个样式表全部 gitignore，从源 TTF 确定性重建。
 - 配置在 `scripts/fonts/font-subset.config.json`，其中 `scripts` 段的 latin/latin-ext 范围镜像 VitePress 的 `fontSubsets.json`；标准字符与切片桶在它引用的 `font-characters.config.json` 和 `font-slicing.config.json`。
-- 需要 Python 3 加 fonttools 与 brotli（`pip install -r requirements.txt`），工具链缺失时构建停止。
+- Python 版本由 `.python-version` 指定，依赖锁在 `requirements.txt`（fonttools 与 brotli）；工具链缺失时构建停止。构建可自动识别 uv 环境。
+- 安装方式二选一：
+  - pip：`pip install -r requirements.txt`
+  - [uv](https://docs.astral.sh/uv/getting-started/installation/)：
+    - `uv python install`（按 `.python-version` 安装，可省略：缺版本时 uv 会自动下载）
+    - `uv venv`
+    - `uv pip install -r requirements.txt`
 
 ## 代码风格与命名
 
