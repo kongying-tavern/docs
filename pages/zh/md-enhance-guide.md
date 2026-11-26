@@ -468,6 +468,31 @@ Windows：[[Mod+K]]{platform=windows}；macOS：[[Mod+K]]{platform=mac}。
 paragraph _style me_{.vp-link} more text
 ::::
 
+### Image 图片 {#image}
+
+#### 语法
+
+图片语法用于在图片上附加写法，以下是可用的扩展：
+
+- 指定显示尺寸：在 `![...]` 内，图片说明文字后接 `|宽x高` 即可。宽或高写 `0`，表示按原图比例缩放。引用式图片同样适用。
+
+  ```markdown
+  ![站点标志|64x0](/imgs/common/logo/logo_128.png)
+  ![站点标志|0x48][img:logo]
+
+  [img:logo]: /imgs/common/logo/logo_128.png
+  ```
+
+- 添加类名：在图片后接 `{.class}`，写法见 [Attrs 自定义属性](#attrs)。
+
+#### 示例
+
+:::: demo
+
+![站点标志|64x0](/imgs/common/logo/logo_128.png)
+
+::::
+
 ### Mention 提及
 
 提及功能可将 `@xxx` 类型的标记，转换为 Gitee 链接。
