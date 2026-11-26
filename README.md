@@ -23,10 +23,16 @@ pnpm run dev
 
 The required Node, pnpm and Python versions are listed in the [development guide](./.github/guides/contributing/development-guide.md#环境要求).
 
+## Guides
+
+- [Development guide](./.github/guides/contributing/development-guide.md) (中文): environment, code layout, imports, checks, and release workflows.
+- [Content guide](./.github/guides/contributing/content-guide.md) (中文): how to plan and write page content and project docs.
+- [Commit convention](./.github/guides/contributing/commit-convention.md): commit format, scopes, and pull requests.
+- Translation guide: [中文](./.github/guides/translation/translation-guide-zh.md) · [English](./.github/guides/translation/translation-guide-en.md)
+
 ## Working on the content
 
-- Use the translation guide to find the locale files and check changes before submitting: [翻译指南](./.github/guides/translation/translation-guide-zh.md#文件与工具) · [Translation Guide](./.github/guides/translation/translation-guide-en.md#files-and-tools)
-- Use `githubPagesOnly: true` in the frontmatter of a page that should ship only on GitHub Pages. [Frontmatter guide](./pages/zh/frontmatter.md)
+- Use `githubPagesOnly: true` in the frontmatter of a page that should ship only on GitHub Pages. [Frontmatter guide](https://yuanshen.site/docs/frontmatter#github-pages-only)
 - See VitePress docs on supported [Markdown Extensions](https://vitepress.vuejs.org/guide/markdown) and the ability to [use Vue syntax inside markdown](https://vitepress.vuejs.org/guide/using-vue).
 
 ## License
