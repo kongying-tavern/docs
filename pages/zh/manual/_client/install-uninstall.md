@@ -58,7 +58,7 @@ title: 安装与卸载
 根据本软件安装方式的不同，有不同的卸载方式：
 
 - 若安装时使用的是安装版，可使用以下任意方案进行卸载：
-  - Windows 自带方案：使用[添加或删除程序][link:uninstall-windows]对本软件进行卸载。
+  - Windows 自带方案：使用[添加或删除程序][link:windows-uninstall]对本软件进行卸载。
   - 第三方卸载：可使用第三方带卸载程序功能的软件进行卸载。
 - 若安装时使用的是免安装版，直接删除 `Map.exe` 文件所在的目录即可。
 
@@ -68,7 +68,7 @@ title: 安装与卸载
 [link:download-client]: /download-client
 [link:7zip]: https://sparanoid.com/lab/7z/
 [link:bandizip]: https://cn.bandisoft.com/bandizip/
-[link:uninstall-windows]: https://support.microsoft.com/zh-cn/windows/4b55f974-2cc6-2d2b-d092-5905080eaf98
+[link:windows-uninstall]: https://support.microsoft.com/zh-cn/windows/4b55f974-2cc6-2d2b-d092-5905080eaf98
 
 ## FAQ {#faq}
 
