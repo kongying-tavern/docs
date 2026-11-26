@@ -195,4 +195,44 @@ title: 基础指南
 
 本软件中，某些功能点附近存在一个 :Placeholder{inline hint="【图标】文档链接图标（Icon_QuestionMark.png）"} 的小图标，点击该图标可在浏览器中访问本手册的对应章节。
 
+## FAQ {#faq}
+
+### 配置相关 {#faq-config}
+
+::Placeholder{hint="【文本】待补：配置相关的常见问题。"}
+
+::
+
+### 地图相关 {#faq-map}
+
+:::QAGroup
+::QA
+#question
+快捷开关区是否可以自定义开关功能？
+
+#answer
+不可以。快捷开关区目前开放的快捷开关为常用的功能开关。由于地图功能点较多，自定义快捷开关可能会导致小分辨率下布局占用等不可预期的 Bug。如果需要快捷开启 / 关闭某个功能，请使用 :Placeholder{inline hint="【链接】快捷键（待补链接）"} 功能。
+::
+
+::QA
+#question
+软件并非我熟悉的语言，怎么办？
+
+#answer
+在启动界面左下角，点击 :Placeholder{inline hint="【图标】地球图标（待补素材）"} 【选择语言】按钮，可选择本软件语言；也可以通过 :Placeholder{inline hint="【链接】语言设置（待补链接）"} 设置本软件语言。
+::
+
+::QA
+#question
+使用本软件会不会封号？
+
+#answer
+:Placeholder{inline hint="【文本】本软件是否封号：待补说明"}
+::
+:::
+
+::Placeholder{hint="【文本】待补：其余常见问题。"}
+
+::
+
 [link:area-button-behavior]: #area-button-behavior
