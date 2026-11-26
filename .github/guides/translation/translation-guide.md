@@ -22,7 +22,7 @@ Before translating an article, claim it on the [claim board](https://github.com/
 
 ## Author notes
 
-The original author may leave notes beside a Markdown page to pass context to translators, such as locale-specific URLs. These notes are stored by the VS Code extension [Code Explainer Notes](https://marketplace.visualstudio.com/items?itemName=AristideKamara.code-explainer-notes) (`aristidekamara.code-explainer-notes`) in the shared workspace file `.vscode/code-comments.json`; they are not part of the page source.
+The original author may leave notes beside a Markdown page to pass context to translators, such as locale-specific URLs. These notes are stored by the VS Code extension [Code Explainer Notes](https://marketplace.visualstudio.com/items?itemName=AristideKamara.code-explainer-notes) (`aristidekamara.code-explainer-notes`) in the shared workspace file `.vscode/code-comments.json`. They are not part of the page source.
 
 The extension is **required for all contributors**: notes are visible only through it, so every translator must install it to see the same guidance. It is listed in `.vscode/extensions.json`, and VS Code prompts you to install it when you open the workspace.
 
@@ -31,26 +31,17 @@ The extension is **required for all contributors**: notes are visible only throu
 
 ## Translation rules
 
-- Translate from the Chinese source and retain its page structure. Translate frontmatter titles and descriptions; keep explicit heading anchors such as `{#installation}` and component names.
+- Translate from the Chinese source and retain its page structure. Translate frontmatter titles and descriptions. Keep explicit heading anchors such as `{#installation}` and component names.
 - For site-specific Markdown syntax such as cards, timelines, and custom emoji, see the [Markdown enhancements guide (Chinese)](../../../pages/zh/md-enhance-guide.md).
-- Keep YAML keys, `{name}` placeholders, component slot names and plural separators `|`. x18n also lists links and regular expression patterns in `site.yml`; change them only when the task calls for it.
+- Keep YAML keys, `{name}` placeholders, component slot names and plural separators `|`. x18n also lists links and regular expression patterns in `site.yml`. Change them only when the task calls for it.
 - Keep menu grouping and order aligned across locales: array entries are matched by index. If a page is unavailable in a locale, link to an existing translation and label its language.
 - Follow the [forum glossary](./forum-glossary.md) for forum messages. Check short labels, interpolated values and links in the affected page.
 - Review each warning against the source text and its use on the page. Update the translation when the source changes.
 
 ## Checks and submission
 
-Run the checks that apply to your changes:
+Run the checks that apply to your changes. The command-to-change mapping is in the [development guide](../contributing/development-guide.md#检查范围). For UI message or site configuration changes, run `pnpm build` as well.
 
-| Change | Commands |
-| --- | --- |
-| Markdown | `pnpm lint:md` |
-| UI messages or `site.yml` | `pnpm i18n:check` |
-| Chinese articles | `pnpm lint:zh` |
-| Vue or TypeScript | `pnpm typecheck` |
-
-Preview with `pnpm dev` and open the URL printed by VitePress. Before submitting UI or site configuration changes, run `pnpm build` too.
-
-In the pull request, describe the language, changed content and checks performed. Commit source files only; exclude `dist/` and generated fonts.
+In the pull request, describe the language, changed content and checks performed. Commit source files only. Exclude `dist/` and generated fonts.
 
 See the [i18n development guide](../../../scripts/x18n/README.md#命令说明) for command behavior, file writes and Vue usage.

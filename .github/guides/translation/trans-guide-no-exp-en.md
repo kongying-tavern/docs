@@ -6,11 +6,10 @@ This guide walks you through a translation locally: prepare the tools, find the 
 
 ### Local preview
 
-This site is built with VitePress. `pnpm dev` starts a local preview and prints an address in the terminal; open that address in a browser to see the pages as readers will see them.
+Use `pnpm dev` for a local preview. The install commands and preview address are in [local development](../../../README.md#contributing).
 
-- The commands to install dependencies and start the preview are in [local development](../../../README.md#contributing).
 - Pages update automatically when you save changes, so a manual restart is usually unnecessary.
-- To stop the preview, press `Ctrl+C` in the terminal; run `pnpm dev` again the next time you want to view it.
+- To stop the preview, press `Ctrl+C` in the terminal. Run `pnpm dev` again the next time you want to view it.
 
 ### Editing tools
 
@@ -38,7 +37,7 @@ Before translating an article, check the [claim board](https://github.com/kongyi
 
 - **Articles**: Markdown files, edited directly in VS Code.
 - **UI messages**: run `pnpm i18n:ui`, open the authentication link printed in the terminal, and edit in the editor that opens. Saving writes your changes back to the corresponding YAML file.
-- **Site configuration**: besides messages, `site.yml` holds settings such as navigation menus, links and matching rules. You can edit it in the same editor or directly in VS Code; both ways change the same file with the same result.
+- **Site configuration**: besides messages, `site.yml` holds settings such as navigation menus, links and matching rules. You can edit it in the same editor or directly in VS Code. Both ways change the same file with the same result.
 - Follow the [translation rules](./translation-guide.md#translation-rules) and preview the affected language page.
 
 ## Check and submit
