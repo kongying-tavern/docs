@@ -364,7 +364,7 @@ Windows：[[Mod+K]]{platform=windows}；macOS：[[Mod+K]]{platform=mac}。
 ==<标记文本>==
 ```
 
-> 请注意，`==` 外侧需要添加空格 (详见示例)。
+> 请注意，`==` 外侧需要添加空格（详见示例）。
 
 #### 示例
 
