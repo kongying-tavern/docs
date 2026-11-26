@@ -4,7 +4,7 @@
 
 #### TL;DR:
 
-Messages must be matched by the following regex:
+Messages must be matched by the following regex. Scope values are further restricted by `commitlint.config.mjs` (see [Scope](#scope)):
 
 ```js
 ;/^(revert: )?(feat|fix|docs|dx|style|refactor|perf|test|workflow|build|ci|chore|types|wip)(\(.+\))?: .{1,50}/
@@ -68,7 +68,7 @@ Other prefixes are up to your discretion. Suggested prefixes are `docs`, `chore`
 
 ### Scope
 
-The scope could be anything specifying the place of the commit change. For example `core`, `compiler`, `ssr`, `v-model`, `transition` etc...
+This repository restricts scopes to `i18n`, `forum`, `blog`, `theme` and `deps`, as declared in `commitlint.config.mjs`; other scopes are rejected by the commit hook. Run `pnpm commit` (Commitizen) for guided prompts.
 
 ### Subject
 
@@ -89,3 +89,9 @@ The footer should contain any information about **Breaking Changes** and is also
 reference GitHub issues that this commit **Closes**.
 
 **Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
+
+## Pull Requests
+
+- Include a concise summary and link the tracking issue or task.
+- Attach before/after screenshots for UI changes.
+- List any data scripts you ran so reviewers can reproduce the result.

@@ -124,7 +124,7 @@ Next steps:
 1. Translate pages/${code}/**/*.md (priority: translations.md, index.md, download-client.md, community.md, support-us.md)
 2. Translate .vitepress/locales/${code}/*.yml (site.yml includes the site title, metadata, menus and language suggestion)
 3. Verify: pnpm i18n:check && pnpm typecheck && pnpm dev (preview /docs/${code}/)
-4. Follow .github/trans-guide-new-language.md to claim files and submit PRs
+4. Follow .github/guides/translation/trans-guide-new-language-en.md to claim files and submit PRs
 Site and Lunaria locales are auto-discovered from .vitepress/locales; no registration file needs a manual edit.`)
 }
 

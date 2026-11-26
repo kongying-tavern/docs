@@ -19,7 +19,7 @@ description: ドキュメントの翻訳状況と参加方法を紹介します�
 - [記事の翻訳状況（Lunaria）](https://yuanshen.site/docs/_translations/)：未翻訳の記事や、更新が必要な記事を確認できます。
 - [画面文言の翻訳状況（x18n）](https://yuanshen.site/docs/_i18n/)：各言語の文言、翻訳率、診断結果を確認できます。公開版は閲覧専用です。
 
-翻訳を始める方は[入門チュートリアル (英語)](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-no-exp-en.md)をご覧ください。編集するファイルとプルリクエストの送り方は[翻訳ガイド (英語)](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)にまとめています。
+翻訳を始める方は[入門チュートリアル](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-no-exp-en.md)（[翻译入门](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-no-exp-zh.md)）をご覧ください。編集するファイルとプルリクエストの送り方は[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/translation-guide-en.md)（[翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/translation-guide-zh.md)）にまとめています。
 
 ## アーカイブ {#archived-languages}
 
@@ -34,4 +34,4 @@ description: ドキュメントの翻訳状況と参加方法を紹介します�
 
 ## 言語の追加 {#starting-a-new-translation}
 
-言語を追加する場合は[新言語ガイド (中国語)](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)に沿って初期設定してください。
+言語を追加する場合は[新言語ガイド](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-new-language-en.md)（[新增语言指南](https://github.com/kongying-tavern/docs/blob/main/.github/guides/translation/trans-guide-new-language-zh.md)）に沿って初期設定してください。

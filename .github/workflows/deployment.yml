@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # 变更门禁（黑名单见 .github/filters.yml）
+  # 变更门禁（黑名单见 .github/config/filters.yml）
   changes:
     if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
         uses: dorny/paths-filter@v4
         id: filter
         with:
-          filters: .github/filters.yml
+          filters: .github/config/filters.yml
           base: ${{ github.event.before }}
           predicate-quantifier: some-with-excludes
 
