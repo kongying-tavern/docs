@@ -32,7 +32,7 @@ The extension is **required for all contributors**: notes are visible only throu
 ## Translation rules
 
 - Translate from the Chinese source and retain its page structure. Translate frontmatter titles and descriptions. Keep explicit heading anchors such as `{#installation}` and component names.
-- For site-specific Markdown syntax such as cards, timelines, and custom emoji, see the [Markdown enhancements guide (Chinese)](../../../pages/zh/md-enhance-guide.md).
+- For site-specific Markdown syntax such as cards, timelines, and custom emoji, see the [Markdown enhancements guide (Chinese)](https://yuanshen.site/docs/md-enhance-guide).
 - Keep YAML keys, `{name}` placeholders, component slot names and plural separators `|`. x18n also lists links and regular expression patterns in `site.yml`. Change them only when the task calls for it.
 - Keep menu grouping and order aligned across locales: array entries are matched by index. If a page is unavailable in a locale, link to an existing translation and label its language.
 - Follow the [forum glossary](./forum-glossary.md) for forum messages. Check short labels, interpolated values and links in the affected page.
