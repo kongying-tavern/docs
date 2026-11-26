@@ -79,8 +79,7 @@ shared 套件还通过独立 Node 进程实际验证两份站点配置和三个�
   `index.ts` 只在它不携带 UI 或其它副作用时使用。barrel 引入 SFC 会让 Playwright 无法加载
   用例，这类副作用应拆到独立模块（见 `services/telemetry` 的 `toast.ts`）。
 - 页面截图、trace 和临时捕获放在忽略的产物目录，不当作维护中的测试源码。
-- `pnpm typecheck:ts` 覆盖 runtime 逻辑测试，`pnpm typecheck:forum:ui` 单独检查 e2e，
-  `pnpm typecheck:vue` 检查 Vue 侧。
+- 各 typecheck 命令的覆盖范围见[开发指南的检查范围](../.github/guides/contributing/development-guide.md#检查范围)。
 - 默认逻辑入口不启动浏览器；组件浏览器 harness 保留独立命令及其原有浏览器环境要求。
 
 `test:theme:ui` 默认使用已安装的 Chrome，可通过原有 `SWIPE_BROWSER_CHANNEL` 与

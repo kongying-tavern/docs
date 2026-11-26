@@ -21,7 +21,7 @@ pnpm i
 pnpm run dev
 ```
 
-This project requires Node.js `^20.19.0` or `>=22.12.0` (what Vite itself requires); the repo pins a newer toolchain in `.nvmrc`.
+The required Node, pnpm and Python versions are listed in the [development guide](./.github/guides/contributing/development-guide.md#环境要求).
 
 ## Working on the content
 
