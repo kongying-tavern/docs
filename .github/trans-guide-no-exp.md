@@ -8,7 +8,7 @@
 
 在 GitHub 点击 Fork，将仓库复制到自己的账号下，再用 VS Code 的“克隆存储库”下载到本地。打开项目文件夹，在终端按本地开发说明安装依赖并启动预览。
 
-打开终端显示的地址。按 `Ctrl+C` 停止预览，运行 `pnpm dev` 重新启动。VS Code 提示安装仓库推荐的扩展时，选择安装；x18n 用于编辑词条，YAML 和 Markdownlint 用于检查格式。
+打开终端显示的地址。按 `Ctrl+C` 停止预览，运行 `pnpm dev` 重新启动。VS Code 提示安装仓库推荐的扩展时，选择安装；x18n 用于编辑词条，YAML 和 Markdownlint 用于检查格式。[Code Explainer Notes](https://marketplace.visualstudio.com/items?itemName=AristideKamara.code-explainer-notes) 必须安装：原始书写者留下的[附加说明](./translation-guide.md#author-notes)只有通过该插件才能看到，所有人都安装后才能看到同一份备注。翻译前请检查相关段落是否有备注。
 
 ## 编辑翻译
 

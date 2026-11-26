@@ -16,6 +16,15 @@ Local setup: [中文教程](./trans-guide-no-exp.md) · [English tutorial](./tra
 
 Claim articles on the [claim board](https://github.com/kongying-tavern/docs/issues/555), which lists the commands and deadlines. For UI messages, edit the YAML files and submit a pull request. Leave shared configuration and generated files unchanged.
 
+## Author notes
+
+The original author may leave notes beside a Markdown page to pass context to translators, such as locale-specific URLs. These notes are stored by the VS Code extension [Code Explainer Notes](https://marketplace.visualstudio.com/items?itemName=AristideKamara.code-explainer-notes) (`aristidekamara.code-explainer-notes`) in the shared workspace file `.vscode/code-comments.json`; they are not part of the page source.
+
+The extension is **required for all contributors**: notes are visible only through it, so every translator must install it to see the same guidance. It is listed in `.vscode/extensions.json`, and VS Code prompts you to install it when you open the workspace.
+
+- Authors: select the relevant text and run `Code Explainer: Add Comment`, then save in shared storage mode so the note is committed with the repository. Relink a note when the source text moves.
+- Translators: check the Code Explainer side panel or the marker on the passage before translating. A note is guidance addressed to you, not copy for the page: use the concrete value it supplies at the right place in the page, such as putting a locale-specific URL into that link's target. Do not paste the note's own wording into the Markdown, since that would mix translator-facing instructions into the translated article.
+
 ## Translation rules
 
 - Translate from the Chinese source and retain its page structure. Translate frontmatter titles and descriptions; keep explicit heading anchors such as `{#installation}` and component names.

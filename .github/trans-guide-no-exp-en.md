@@ -8,7 +8,7 @@ Install [Git](https://git-scm.com/downloads), [Visual Studio Code](https://code.
 
 Click **Fork** on GitHub to copy the repository to your account, then use **Clone Repository** in VS Code to download your copy. Open the project folder and run the local development commands in its terminal.
 
-Open the URL printed by the terminal. Press `Ctrl+C` to stop preview and run `pnpm dev` to restart it. Accept the workspace extension recommendations: x18n edits messages, while YAML and Markdownlint help check files.
+Open the URL printed by the terminal. Press `Ctrl+C` to stop preview and run `pnpm dev` to restart it. Accept the workspace extension recommendations: x18n edits messages, YAML and Markdownlint help check files. [Code Explainer Notes](https://marketplace.visualstudio.com/items?itemName=AristideKamara.code-explainer-notes) is mandatory: the original author's [supplementary notes](./translation-guide.md#author-notes) are visible only through this extension, so everyone must install it to see the same notes. Check those notes for the passage before translating.
 
 ## Edit a translation
 
