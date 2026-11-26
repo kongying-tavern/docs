@@ -22,6 +22,8 @@ Two published dashboards show what still needs translation: [Lunaria](https://yu
 
 Only edit files for the target locale. Do not change the Chinese source in `pages/zh/`. Changing the source marks every locale's translation as needing an update.
 
+When the source text changes, its translation needs to be revised. Lunaria marks these articles as needing an update and lists them on the claim board alongside untranslated ones. Claim them the same way, revise the translation against the updated source and submit a pull request. Once the change is merged and deployed, the dashboard recalculates status and the article is no longer listed as needing an update.
+
 ### Claiming work
 
 Before translating an article, claim it on the [claim board](https://github.com/kongying-tavern/docs/issues/555). The board lists the available articles, the claim commands and the deadline. UI messages are not claimed through the board: edit the YAML files and submit a pull request. Leave shared configuration and generated files unchanged.
