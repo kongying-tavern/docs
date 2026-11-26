@@ -12,13 +12,13 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 {define:L_LEGEND}{color:#e1ab36}**传说级**{/color}{/define}
 {define:L_MYTH}{color:#f15e4e}**神话级**{/color}{/define}
 
-> **客户端下载方式 (除了自动更新外的方式)**
+> **客户端下载方式（除了自动更新外的方式）**
 >
 > - 在线安装器：<https://steambird.pub/-/kyjg/KongYingMap.OnlineInst.exe>
 > - 夸克云盘：<https://pan.quark.cn/s/fe8bb34c77bc>
 > - 加入讨论组：<https://yuanshen.site/docs/community.html>
-> - 百度网盘 (提取码：KYJG)：<https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg>
-> - 天翼云盘 (访问码：exn0)：<https://cloud.189.cn/t/YF7Fj2zIRVbi>
+> - 百度网盘（提取码：KYJG）：<https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg>
+> - 天翼云盘（访问码：exn0）：<https://cloud.189.cn/t/YF7Fj2zIRVbi>
 > - 若没有出现自动更新窗口，请尝试：<https://yuanshen.site/docs/manual/faq/autoupdate/updater>
 
 ```
@@ -163,7 +163,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ## 2025-12-04-1269
 
-- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致物品状态异常 (AI 干的)。
+- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致物品状态异常（AI 干的）。
 
 ## 2025-12-04-160
 
