@@ -28,6 +28,17 @@ Choose checks by what changed rather than defaulting to `pnpm lint`:
 
 `pnpm lint` runs ESLint and `pnpm lint:zh` only; it does not include `pnpm lint:md`, so on its own it does not cover a Markdown change. The pre-commit hook only runs `eslint --fix` on staged code files (JS/TS/Vue/CSS); it does not run Markdown checks or type checks, so run the checks above yourself before committing.
 
+## Writing Guides
+
+When you create or rewrite documentation, follow the [content guide](.github/guides/contributing/content-guide.md) for structure, examples and concision. Its rules apply to generated text as well.
+
+AI-specific constraints:
+
+- Write the final design only. Do not add candidate options, rejected alternatives or drafting history.
+- Do not invent missing values. If a value is unknown, leave it marked as pending instead of filling it with a plausible default.
+- Keep setup, preview and tool installation in their existing canonical documents; link instead of repeating them.
+- Place contributor guides in `.github/guides/contributing/` and translation guides in `.github/guides/translation/`.
+
 ## Testing Guidelines
 All maintained tests live under root `tests/`, grouped by how they run: Vitest logic tests in `tests/runtime/` (`forum/`, `theme/`, `shared/`, `fonts/` domains), Playwright page journeys in `tests/e2e/` (`forum/` and `site/` domains), and component browser harnesses in `tests/harness/`; split every domain into feature modules. Shared helpers live in `tests/support/` and reusable raw-data fixtures in `tests/fixtures/`; runner-specific scaffolding stays inside its owning suite in `fixtures/` and `support/`; do not add test files to production source directories. Test imports use relative specifiers only, never path aliases, and any barrel they reach must stay free of side effects: the telemetry barrel must not re-export UI components. `pnpm test` recursively discovers `tests/runtime/**/*.test.ts`; `pnpm test:list` lists them. Use `pnpm test:runtime`, `pnpm test:forum`, `pnpm test:shared`, `pnpm test:theme` (shared + theme), and `pnpm test:fonts` for focused runs. `pnpm test:forum:ui` runs the Playwright journeys for the `forum/` and `site/` domains; `pnpm test:theme:ui` runs the keyboard-shortcut and swipe-actions browser harnesses with their own fixtures. Browser checks stay separate from the default logic test entry. See `tests/README.md` for placement and maintenance rules. Additional quality checks include linting, type checks, localized markdown validation, and ensuring `pnpm build` completes without warnings. When touching generated content, rerun the relevant `pnpm build-*` script and spot-check the rendered page via `pnpm dev`. Document manual verification steps in your PR description.
 
