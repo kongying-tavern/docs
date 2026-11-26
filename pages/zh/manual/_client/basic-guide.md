@@ -42,7 +42,7 @@ title: 基础指南
 
 - 使用鼠标滚轮，可缩放地图大小。
 - 使用操作功能区右侧的滑动条进行地图缩放：
-  - 点击滑动条上方的 :Placeholder{inline hint="【图标】加号图标（Btn_Slider_Plus.png）"} 可放大地图区，点击滑动条下方的 :Placeholder{inline hint="【图标】减号图标（Btn_Slider_Minus.png）"} 可缩小地图区。
+  - 点击滑动条上方的![加号图标|0x20][img:btn-slider-plus]{.inline-img}可放大地图区，点击滑动条下方的![减号图标|0x20][img:btn-slider-minus]{.inline-img}可缩小地图区。
   - 拖动滑动条上下移动，可放大或缩小地图区。
 
 ### 派蒙面板折叠 {#panel-collapse}
@@ -87,7 +87,7 @@ title: 基础指南
   - 合并显示的物品右下角为物品条数。
   - 点击合并的物品图标，可删除整个合并分组。
   - 将光标移动至合并的物品上，右侧会出现被合并的物品条目。点击右侧条目，可删除对应物品条目的选择。
-  - 点击已选择物品列表最上方的 :Placeholder{inline hint="【图标】清空选择物品（Icon_Item_Clear.png）"} 按钮，可清空已选择物品列表。
+  - 点击已选择物品列表最上方的![清空选择物品|0x40][img:item-clear]{.inline-img}按钮，可清空已选择物品列表。
 - 切换二级地区，不影响已选择的物品。
 
 #### 宝箱物品选择 {#select-chests}
@@ -100,9 +100,9 @@ title: 基础指南
 - 宝箱选择器顶部，存在【宝箱品质】与【获取方式】分类标签页。切换标签页后，宝箱物品列表也会切换至对应分类。
 - 分类标签页左侧有【全选】按钮，点击此按钮可切换当前分类的全选 / 取消全选。
 - 【全选】按钮会随着当前分类的选中状态改变。
-  - 若当前分类中，所有物品均已选中，则全选按钮状态为 :Placeholder{inline hint="【图标】全选状态（Icon_Chest_CheckedAll.png）"}。
-  - 若当前分类中，部分物品已选中，则全选按钮状态为 :Placeholder{inline hint="【图标】半选状态（Icon_Chest_CheckedHalf.png）"}。
-  - 若当前分类中，无物品选中，则全选按钮的状态为 :Placeholder{inline hint="【图标】未选状态（Icon_Chest_UncheckedAll.png）"}。
+  - 若当前分类中，所有物品均已选中，则全选按钮状态为![全选状态|0x20][img:chest-checked-all]{.inline-img}。
+  - 若当前分类中，部分物品已选中，则全选按钮状态为![半选状态|0x20][img:chest-checked-half]{.inline-img}。
+  - 若当前分类中，无物品选中，则全选按钮的状态为![未选状态|0x20][img:chest-unchecked-all]{.inline-img}。
 - 点击分类标签页右侧的 :small_red_triangle: / :small_red_triangle_down:，可展开 / 折叠宝箱选择器面板。
 - 宝箱面板下方，有宝箱成就计数，此计数数量与游戏内成就数计数一致。
 - 宝箱选择器面板中，【宝箱品质】与【获取方式】无需同时选择。
@@ -136,13 +136,13 @@ title: 基础指南
   - 图片用于提供游戏内场景截图，以供用户对比，从而确认点位的具体位置或详细信息。
   - 图片为点位的补充信息，并非所有的点位都有图片。
 - 视频
-  - 视频用于提供比较完整的点位探索指引，点击点位弹窗图片区右下角的 :Placeholder{inline hint="【图标】视频播放按钮（Icon_Marker_VideoPlay.png）"}，可在浏览器中打开视频链接。
+  - 视频用于提供比较完整的点位探索指引，点击点位弹窗图片区右下角的![视频播放按钮|0x40][img:marker-video-play]{.inline-img}，可在浏览器中打开视频链接。
   - 视频为点位的补充信息，并非所有的点位都有视频。
 
 点位弹窗中，还存在以下操作：
 
 - 当光标在点位弹窗中，且在内容区之外时，可通过鼠标滚轮，对当前点位弹窗进行放大 / 缩小操作。
-- 点击点位弹窗右上角的 :Placeholder{inline hint="【图标】弹窗关闭按钮（Icon_Marker_Close.png）"}，或点击点位弹窗之外的地图区，均可关闭当前点位弹窗。
+- 点击点位弹窗右上角的![弹窗关闭按钮|0x20][img:marker-close]{.inline-img}，或点击点位弹窗之外的地图区，均可关闭当前点位弹窗。
 
 ### 点位标记 {#marker-pin}
 
@@ -193,8 +193,17 @@ title: 基础指南
 
 ## 文档链接 {#manual-link}
 
-本软件中，某些功能点附近存在一个 :Placeholder{inline hint="【图标】文档链接图标（Icon_QuestionMark.png）"} 的小图标，点击该图标可在浏览器中访问本手册的对应章节。
+本软件中，某些功能点附近存在一个![文档链接图标|0x20][img:question-mark]{.inline-img}的小图标，点击该图标可在浏览器中访问本手册的对应章节。
 
+[img:btn-slider-plus]: /imgs/manual/_client/basic-guide/icons/btn-slider-plus.png
+[img:btn-slider-minus]: /imgs/manual/_client/basic-guide/icons/btn-slider-minus.png
+[img:item-clear]: /imgs/manual/_client/basic-guide/icons/icon-item-clear.png
+[img:chest-checked-all]: /imgs/manual/_client/basic-guide/icons/icon-chest-checked-all.png
+[img:chest-checked-half]: /imgs/manual/_client/basic-guide/icons/icon-chest-checked-half.png
+[img:chest-unchecked-all]: /imgs/manual/_client/basic-guide/icons/icon-chest-unchecked-all.png
+[img:marker-video-play]: /imgs/manual/_client/basic-guide/icons/icon-marker-video-play.png
+[img:marker-close]: /imgs/manual/_client/basic-guide/icons/icon-marker-close.png
+[img:question-mark]: /imgs/manual/_client/basic-guide/icons/icon-question-mark.png
 [link:area-button-behavior]: #area-button-behavior
 
 ## FAQ {#faq}

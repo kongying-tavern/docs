@@ -241,6 +241,14 @@ div.VPHomeHero > div > div.main > p.tagline {
   text-wrap: pretty;
 }
 
+/* 正文中的行内小图标：尺寸由 Markdown 的 obsidian-img-size 语法指定，此处只负责
+   行内显示与左右间距；覆盖 VitePress 给 .vp-doc img 设置的 1rem 外边距。 */
+.vp-doc img.inline-img {
+  display: inline-block;
+  margin: 0 0.4rem;
+  vertical-align: -0.125em;
+}
+
 /* Inline emoji must not inherit prose image margins that enlarge the line box. */
 img[data-emoji] {
   display: inline-block;
