@@ -1,6 +1,6 @@
 # Feedback Forum Glossary / 反馈论坛术语表
 
-Use these terms in `forum.yml`. General syntax and submission rules are in the [translation guide](./translation-guide.md). When wording needs discussion, include the message key in the issue or pull request.
+Use these terms in `forum.yml`. General syntax and submission rules are in the [translation guide](./translation-guide-en.md). When wording needs discussion, include the message key in the issue or pull request.
 
 ## Key terms
 

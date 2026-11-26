@@ -1,6 +1,6 @@
 # 新增翻译语言
 
-这份指南讲怎么为一个新语言建立完整的翻译目录。修改已有语言的译文，见[翻译入门](./trans-guide-no-exp.md)。
+这份指南讲怎么为一个新语言建立完整的翻译目录。修改已有语言的译文，见[翻译入门](./trans-guide-no-exp-zh.md)。英文版见 [Adding a Translation Language](./trans-guide-new-language-en.md)。
 
 ## 开始前
 
@@ -42,4 +42,4 @@ VitePress 和翻译看板都会自动扫描 `.vitepress/locales`，不需要手�
 1. 对照 `pages/zh/` 翻译新语言文章，优先完成重点页面。
 2. 翻译复制来的全部 YAML，包括 `site.yml` 中的站点文案和语言建议栏。`site.yml` 的改动会被 VitePress 重载。
 3. 在各语言 `translations.md` 的语言列表中补上新入口。
-4. 按[翻译规则](./translation-guide.md#translation-rules)复核文案，完成[提交前检查](./translation-guide.md#checks-and-submission)后提交 Pull Request。
+4. 按[翻译规则](./translation-guide-zh.md#翻译规则)复核文案，完成[提交前检查](./translation-guide-zh.md#检查与提交)后提交 Pull Request。

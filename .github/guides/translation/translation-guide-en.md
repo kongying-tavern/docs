@@ -2,7 +2,7 @@
 
 Use this guide to translate the documentation site. For map client translations, see the [translations page](https://yuanshen.site/docs/translations/#translations-client).
 
-Local setup: [中文教程](./trans-guide-no-exp.md) · [English tutorial](./trans-guide-no-exp-en.md). To add a language, follow the [new language guide (Chinese)](./trans-guide-new-language.md).
+Local setup: [中文教程](./trans-guide-no-exp-zh.md) · [English tutorial](./trans-guide-no-exp-en.md). To add a language, follow the [new language guide (Chinese)](./trans-guide-new-language-zh.md) or [Adding a language](./trans-guide-new-language-en.md). Chinese version: [翻译指南](./translation-guide-zh.md).
 
 ## Files and tools
 
