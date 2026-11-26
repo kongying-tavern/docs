@@ -12,9 +12,22 @@ Local setup: [中文教程](./trans-guide-no-exp.md) · [English tutorial](./tra
 | UI messages | `.vitepress/locales/<locale>/*.yml`, except `site.yml` | `pnpm i18n:ui` |
 | Site configuration | `.vitepress/locales/<locale>/site.yml` | `pnpm i18n:ui` or YAML editor |
 
-[Lunaria](https://yuanshen.site/docs/_translations/) tracks articles; [x18n](https://yuanshen.site/docs/_i18n/) tracks UI and site text. Both published dashboards are read-only. Submit changes through a pull request.
+### Progress dashboards
 
-Claim articles on the [claim board](https://github.com/kongying-tavern/docs/issues/555), which lists the commands and deadlines. For UI messages, edit the YAML files and submit a pull request. Leave shared configuration and generated files unchanged.
+Two published dashboards show what still needs translation: [Lunaria](https://yuanshen.site/docs/_translations/) tracks articles and [x18n](https://yuanshen.site/docs/_i18n/) tracks UI and site text. They are read-only — they reflect what has been merged, not a place to edit. Make changes in the files above and submit a pull request.
+
+### Claiming work
+
+Before translating an article, claim it on the [claim board](https://github.com/kongying-tavern/docs/issues/555). The board lists the available articles, the claim commands and the deadline. UI messages are not claimed through the board: edit the YAML files and submit a pull request. Leave shared configuration and generated files unchanged.
+
+## Author notes
+
+The original author may leave notes beside a Markdown page to pass context to translators, such as locale-specific URLs. These notes are stored by the VS Code extension [Code Explainer Notes](https://marketplace.visualstudio.com/items?itemName=AristideKamara.code-explainer-notes) (`aristidekamara.code-explainer-notes`) in the shared workspace file `.vscode/code-comments.json`; they are not part of the page source.
+
+The extension is **required for all contributors**: notes are visible only through it, so every translator must install it to see the same guidance. It is listed in `.vscode/extensions.json`, and VS Code prompts you to install it when you open the workspace.
+
+- Authors: select the relevant text and run `Code Explainer: Add Comment`, then save in shared storage mode so the note is committed with the repository. Relink a note when the source text moves.
+- Translators: check the Code Explainer side panel or the marker on the passage before translating. A note is guidance addressed to you, not copy for the page: use the concrete value it supplies at the right place in the page, such as putting a locale-specific URL into that link's target. Do not paste the note's own wording into the Markdown, since that would mix translator-facing instructions into the translated article.
 
 ## Translation rules
 
