@@ -40,4 +40,4 @@ Commits follow Conventional Commits; the allowed scopes, message format and PR e
 
 ## Data & Localization Tips
 
-Keep data refresh credentials in `.env.data`. UI messages and localized site settings live in `.vitepress/locales`. For translation or i18n integration tasks, read the [Agent i18n workflow](.agents/i18n.md) first. The [translation guide](.github/guides/translation/translation-guide.md) covers contributor instructions and shared translation rules.
+Keep data refresh credentials in `.env.data`. UI messages and localized site settings live in `.vitepress/locales`. For translation or i18n integration tasks, read the [Agent i18n workflow](.agents/i18n.md) first. The translation guides ([中文](.github/guides/translation/translation-guide-zh.md) / [English](.github/guides/translation/translation-guide-en.md)) cover contributor instructions and shared translation rules.
