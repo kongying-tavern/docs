@@ -51,6 +51,22 @@ test('Lunaria tracks articles only and retains the claim bot status contract', (
   expect(sync.jobs.sync.steps.some(step => step.run === 'pnpm lunaria:build')).toBe(true)
 })
 
+test('claim bot loads the config and template from the config directory', () => {
+  const claimConfig = load(read('.github/config/lunaria-claim.yml')) as { templatePath?: string }
+  expect(claimConfig.templatePath).toBe('.github/config/lunaria-claim.md')
+
+  const sync = load(read('.github/workflows/sync.yml')) as { jobs: { sync: { steps: Step[] } } }
+  const bot = load(read('.github/workflows/claim-bot.yml')) as { jobs: Record<string, { steps: Step[] }> }
+  const steps = [
+    ...sync.jobs.sync.steps,
+    ...Object.values(bot.jobs).flatMap(job => job.steps),
+  ].filter(step => step.uses?.startsWith('jiazengp/lunaria-claim@'))
+  expect(steps).toHaveLength(4)
+  for (const step of steps) {
+    expect(step.with?.['config-path']).toBe('.github/config/lunaria-claim.yml')
+  }
+})
+
 test('renaming the article tree preserves an outdated translation in Lunaria', () => {
   const fixture = mkdtempSync(resolve(tmpdir(), 'lunaria-history-'))
   const git = (...args: string[]) => execFileSync('git', args, { cwd: fixture, stdio: 'pipe' })
