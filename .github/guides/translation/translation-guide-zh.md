@@ -20,6 +20,8 @@
 
 两个已发布的看板显示待翻译内容：[Lunaria](https://yuanshen.site/docs/_translations/) 跟踪文章，[x18n](https://yuanshen.site/docs/_i18n/) 跟踪界面与站点文案。看板只读，反映已经合并和部署的结果，不是编辑入口。在上面的文件里改动，再通过 Pull Request 提交。
 
+翻译时只改目标语言的文件，不要改 `pages/zh/` 的中文源文。改动源文会让所有语言的译文被标记为需要更新。
+
 ### 认领文章
 
 翻译文章前先到[认领看板](https://github.com/kongying-tavern/docs/issues/555)认领。看板列出可认领的文章、认领命令和期限。界面词条不通过看板认领，直接编辑 YAML 并提交 Pull Request。共享配置与生成文件不要改。
