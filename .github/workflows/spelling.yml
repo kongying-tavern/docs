@@ -17,4 +17,4 @@ jobs:
       - name: Check spelling
         uses: crate-ci/typos@v1.51.1
         with:
-          config: ./.github/_typos.toml
+          config: ./.github/config/spelling-typos.toml

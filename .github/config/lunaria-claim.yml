@@ -4,4 +4,5 @@ issue:
   label: lunaria-claim # bot 用它定位认领 issue，改名后已有 issue 不会自动迁移
 ttlDays: 15 # 认领后未提交 PR 的超期天数
 collapseThreshold: 30 # 单个语言区块超过该条数后折叠显示
+templatePath: .github/config/lunaria-claim.md # issue body 模板位置（相对仓库根目录）
 dashboardUrl: https://yuanshen.site/docs/_translations/

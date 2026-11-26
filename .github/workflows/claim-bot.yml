@@ -28,6 +28,7 @@ jobs:
       - uses: jiazengp/lunaria-claim@v1
         with:
           mode: claim
+          config-path: .github/config/lunaria-claim.yml
 
   link-pr:
     if: github.event_name == 'pull_request_target'
@@ -38,6 +39,7 @@ jobs:
       - uses: jiazengp/lunaria-claim@v1
         with:
           mode: link-pr
+          config-path: .github/config/lunaria-claim.yml
 
   expire:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -47,3 +49,4 @@ jobs:
       - uses: jiazengp/lunaria-claim@v1
         with:
           mode: expire
+          config-path: .github/config/lunaria-claim.yml

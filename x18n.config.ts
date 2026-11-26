@@ -19,6 +19,6 @@ export default defineConfig({
   },
   glossary: [{
     term: '反馈论坛',
-    note: 'For forum.* messages, follow .github/forum-glossary.md and its contextual exceptions.',
+    note: 'For forum.* messages, follow .github/guides/translation/forum-glossary.md and its contextual exceptions.',
   }],
 })
