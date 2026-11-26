@@ -195,6 +195,8 @@ title: 基础指南
 
 本软件中，某些功能点附近存在一个 :Placeholder{inline hint="【图标】文档链接图标（Icon_QuestionMark.png）"} 的小图标，点击该图标可在浏览器中访问本手册的对应章节。
 
+[link:area-button-behavior]: #area-button-behavior
+
 ## FAQ {#faq}
 
 ### 配置相关 {#faq-config}
@@ -234,5 +236,3 @@ title: 基础指南
 ::Placeholder{hint="【文本】待补：其余常见问题。"}
 
 ::
-
-[link:area-button-behavior]: #area-button-behavior

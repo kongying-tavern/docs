@@ -62,7 +62,6 @@ title: 安装与卸载
   - 第三方卸载：可使用第三方带卸载程序功能的软件进行卸载。
 - 若安装时使用的是免安装版，直接删除 `Map.exe` 文件所在的目录即可。
 
-[link:install]: #install
 [link:update]: #update
 [link:uninstall]: #uninstall
 [link:download-client]: /download-client
@@ -149,3 +148,5 @@ title: 安装与卸载
 请先将免安装包内的文件解压至本地磁盘，再运行本软件。直接在解压软件中启动 `Map.exe`，会导致软件依赖的部分文件无法释放到本地磁盘中，从而影响软件的正常运行。
 ::
 :::
+
+[link:install]: #install
