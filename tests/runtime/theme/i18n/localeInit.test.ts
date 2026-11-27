@@ -28,7 +28,7 @@ function fixture(template: 'zh' | 'en' = 'en') {
   cpSync(resolve(`.vitepress/locales/${template}`), join(root, `.vitepress/locales/${template}`), { recursive: true })
   writeFileSync(join(root, 'package.json'), '{"type":"module"}')
   writeFileSync(join(root, `pages/${template}/blog/[path].paths.ts`), `usePostData('${template.toUpperCase()}')`)
-  for (const page of ['index.md', 'frontmatter.md', 'md-enhance-guide.md', 'announcement.md'])
+  for (const page of ['index.md', 'frontmatter.md', 'md-enhance-guide.md'])
     writeFileSync(join(root, `pages/${template}/${page}`), `# ${page}`)
   return root
 }
@@ -53,7 +53,7 @@ test.each(['zh', 'en'] as const)('init:locale loads a complete language from the
     assert.equal(readFileSync(join(root, `.vitepress/locales/fr/${file}.yml`), 'utf8'), readFileSync(join(root, `.vitepress/locales/${template}/${file}.yml`), 'utf8'))
   assert.equal(readFileSync(join(root, 'pages/fr/blog/[path].paths.ts'), 'utf8'), 'usePostData(\'FR\')')
   assert.equal(existsSync(join(root, 'pages/fr/index.md')), true)
-  for (const page of ['frontmatter.md', 'md-enhance-guide.md', 'announcement.md'])
+  for (const page of ['frontmatter.md', 'md-enhance-guide.md'])
     assert.equal(existsSync(join(root, `pages/fr/${page}`)), template !== 'zh')
 
   const configPath = join(root, 'vite.config.ts')

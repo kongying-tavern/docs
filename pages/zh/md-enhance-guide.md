@@ -364,7 +364,7 @@ Windows：[[Mod+K]]{platform=windows}；macOS：[[Mod+K]]{platform=mac}。
 ==<标记文本>==
 ```
 
-> 请注意，`==` 外侧需要添加空格 (详见示例)。
+> 请注意，`==` 外侧需要添加空格（详见示例）。
 
 #### 示例
 
@@ -466,6 +466,41 @@ Windows：[[Mod+K]]{platform=windows}；macOS：[[Mod+K]]{platform=mac}。
 
 :::: demo
 paragraph _style me_{.vp-link} more text
+::::
+
+### Image 图片 {#image}
+
+#### 语法
+
+图片语法用于在图片上附加写法，以下是可用的扩展：
+
+- 指定显示尺寸：在 `![...]` 内，图片说明文字后接 `|宽x高` 即可。宽或高写 `0`，表示按原图比例缩放。引用式图片同样适用。
+
+  ```markdown
+  ![站点标志|64x0](/imgs/common/logo/logo_128.png)
+  ![站点标志|0x48][img:logo]
+
+  [img:logo]: /imgs/common/logo/logo_128.png
+  ```
+
+- 添加类名：在图片后接 `{.class}`，写法见 [Attrs 自定义属性](#attrs)。
+
+#### 行内图片与块状图片
+
+- 图片默认是块状图片，独占一个段落，展示为图片和标题的形式。VitePress 会将其包成 `<figure>`，并把图片说明文字作为标题显示在图片下方。
+- 在图片后加 `{.inline-img}`，可让图片与文字排在同一行内。
+- `{.inline-img}` 的样式只负责行内显示和左右间距，不控制尺寸。
+- 尺寸需要另外指定，写法见上文「指定显示尺寸」，在图片说明文字后接 `|宽x高` 即可。
+- 此外，站内所有图片都支持点击放大，并在滚动到视口时才加载。
+
+#### 示例
+
+:::: demo
+
+这是一个行内图片![站点标志|0x20](/imgs/common/logo/logo_128.png){.inline-img}，嵌在句子中。
+
+![站点标志|64x0](/imgs/common/logo/logo_128.png)
+
 ::::
 
 ### Mention 提及

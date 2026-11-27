@@ -22,14 +22,14 @@ function routerWith(loadLocale: (locale: string) => Promise<void>, base = '/docs
 test('page-load hook prepares messages for direct and history navigation, including root base', async () => {
   const load = vi.fn(async () => {})
   const router = routerWith(load)
-  expect(await router.onBeforePageLoad!('https://example.com/docs/en/announcement')).toBe(true)
+  expect(await router.onBeforePageLoad!('https://example.com/docs/en/agreement')).toBe(true)
   expect(load).toHaveBeenLastCalledWith('en')
   expect(await router.onBeforePageLoad!('/docs/ja/feedback/123?x=1#reply')).toBe(true)
   expect(load).toHaveBeenLastCalledWith('ja')
-  expect(await router.onBeforePageLoad!('/docs/announcement')).toBe(true)
+  expect(await router.onBeforePageLoad!('/docs/agreement')).toBe(true)
   expect(load).toHaveBeenLastCalledWith('root')
   const dev = routerWith(load, '/')
-  await dev.onBeforePageLoad!('/en/announcement')
+  await dev.onBeforePageLoad!('/en/agreement')
   expect(load).toHaveBeenLastCalledWith('en')
 })
 
@@ -40,8 +40,8 @@ test('a slower previous locale load cannot resume after a newer page load', asyn
         finish = resolve
       })
     : Promise.resolve())
-  const first = router.onBeforePageLoad!('/docs/en/announcement')
-  expect(await router.onBeforePageLoad!('/docs/ja/announcement')).toBe(true)
+  const first = router.onBeforePageLoad!('/docs/en/agreement')
+  expect(await router.onBeforePageLoad!('/docs/ja/agreement')).toBe(true)
   finish()
   expect(await first).toBe(false)
 })
@@ -50,9 +50,9 @@ test('failed locale loads cancel the page load and allow a later retry', async (
   const report = vi.spyOn(console, 'warn').mockImplementation(() => {})
   const load = vi.fn().mockRejectedValueOnce(new Error('offline')).mockResolvedValue(undefined)
   const router = routerWith(load)
-  expect(await router.onBeforePageLoad!('/docs/en/announcement')).toBe(false)
+  expect(await router.onBeforePageLoad!('/docs/en/agreement')).toBe(false)
   expect(report).toHaveBeenCalledOnce()
-  expect(await router.onBeforePageLoad!('/docs/en/announcement')).toBe(true)
+  expect(await router.onBeforePageLoad!('/docs/en/agreement')).toBe(true)
 })
 
 test('ordinary navigation rejects a failed locale before the router changes history', async () => {

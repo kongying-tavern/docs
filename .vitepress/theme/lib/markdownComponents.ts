@@ -20,6 +20,7 @@ const Emoji = defineAsyncComponent(() => import('../components/ui/emoji/Emoji.vu
 const LinkGrid = defineAsyncComponent(() => import('../components/ui/link-grid/LinkGrid.vue'))
 const QA = defineAsyncComponent(() => import('../markdown-ext/qa/QA.vue'))
 const QaGroup = defineAsyncComponent(() => import('../markdown-ext/qa/QaGroup.vue'))
+const Placeholder = defineAsyncComponent(() => import('../markdown-ext/placeholder/Placeholder.vue'))
 const QQGroupList = defineAsyncComponent(() => import('../components/qq-group-list/QQGroupList.vue'))
 const Spoiler = defineAsyncComponent(() => import('../markdown-ext/spoiler/Spoiler.vue'))
 
@@ -42,6 +43,7 @@ export function installMarkdownComponents(app: Pick<App, 'component'>): void {
   app.component('Qa', QA)
   // 同样由 `:::QAGroup` 变成的 `<qa-group>` 对应 `QaGroup`。
   app.component('QaGroup', QaGroup)
+  app.component('Placeholder', Placeholder)
   app.component('QQGroupList', QQGroupList)
   app.component('Spoiler', Spoiler)
   app.component('LinkGrid', LinkGrid)

@@ -74,5 +74,10 @@
     "editor.formatOnPaste": true
   },
   "mdc.enableComponentMetadataCompletions": true,
-  "mdc.componentMetadataLocalFilePattern": ".vitepress/theme/mdc-components.gen.mjs"
+  "mdc.componentMetadataLocalFilePattern": ".vitepress/theme/mdc-components.gen.mjs",
+  "codeExplainer.showCodeLens": true,
+  "codeExplainer.showGutterMarkers": true,
+  "codeExplainer.showHover": true,
+  "codeExplainer.storageMode": "shared",
+  "codeExplainer.ai.enabled": false
 }

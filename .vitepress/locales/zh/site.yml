@@ -91,6 +91,16 @@ themeConfig:
       - {}
     /settings-labels:
       - {}
+    /manual/_client/:
+      - text: 使用手册
+        collapsed: false
+        items:
+          - text: 目录
+            link: /manual/_client/
+          - text: 安装与卸载
+            link: /manual/_client/install-uninstall
+          - text: 基础指南
+            link: /manual/_client/basic-guide
     /manual:
       - text: 使用手册
         collapsed: false

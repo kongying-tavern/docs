@@ -25,7 +25,7 @@ If you can log into Gitee properly, while not able to do so in the client, pleas
 
 ### Known Issues
 
-- Some special characters in the username or password will prevent you from logging in. (e.g. "&", "+", "-")
+- Some special characters in the username or password will prevent you from logging in (e.g. `&`, `+`, `-`)
 - Please change your password if it includes special characters, and use your Email to log in when your username includes special characters.
 - Special characters in passwords will prevent the client from saving your password, thus it will request a login at every launch
 - If the login issue persists when neither of your username or password includes special characters, it may be caused by a delay in Gitee's third party login API, please wait for several hours after registration and attempt again

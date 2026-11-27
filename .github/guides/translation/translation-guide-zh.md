@@ -4,6 +4,10 @@
 
 本地准备：[翻译入门](./trans-guide-no-exp-zh.md) · [Getting started](./trans-guide-no-exp-en.md)。新增语言：[新增语言指南](./trans-guide-new-language-zh.md) · [Adding a language](./trans-guide-new-language-en.md)。英文版见 [Translation Guide](./translation-guide-en.md)。
 
+## 翻译与本地化
+
+翻译把内容从中文转成另一种语言，保留原文的结构和含义。本地化让译文读起来像母语者写的，用词、句式、举例符合目标语言的习惯。这份指南以翻译为主。直译会让目标读者看不懂时，用目标语言里对应的说法，这一步属于本地化。
+
 ## 文件与工具
 
 | 内容 | 文件 | 编辑方式 |
@@ -20,6 +24,12 @@
 
 翻译文章前先到[认领看板](https://github.com/kongying-tavern/docs/issues/555)认领。看板列出可认领的文章、认领命令和期限。界面词条不通过看板认领，直接编辑 YAML 并提交 Pull Request。共享配置与生成文件不要改。
 
+### 源文与译文
+
+翻译时只改目标语言的文件，不要改 `pages/zh/` 的中文源文。改动源文会让所有语言的译文被标记为需要更新。
+
+原文更新后，译文需要跟着修订。Lunaria 会把这类文章标为需要更新，和待翻译文章一起列在认领看板。认领方式相同，对照更新后的原文修改译文后提交 Pull Request。改动合并部署后，看板重新计算状态，文章不再列为需要更新。
+
 ## 作者备注
 
 原始书写者可能在 Markdown 页面旁留下备注，向译者传递上下文，例如不同语言对应的 URL。这些备注由 VS Code 扩展 [Code Explainer Notes](https://marketplace.visualstudio.com/items?itemName=AristideKamara.code-explainer-notes)（`aristidekamara.code-explainer-notes`）存放在共享工作区文件 `.vscode/code-comments.json`。它们不属于页面正文。
@@ -29,14 +39,61 @@
 - 作者：选中相关文本，运行 `Code Explainer: Add Comment`，用共享存储保存，备注会随仓库提交。源文本移动后要重新关联备注。
 - 译者：翻译前查看 Code Explainer 侧栏或段落标记。备注是给你的说明，不是页面正文。把备注提供的具体值放到页面对应位置，例如把语言专属 URL 填进链接目标。不要把备注原话粘进 Markdown，否则会把译者说明混进译文。
 
-## 翻译规则
+## 翻译范围
 
-- 从中文原文翻译，保留页面结构。翻译 frontmatter 的 title 和 description。保留 `{#installation}` 这类显式标题锚点和组件名。
+先判断内容要不要翻译，再动手。
+
+### 要翻译
+
+- 文章正文
+- 文本性 frontmatter：判断标准是这段文本的读者是站点访客，例如 `title`、`description` 和首页 `features` 中的文字
+- MDC 容器和组件的显示文本：容器类型、组件名和参数名保持原样，参数值里给读者看的文字要翻译
+- 界面词条里展示给用户的文案
+- `site.yml` 里的展示文案，例如导航文字、按钮、提示、页脚
+- 图片 alt：图片加载不出来时，读者靠它理解内容
+- 链接与图片等资源地址：按目标语言填写，有作者注释时以注释为准
+
+### 不用翻译的文件
+
+- 工具文档：`frontmatter.md`、`md-enhance-guide.md`。
+- 模板与静态资源：`blog/[path].md`、`pages/public/**`。
+
+Lunaria 不追踪这些文件，文章进度看板不会列出它们。
+
+### 保持原样
+
+**Markdown 与 MDC 语法**
+
+- 标题、列表、引用、代码围栏等语法符号。
+- 容器标记、参数分隔、属性标记和显式标题锚点。组件名、参数名不翻译，给用户看的文字要翻译。
 - 卡片、时间线、自定义绘表情等站点特有语法见 [Markdown 增强语法指南](https://yuanshen.site/docs/md-enhance-guide)。
-- 保留 YAML 键、`{name}` 占位符、组件插槽名和复数分隔符 `|`。x18n 还列出 `site.yml` 中的链接和正则规则。只有任务要求时才改它们。
-- 各语言的菜单分组与顺序保持一致，数组条目按下标匹配。某语言缺少页面时，链接到已有译文并标注语言。
+
+**程序标识**
+
+- YAML 键名，也就是冒号左边的部分。
+- 控制布局或行为的 frontmatter 字段及其值，例如 `layout`、`aside`、`search`。
+- vue-i18n 的 `{name}` 占位符、`|` 复数分隔符、组件插槽名。
+
+**匹配规则**
+
+- `site.yml` 和共享配置里的正则规则、标题匹配字符串。
+
+**代码**
+
+- 代码块和行内代码里的命令、参数、路径、代码示例。
+
+## 用词
+
+- 用词以原神官方或空荧酒馆官方为准，不使用社区俚语和自造简称。
+- 官方与行业通用的缩写照常保留。
+- 游戏专名查项目提供的术语对照资源，产品功能名查界面词条和[论坛术语表](./forum-glossary.md)。
+- 同一概念在不同位置用词一致。
+
+## 特殊情形
+
+- 某语言缺少页面时，链接到已有译文并标注语言。
 - 论坛文案遵循[论坛术语表](./forum-glossary.md)。检查短标签、插值内容和链接。
-- 对照原文逐条检查警告块及其在页面中的用法。原文变化时同步更新译文。
+- 对照原文逐条检查警告块及其在页面中的用法。
 
 ## 检查与提交
 
