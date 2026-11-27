@@ -119,7 +119,7 @@ title: 安装与卸载
 #answer
 当前客户端为 Windows 版本，无法在上述系统中运行。
 
-若需要在其他系统中运行，可使用 :Placeholder{inline hint="【链接】网页版（待补链接）"}。
+若需要在其他系统中运行，可使用[网页版][link:web]。
 ::
 
 ::QA
@@ -150,3 +150,4 @@ title: 安装与卸载
 :::
 
 [link:install]: #install
+[link:web]: https://yuanshen.site/
